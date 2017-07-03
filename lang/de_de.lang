@@ -1,0 +1,25 @@
+d2u_references = D2U Referenzen
+d2u_references_references = Referenzen
+d2u_references_tags = Tags
+d2u_references_settings = Einstellungen
+d2u_references_setup = Setup
+
+d2u_references_date = Datum
+d2u_references_description = Beschreibung
+d2u_references_name = Name
+d2u_references_no_references_found = Es wurden noch keine Referenzen angelegt.
+d2u_references_no_tags_found = Es wurde noch keine Tags angelegt.
+d2u_references_online_status = Online
+d2u_references_picture = Bild
+d2u_references_pictures = Bilder
+d2u_references_reference = Referenz
+d2u_references_tags = Tags
+d2u_references_teaser = Kurzbeschreibung
+d2u_references_url = Externe URL
+
+d2u_references_settings_article = Referenzen Artikel
+
+d2u_references_rights = D2U Referenzen Addon
+d2u_references_rights_edit_data = D2U Referenzen Addon: Editierrechte für Daten und sprachübergreifende Inhalte
+d2u_references_rights_edit_lang = D2U Referenzen Addon: Editierrechte für Übersetzungen und sprachspezifische Inhalte (es gelten die Sprachen der Rolleneinstellungen)
+d2u_references_rights_settings = D2U Referenzen Addon: Einstellungen
