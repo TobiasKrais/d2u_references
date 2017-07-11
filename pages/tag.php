@@ -21,7 +21,7 @@ if (filter_input(INPUT_POST, "btn_save") == 1 || filter_input(INPUT_POST, "btn_a
 	foreach(rex_clang::getAll() as $rex_clang) {
 		if($tag === FALSE) {
 			$tag = new Tag($tag_id, $rex_clang->getId());
-//			$tag->pictures = $input_media[1];
+//			$tag->picture = $input_media[1];
 			$tag->reference_ids = isset($form['reference_ids']) ? $form['reference_ids'] : [];
 		}
 		else {
@@ -70,7 +70,7 @@ else if(filter_input(INPUT_POST, "btn_delete") == 1 || $func == 'delete') {
 	$func = '';
 }
 
-// Eingabeformular
+// Form
 if ($func == 'edit' || $func == 'add') {
 ?>
 	<form action="<?php print rex_url::currentBackendPage(); ?>" method="post">
@@ -178,7 +178,7 @@ if ($func == '') {
     $list->addColumn(rex_i18n::msg('delete_module'), '<i class="rex-icon rex-icon-delete"></i> ' . rex_i18n::msg('delete'));
     $list->setColumnLayout(rex_i18n::msg('delete_module'), ['', '<td class="rex-table-action">###VALUE###</td>']);
     $list->setColumnParams(rex_i18n::msg('delete_module'), ['func' => 'delete', 'entry_id' => '###tag_id###']);
-    $list->addLinkAttribute(rex_i18n::msg('delete_module'), 'data-confirm', rex_i18n::msg('d2u_references_confirm_delete'));
+    $list->addLinkAttribute(rex_i18n::msg('delete_module'), 'data-confirm', rex_i18n::msg('d2u_helper_confirm_delete'));
 
     $list->setNoRowsMessage(rex_i18n::msg('d2u_references_no_tags_found'));
 
