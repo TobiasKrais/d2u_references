@@ -22,6 +22,7 @@ if (filter_input(INPUT_POST, "btn_save") == 1 || filter_input(INPUT_POST, "btn_a
 		if($tag === FALSE) {
 			$tag = new Tag($tag_id, $rex_clang->getId());
 //			$tag->picture = $input_media[1];
+			
 			$tag->reference_ids = isset($form['reference_ids']) ? $form['reference_ids'] : [];
 		}
 		else {

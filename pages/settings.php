@@ -58,7 +58,8 @@ if (filter_input(INPUT_POST, "btn_save") == 'save') {
 							print '<select class="form-control" name="settings[lang_replacement_'. $rex_clang->getId() .']">';
 							$replacement_options = array(
 								'd2u_helper_lang_english' => 'english',
-								'd2u_helper_lang_german' => 'german'
+								'd2u_helper_lang_german' => 'german',
+								'd2u_helper_lang_slovak' => 'slovak'
 							);
 							foreach($replacement_options as $key => $value) {
 								$selected = $value == $this->getConfig('lang_replacement_'. $rex_clang->getId()) ? ' selected="selected"' : '';

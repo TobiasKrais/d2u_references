@@ -168,7 +168,7 @@ if ($func == 'edit' || $func == 'add') {
 }
 
 if ($func == '') {
-	$query = 'SELECT refs.reference_id, name, online_status '
+	$query = 'SELECT refs.reference_id, name, `date`, online_status '
 		. 'FROM '. rex::getTablePrefix() .'d2u_references_references AS refs '
 		. 'LEFT JOIN '. rex::getTablePrefix() .'d2u_references_references_lang AS lang '
 			. 'ON refs.reference_id = lang.reference_id AND lang.clang_id = '. rex_config::get("d2u_references", "default_lang") .' '
@@ -187,6 +187,8 @@ if ($func == '') {
 
     $list->setColumnLabel('name', rex_i18n::msg('d2u_references_name'));
     $list->setColumnParams('name', ['func' => 'edit', 'entry_id' => '###reference_id###']);
+
+    $list->setColumnLabel('date', rex_i18n::msg('d2u_references_date'));
 
 	$list->removeColumn('online_status');
     $list->addColumn(rex_i18n::msg('status_online'), '<a class="rex-###online_status###" href="' . rex_url::currentBackendPage(['func' => 'changestatus']) . '&entry_id=###reference_id###"><i class="rex-icon rex-icon-###online_status###"></i> ###online_status###</a>');

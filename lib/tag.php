@@ -79,12 +79,15 @@ class Tag {
 			$this->updatedate = $result->getValue("updatedate");
 			$this->updateuser = $result->getValue("updateuser");
 			
-			$query_refs = "SELECT lang.tag_id FROM ". rex::getTablePrefix() ."d2u_references_tags_lang AS lang "
-				."WHERE clang_id = ". $clang_id ." ORDER BY name";
+			$query_refs = "SELECT tag2refs.reference_id FROM ". rex::getTablePrefix() ."d2u_references_tag2refs AS tag2refs "
+				."LEFT JOIN ". rex::getTablePrefix() ."d2u_references_references_lang AS lang "
+					."ON tag2refs.reference_id = lang.reference_id "
+				."WHERE tag_id = ". $this->tag_id ." AND clang_id = ". $this->clang_id ." "
+				."ORDER BY name";
 			$result_refs = rex_sql::factory();
-			$result_refs->setQuery($query);
+			$result_refs->setQuery($query_refs);
 			for($i = 0; $i < $result_refs->getRows(); $i++) {
-				$this->reference_ids[] = $result_refs->getValue("tag_id");
+				$this->reference_ids[] = $result_refs->getValue("reference_id");
 				$result_refs->next();
 			}
 		}
@@ -131,10 +134,11 @@ class Tag {
 			."WHERE clang_id = ". $clang_id ." "
 			."ORDER BY name";
 		if($online_only) {
-			$query = "SELECT tag2refs.tag_id FROM (SELECT tag_id FROM ". rex::getTablePrefix() ."d2u_references_tag2refs GROUP BY tag_id) AS tag2refs "
+			$query = "SELECT tag2refs.tag_id FROM ". rex::getTablePrefix() ."d2u_references_tag2refs AS tag2refs "
 				."LEFT JOIN ". rex::getTablePrefix() ."d2u_references_tags_lang AS lang "
-					."ON tag2refs.tag_id =  lang.tag_id AND clang_id = ". $clang_id ." "
-				."WHERE lang.tag_id <> NULL "
+					."ON tag2refs.tag_id = lang.tag_id AND clang_id = ". $clang_id ." "
+				."WHERE lang.tag_id IS NOT NULL "
+				."GROUP BY tag2refs.tag_id "
 				."ORDER BY name";
 		}
 		$result = rex_sql::factory();
@@ -271,7 +275,7 @@ class Tag {
 			$result_del_refs->setQuery($query_del_refs);
 				
 			foreach($this->reference_ids as $reference_id) {
-				$query_add_refs = "INSERT INTO ". rex::getTablePrefix() ."d2u_references_tag2refs SET reference_id = ". $reference_id .", tag_id = ". $this->tag_id;
+				$query_add_refs = "REPLACE INTO ". rex::getTablePrefix() ."d2u_references_tag2refs SET reference_id = ". $reference_id .", tag_id = ". $this->tag_id;
 				$result_add_tags = rex_sql::factory();
 				$result_add_tags->setQuery($query_add_refs);
 			}

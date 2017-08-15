@@ -12,6 +12,7 @@ class d2u_references_lang_helper {
 		'd2u_references_external_url' => 'Got to product site',
 		'd2u_references_references' => 'References',
 	];
+
 	/**
 	 * @var string[] Array with german replacements. Key is the wildcard,
 	 * value the replacement. 
@@ -20,6 +21,16 @@ class d2u_references_lang_helper {
 		'd2u_references_all_tags' => 'Alle Tags',
 		'd2u_references_external_url' => 'Zur Produktseite',
 		'd2u_references_references' => 'Referenzen',
+	];
+
+	/**
+	 * @var string[] Array with german replacements. Key is the wildcard,
+	 * value the replacement. 
+	 */
+	protected $replacements_slovak = [
+		'd2u_references_all_tags' => 'Všetky tagy',
+		'd2u_references_external_url' => 'Stránka produktu',
+		'd2u_references_references' => 'Referencie',
 	];
 	
 	/**
@@ -43,6 +54,9 @@ class d2u_references_lang_helper {
 				// Load values for input
 				if($d2u_references->hasConfig('lang_replacement_'. $clang_id) && $d2u_references->getConfig('lang_replacement_'. $clang_id) == 'german') {
 					$value = $this->replacements_german[$key];
+				}
+				else if($d2u_references->hasConfig('lang_replacement_'. $clang_id) && $d2u_references->getConfig('lang_replacement_'. $clang_id) == 'slovak') {
+					$value = $this->replacements_slovak[$key];
 				}
 				else { 
 					$value = $this->replacements_english[$key];
