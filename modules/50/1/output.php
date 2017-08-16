@@ -44,15 +44,15 @@ foreach($references as $reference) {
 	print '<div class="col-sm-12 col-md-6 col-lg-4 abstand">';
 	print '<div class="reference-box">'; // START reference-box
 
-	if($reference->external_url != '') {
-		print '<a href="'. $reference->external_url .'">';
+	if($reference->external_url_lang != '' || $reference->external_url != '') {
+		print '<a href="'. ($reference->external_url_lang != '' ? $reference->external_url_lang : $reference->external_url) .'">';
 	}
 	if(count($reference->pictures) > 0) {
 		print '<img src="index.php?rex_media_type=d2u_helper_sm&amp;rex_media_file='. $reference->pictures[0].'" alt="'. $reference->name .'" title="'. $reference->name .'">';
 	}
 
 	print '<div class="reference-box-heading"><b>'. $reference->name .'</b></div>';
-	if($reference->external_url != '') {
+	if($reference->external_url_lang != '' || $reference->external_url != '') {
 		print '</a>';
 	}
 

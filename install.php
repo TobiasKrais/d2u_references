@@ -15,6 +15,7 @@ $sql->setQuery("CREATE TABLE IF NOT EXISTS ". rex::getTablePrefix() ."d2u_refere
 	name varchar(255) collate utf8_general_ci default NULL,
 	teaser text collate utf8_general_ci default NULL,
 	description text collate utf8_general_ci default NULL,
+	url_lang varchar(255) collate utf8_general_ci default NULL,
 	translation_needs_update varchar(7) collate utf8_general_ci default NULL,
 	updatedate int(11) default NULL,
 	updateuser varchar(255) collate utf8_general_ci default NULL,

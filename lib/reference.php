@@ -50,6 +50,11 @@ class Reference {
 	var $external_url = "";
 	
 	/**
+	 * @var string Language specific external URL 
+	 */
+	var $external_url_lang = "";
+	
+	/**
 	 * @var int[] Array with tags 
 	 */
 	var $tag_ids = [];
@@ -109,6 +114,7 @@ class Reference {
 					htmlspecialchars_decode($result->getValue("description"))
 			);
 			$this->external_url = $result->getValue("url");
+			$this->external_url_lang = $result->getValue("url_lang");
 			$this->online_status = $result->getValue("online_status");
 			$this->pictures = preg_grep('/^\s*$/s', explode(",", $result->getValue("pictures")), PREG_GREP_INVERT);
 			if($result->getValue("translation_needs_update") != "") {
@@ -330,6 +336,7 @@ class Reference {
 						."name = '". $this->name ."', "
 						."teaser = '". $this->teaser ."', "
 						."description = '". htmlspecialchars($this->description) ."', "
+						."url_lang = '". $this->external_url_lang ."', "
 						."translation_needs_update = '". $this->translation_needs_update ."', "
 						."updatedate = ". time() .", "
 						."updateuser = '". rex::getUser()->getLogin() ."' ";

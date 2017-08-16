@@ -102,6 +102,9 @@ if(!function_exists('printReferenceList')) {
 }
 
 // Get placeholder wildcard tags and other presets
+$sprog = rex_addon::get("sprog");
+$tag_open = $sprog->getConfig('wildcard_open_tag');
+$tag_close = $sprog->getConfig('wildcard_close_tag');
 $urlParamKey = "";
 if(rex_addon::get("url")->isAvailable()) {
 	$url_data = UrlGenerator::getData();
@@ -131,8 +134,8 @@ else if(filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' 
 	print '<div class="reference-detail">';
 	print '<h1>'. $reference->name .'</h1>';
     print $reference->description;
-	if($reference->external_url != "") {
-		print '<a href="'. $reference->external_url .'">'. $tag_open .'d2u_references_external_url'. $tag_close .'</a>';
+	if($reference->external_url_lang != '' || $reference->external_url != "") {
+		print '<a href="'. ($reference->external_url_lang != '' ? $reference->external_url_lang : $reference->external_url) .'">»&nbsp;&nbsp;'. $tag_open .'d2u_references_external_url'. $tag_close .'</a>';
 	}
 	if(count($reference->pictures) > 0) {
 		printImages($reference->pictures);

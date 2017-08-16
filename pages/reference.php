@@ -33,6 +33,7 @@ if (filter_input(INPUT_POST, "btn_save") == 1 || filter_input(INPUT_POST, "btn_a
 		$reference->name = $form['lang'][$rex_clang->getId()]['name'];
 		$reference->teaser = $form['lang'][$rex_clang->getId()]['teaser'];
 		$reference->description = $form['lang'][$rex_clang->getId()]['description'];
+		$reference->external_url_lang = $form['lang'][$rex_clang->getId()]['url_lang'];
 		$reference->translation_needs_update = $form['lang'][$rex_clang->getId()]['translation_needs_update'];
 		
 		if($reference->translation_needs_update == "delete") {
@@ -119,6 +120,7 @@ if ($func == 'edit' || $func == 'add') {
 								d2u_addon_backend_helper::form_input('d2u_references_name', "form[lang][". $rex_clang->getId() ."][name]", $reference->name, $required, $readonly_lang, "text");
 								d2u_addon_backend_helper::form_textarea('d2u_references_teaser', "form[lang][". $rex_clang->getId() ."][teaser]", $reference->teaser, 5, FALSE, $readonly_lang, TRUE);
 								d2u_addon_backend_helper::form_textarea('d2u_references_description', "form[lang][". $rex_clang->getId() ."][description]", $reference->description, 5, FALSE, $readonly_lang, TRUE);
+								d2u_addon_backend_helper::form_input('d2u_references_url', "form[lang][". $rex_clang->getId() ."][url_lang]", $reference->external_url_lang, FALSE, $readonly_lang, "text");
 							?>
 						</div>
 					</fieldset>
