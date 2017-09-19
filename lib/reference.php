@@ -285,7 +285,7 @@ class Reference {
 	
 	/**
 	 * Updates or inserts the object into database.
-	 * @return boolean TRUE if successful
+	 * @return boolean TRUE if error occured
 	 */
 	public function save() {
 		$error = 0;
