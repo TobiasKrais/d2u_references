@@ -86,7 +86,9 @@ if($sql->getRows() == 0) {
 }
 
 // Insert frontend translations
-d2u_references_lang_helper::factory()->install();
+if(class_exists(d2u_references_lang_helper)) {
+	d2u_references_lang_helper::factory()->install();
+}
 
 // Init Config
 if (!$this->hasConfig()) {
