@@ -65,7 +65,7 @@ else if(filter_input(INPUT_POST, "btn_delete") == 1 || $func == 'delete') {
 		$form = (array) rex_post('form', 'array', array());
 		$tag_id = $form['tag_id'];
 	}
-	$tag = new Tag($tag_id, rex_config::get("d2u_references", "default_lang"));
+	$tag = new Tag($tag_id, rex_config::get("d2u_helper", "default_lang"));
 	$tag->delete();
 	
 	$func = '';
@@ -82,7 +82,7 @@ if ($func == 'edit' || $func == 'add') {
 				<?php
 					foreach(rex_clang::getAll() as $rex_clang) {
 						$tag = new Tag($entry_id, $rex_clang->getId());
-						$required = $rex_clang->getId() == rex_config::get("d2u_references", "default_lang") ? TRUE : FALSE;
+						$required = $rex_clang->getId() == rex_config::get("d2u_helper", "default_lang") ? TRUE : FALSE;
 						
 						$readonly_lang = TRUE;
 						if(rex::getUser()->isAdmin() || (rex::getUser()->hasPerm('d2u_references[edit_lang]') && rex::getUser()->getComplexPerm('clang')->hasPerm($rex_clang->getId()))) {
@@ -93,7 +93,7 @@ if ($func == 'edit' || $func == 'add') {
 						<legend><?php echo rex_i18n::msg('d2u_helper_text_lang') .' "'. $rex_clang->getName() .'"'; ?></legend>
 						<div class="panel-body-wrapper slide">
 							<?php
-								if($rex_clang->getId() != rex_config::get("d2u_references", "default_lang")) {
+								if($rex_clang->getId() != rex_config::get("d2u_helper", "default_lang")) {
 									$options_translations = [];
 									$options_translations["yes"] = rex_i18n::msg('d2u_helper_translation_needs_update');
 									$options_translations["no"] = rex_i18n::msg('d2u_helper_translation_is_uptodate');
@@ -116,7 +116,7 @@ if ($func == 'edit' || $func == 'add') {
 					<div class="panel-body-wrapper slide">
 						<?php
 							// Do not use last object from translations, because you don't know if it exists in DB
-							$tag = new Tag($entry_id, rex_config::get("d2u_references", "default_lang"));
+							$tag = new Tag($entry_id, rex_config::get("d2u_helper", "default_lang"));
 							$readonly = TRUE;
 							if(rex::getUser()->isAdmin() || rex::getUser()->hasPerm('d2u_references[edit_data]')) {
 								$readonly = FALSE;
@@ -124,7 +124,7 @@ if ($func == 'edit' || $func == 'add') {
 							
 //							d2u_addon_backend_helper::form_mediafield('d2u_references_picture', '1', $tag->picture, $readonly);
 							$options_tags = [];
-							foreach (Reference::getAll(rex_config::get("d2u_references", "default_lang")) as $reference) {
+							foreach (Reference::getAll(rex_config::get("d2u_helper", "default_lang")) as $reference) {
 								$options_tags[$reference->reference_id] = $reference->name;
 							}
 							d2u_addon_backend_helper::form_select('d2u_references_references', 'form[reference_ids][]', $options_tags, $tag->reference_ids, 10, TRUE, $readonly);
@@ -155,7 +155,7 @@ if ($func == '') {
 	$query = 'SELECT tags.tag_id, name '
 		. 'FROM '. rex::getTablePrefix() .'d2u_references_tags AS tags '
 		. 'LEFT JOIN '. rex::getTablePrefix() .'d2u_references_tags_lang AS lang '
-			. 'ON tags.tag_id = lang.tag_id AND lang.clang_id = '. rex_config::get("d2u_references", "default_lang") .' '
+			. 'ON tags.tag_id = lang.tag_id AND lang.clang_id = '. rex_config::get("d2u_helper", "default_lang") .' '
 		.'ORDER BY name ASC';
     $list = rex_list::factory($query);
 

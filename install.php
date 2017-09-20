@@ -93,5 +93,4 @@ if(class_exists(d2u_references_lang_helper)) {
 // Init Config
 if (!$this->hasConfig()) {
     $this->setConfig('article_id', rex_article::getSiteStartArticleId());
-	$this->setConfig('default_lang', rex_clang::getStartId());
 }
