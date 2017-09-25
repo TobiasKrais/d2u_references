@@ -10,7 +10,7 @@ if($message != "") {
 
 // save settings
 if (filter_input(INPUT_POST, "btn_save") == 1 || filter_input(INPUT_POST, "btn_apply") == 1) {
-	$form = (array) rex_post('form', 'array', array());
+	$form = (array) rex_post('form', 'array', []);
 
 	// Media fields and links need special treatment
 	$input_media = (array) rex_post('REX_INPUT_MEDIA', 'array', array());
@@ -21,6 +21,7 @@ if (filter_input(INPUT_POST, "btn_save") == 1 || filter_input(INPUT_POST, "btn_a
 	foreach(rex_clang::getAll() as $rex_clang) {
 		if($tag === FALSE) {
 			$tag = new Tag($tag_id, $rex_clang->getId());
+			$tag->tag_id = $tag_id; // Ensure correct ID in case first language has no object
 //			$tag->picture = $input_media[1];
 			
 			$tag->reference_ids = isset($form['reference_ids']) ? $form['reference_ids'] : [];
@@ -62,7 +63,7 @@ if (filter_input(INPUT_POST, "btn_save") == 1 || filter_input(INPUT_POST, "btn_a
 else if(filter_input(INPUT_POST, "btn_delete") == 1 || $func == 'delete') {
 	$tag_id = $entry_id;
 	if($tag_id == 0) {
-		$form = (array) rex_post('form', 'array', array());
+		$form = (array) rex_post('form', 'array', []);
 		$tag_id = $form['tag_id'];
 	}
 	$tag = new Tag($tag_id, rex_config::get("d2u_helper", "default_lang"));

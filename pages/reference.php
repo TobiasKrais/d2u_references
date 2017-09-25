@@ -10,7 +10,7 @@ if($message != "") {
 
 // save settings
 if (filter_input(INPUT_POST, "btn_save") == 1 || filter_input(INPUT_POST, "btn_apply") == 1) {
-	$form = (array) rex_post('form', 'array', array());
+	$form = (array) rex_post('form', 'array', []);
 
 	// Media fields and links need special treatment
 	$input_media_list = (array) rex_post('REX_INPUT_MEDIALIST', 'array', array());
@@ -21,6 +21,7 @@ if (filter_input(INPUT_POST, "btn_save") == 1 || filter_input(INPUT_POST, "btn_a
 	foreach(rex_clang::getAll() as $rex_clang) {
 		if($reference === FALSE) {
 			$reference = new Reference($reference_id, $rex_clang->getId());
+			$reference->reference_id = $reference_id; // Ensure correct ID in case first language has no object
 			$reference->pictures = preg_grep('/^\s*$/s', explode(",", $input_media_list[1]), PREG_GREP_INVERT);
 			$reference->external_url = $form['url'];
 			$reference->date = $form['date'];
@@ -67,7 +68,7 @@ if (filter_input(INPUT_POST, "btn_save") == 1 || filter_input(INPUT_POST, "btn_a
 else if(filter_input(INPUT_POST, "btn_delete") == 1 || $func == 'delete') {
 	$reference_id = $entry_id;
 	if($reference_id == 0) {
-		$form = (array) rex_post('form', 'array', array());
+		$form = (array) rex_post('form', 'array', []);
 		$reference_id = $form['reference_id'];
 	}
 	$reference = new Reference($reference_id, rex_config::get("d2u_helper", "default_lang"));
