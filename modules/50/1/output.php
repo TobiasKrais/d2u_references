@@ -25,7 +25,7 @@ else if(filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' 
 	exit;
 }
 else {
-	$references = Reference::getAll(rex_clang::getCurrentId());
+	$references = Reference::getAll(rex_clang::getCurrentId(), TRUE);
 }
 
 if(count($tags) > 0){

@@ -47,38 +47,21 @@ if(!function_exists('printReferenceList')) {
 		$sprog = rex_addon::get("sprog");
 		$tag_open = $sprog->getConfig('wildcard_open_tag');
 		$tag_close = $sprog->getConfig('wildcard_close_tag');
+		
+		$numebr_references = 'REX_VALUE[2]' > 0 ? 'REX_VALUE[2]' : 6;
+		
 		// Text
-		print '<div class="col-12">';
 		if ('REX_VALUE[id=1 isset=1]') {
-			echo "REX_VALUE[id=1 output=html]";
-		}
-		print '</div>';
-
-		// Tags
-		if(count($tags) > 0){
 			print '<div class="col-12">';
-			print '<ul class="tag-list">';
-			print '<li'. (($tag_selected === FALSE) ? ' class="active"' : '') .'><span class="icon tags"></span><a href="'. rex_getUrl() .'">'. $tag_open .'d2u_references_all_tags'. $tag_close .'</a></li>';
-			foreach($tags as $tag) {
-				$class = ($tag_selected !== FALSE && $tag->tag_id == $tag_selected->tag_id) ? ' class="active"' : '';
-				print '<li'. $class .'><span class="icon tag"></span><a href="'. $tag->getURL() .'">'. $tag->name .'</a></li>';
-			}
-			print '</ul>';
+			echo "REX_VALUE[id=1 output=html]";
 			print '</div>';
 		}
-
+	
 		// Reference List
-		$year = 0;
+		$counter = 1;
 		foreach($references as $reference) {
-			if($year != date("Y", strtotime($reference->date))) {
-				$year = date("Y", strtotime($reference->date));
-				print '<div class="col-12 abstand">';
-				print '<h2 class="section-title">'. $tag_open .'d2u_references_references'. $tag_close .' '. $year .'</h2>';
-				print '</div>';
-			}
-			print '<div class="col-12 col-md-6 abstand">';
+			print '<div class="col-6 col-sm-4 col-md-3 col-lg-2 abstand">';
 			print '<div class="reference-box">'; // START reference-box
-			print '<div class="reference-box-heading"><h3>'. $reference->name .'</h3></div>';
 
 			if(strlen($reference->name) > 10) {
 				print '<a href="'. $reference->getURL() .'">';
@@ -87,16 +70,19 @@ if(!function_exists('printReferenceList')) {
 			if(count($reference->pictures) > 0) {
 				print '<img src="index.php?rex_media_type=d2u_references_list_flat&amp;rex_media_file='. $reference->pictures[0].'" alt="'. $reference->name .'" title="'. $reference->name .'">';
 			}
-			if(strlen($reference->name) > 10) {
-				print '<span class="icon go-details"></span>';
-			}
 			print '</div>';
+			print '<div class="reference-box-heading"><b>'. $reference->name .'</b><br>'
+				. $reference->teaser .'</div>';
 			if(strlen($reference->name) > 10) {
 				print '</a>';
 			}
 
 			print '</div>'; // END reference-box
 			print '</div>';
+			if($counter >= 'REX_VALUE[2]') {
+				break;
+			}
+			$counter++;
 		}
 	}
 }
@@ -130,7 +116,17 @@ else if(filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' 
 	}
 	$reference = new Reference($reference_id, rex_clang::getCurrentId());
 
-	print '<div class="col-12">';
+	$cols_lg = "REX_VALUE[20]";
+	if($cols_lg == "") {
+		$cols_lg = 8;
+	}
+	$offset_lg_cols = intval("REX_VALUE[17]");
+	$offset_lg = "";
+	if($offset_lg_cols > 0) {
+		$offset_lg = " mr-lg-auto ml-lg-auto ";
+	}
+	
+	print '<div class="col-12 col-lg-'. $cols_lg . $offset_lg .'">';
 	print '<div class="reference-detail">';
 	print '<h1>'. $reference->name .'</h1>';
     print $reference->description;
@@ -141,7 +137,7 @@ else if(filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' 
 		$videomanager = new Videomanager();
 		$videomanager->printVideo($reference->video);
 	}
-	if(count($reference->pictures) > 0) {
+	if(count($reference->pictures) > 1) {
 		printImages($reference->pictures);
 	}
 	print '</div>';

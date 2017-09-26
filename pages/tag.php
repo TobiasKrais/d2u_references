@@ -125,7 +125,7 @@ if ($func == 'edit' || $func == 'add') {
 							
 //							d2u_addon_backend_helper::form_mediafield('d2u_references_picture', '1', $tag->picture, $readonly);
 							$options_tags = [];
-							foreach (Reference::getAll(rex_config::get("d2u_helper", "default_lang")) as $reference) {
+							foreach (Reference::getAll(rex_config::get("d2u_helper", "default_lang"), FALSE) as $reference) {
 								$options_tags[$reference->reference_id] = $reference->name;
 							}
 							d2u_addon_backend_helper::form_select('d2u_references_references', 'form[reference_ids][]', $options_tags, $tag->reference_ids, 10, TRUE, $readonly);

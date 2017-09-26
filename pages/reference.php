@@ -23,6 +23,7 @@ if (filter_input(INPUT_POST, "btn_save") == 1 || filter_input(INPUT_POST, "btn_a
 			$reference = new Reference($reference_id, $rex_clang->getId());
 			$reference->reference_id = $reference_id; // Ensure correct ID in case first language has no object
 			$reference->pictures = preg_grep('/^\s*$/s', explode(",", $input_media_list[1]), PREG_GREP_INVERT);
+			$reference->video = $form['video_id'] > 0 ? new Video($form['video_id'], $rex_clang->getId()) : FALSE;
 			$reference->external_url = $form['url'];
 			$reference->date = $form['date'];
 			$reference->online_status = array_key_exists('online_status', $form) ? "online" : "offline";
@@ -148,6 +149,14 @@ if ($func == 'edit' || $func == 'add') {
 								$options_tags[$tag->tag_id] = $tag->name;
 							}
 							d2u_addon_backend_helper::form_select('d2u_references_tags', 'form[tag_ids][]', $options_tags, $reference->tag_ids, 10, TRUE, $readonly);
+
+							if(rex_addon::get('d2u_videos')->isAvailable()) {
+								$options_videos = [0 => rex_i18n::msg('d2u_references_no_video')];
+								foreach(Video::getAll(rex_config::get("d2u_helper", "default_lang")) as $video) {
+									$options_videos[$video->video_id] = $video->name;
+								}
+								d2u_addon_backend_helper::form_select('d2u_videos_video', 'form[video_id]', $options_videos, [($reference->video !== FALSE ? $reference->video->video_id : 0)], 1, FALSE, $readonly);
+							}
 						?>
 					</div>
 				</fieldset>

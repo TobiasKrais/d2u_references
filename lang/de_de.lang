@@ -6,9 +6,11 @@ d2u_references_setup = Setup
 
 d2u_references_date = Datum
 d2u_references_description = Beschreibung
+d2u_references_install_module_03_2 = Das Modul 03-2 aus dem D2U Helper Addon wird für dieses Modul benötigt.
 d2u_references_name = Name
 d2u_references_no_references_found = Es wurden noch keine Referenzen angelegt.
 d2u_references_no_tags_found = Es wurde noch keine Tags angelegt.
+d2u_references_no_video = Kein Video ausgewählt.
 d2u_references_online_status = Online
 d2u_references_picture = Bild
 d2u_references_pictures = Bilder

@@ -45,6 +45,11 @@ class Reference {
 	var $pictures = [];
 	
 	/**
+	 * @var Video Videomanager Video
+	 */
+	var $video = FALSE;
+
+	/**
 	 * @var string External URL 
 	 */
 	var $external_url = "";
@@ -111,12 +116,15 @@ class Reference {
 							'$matches',
 							'return rex_getUrl($matches[1], isset($matches[2]) ? $matches[2] : "");'
 					),
-					htmlspecialchars_decode($result->getValue("description"))
+					stripslashes(htmlspecialchars_decode($result->getValue("description")))
 			);
 			$this->external_url = $result->getValue("url");
 			$this->external_url_lang = $result->getValue("url_lang");
 			$this->online_status = $result->getValue("online_status");
 			$this->pictures = preg_grep('/^\s*$/s', explode(",", $result->getValue("pictures")), PREG_GREP_INVERT);
+			if(rex_addon::get('d2u_videos')->isAvailable() && $result->getValue("video_id") > 0) {
+				$this->video = new Video($result->getValue("video_id"), $clang_id, TRUE);
+			}
 			if($result->getValue("translation_needs_update") != "") {
 				$this->translation_needs_update = $result->getValue("translation_needs_update");
 			}
@@ -166,7 +174,7 @@ class Reference {
 
 	/**
 	 * Deletes the object in all languages.
-	 * @param int $delete_all If TRUE, all translations and main object are deleted. If 
+	 * @param boolean $delete_all If TRUE, all translations and main object are deleted. If 
 	 * FALSE, only this translation will be deleted.
 	 */
 	public function delete($delete_all = TRUE) {
@@ -197,13 +205,17 @@ class Reference {
 	/**
 	 * Get all references.
 	 * @param int $clang_id Redaxo clang id.
+	 * @param boolean $online_only If TRUE, only online References are returned..
 	 * @return Reference[] Array with Reference objects.
 	 */
-	public static function getAll($clang_id) {
+	public static function getAll($clang_id, $online_only = TRUE) {
 		$query = "SELECT lang.reference_id FROM ". rex::getTablePrefix() ."d2u_references_references_lang AS lang "
 			."LEFT JOIN ". rex::getTablePrefix() ."d2u_references_references AS refs "
 				."ON lang.reference_id = refs.reference_id "
 			."WHERE clang_id = ". $clang_id ." ";
+		if($online_only) {
+			$query .= "AND online_status = 'online' ";
+		}
 		$query .= 'ORDER BY `date` DESC';
 		$result = rex_sql::factory();
 		$result->setQuery($query);
@@ -297,6 +309,7 @@ class Reference {
 			$query = rex::getTablePrefix() ."d2u_references_references SET "
 					."online_status = '". $this->online_status ."', "
 					."pictures = '". implode(",", $this->pictures) ."', "
+					."video_id = ". ($this->video !== FALSE ? $this->video->video_id : 0) .", "
 					."url = '". $this->external_url ."', "
 					."`date` = '". $this->date ."' ";
 
@@ -335,7 +348,7 @@ class Reference {
 						."clang_id = '". $this->clang_id ."', "
 						."name = '". $this->name ."', "
 						."teaser = '". $this->teaser ."', "
-						."description = '". htmlspecialchars($this->description) ."', "
+						."description = '". addslashes(htmlspecialchars($this->description)) ."', "
 						."url_lang = '". $this->external_url_lang ."', "
 						."translation_needs_update = '". $this->translation_needs_update ."', "
 						."updatedate = ". time() .", "

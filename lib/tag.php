@@ -198,14 +198,18 @@ class Tag {
 	
 	/**
 	 * Get all References for this Tag.
+	 * @param boolean $online_only If TRUE, only online References are returned..
 	 * @return Reference[] Array with Reference objects.
 	 */
-	public function getReferences() {
+	public function getReferences($online_only = TRUE) {
 		$query = "SELECT tag2refs.reference_id FROM ". rex::getTablePrefix() ."d2u_references_tag2refs AS tag2refs "
 			."LEFT JOIN ". rex::getTablePrefix() ."d2u_references_references AS refs "
 				."ON tag2refs.reference_id = refs.reference_id "
-			."WHERE tag_id = ". $this->tag_id ." "
-			."GROUP BY reference_id "
+			."WHERE tag_id = ". $this->tag_id ." ";
+		if($online_only) {
+			$query .= "AND online_status = 'online' ";
+		}
+		$query .= "GROUP BY reference_id "
 			."ORDER BY `date` DESC";
 		$result = rex_sql::factory();
 		$result->setQuery($query);
