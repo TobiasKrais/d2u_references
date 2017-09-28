@@ -32,7 +32,7 @@ class Tag {
 	/**
 	 * @var int[] Reference IDs
 	 */
-	var $reference_ids = [];
+	var $tag_ids = [];
 
 	/**
 	 * @var string "yes" if translation needs update
@@ -79,15 +79,15 @@ class Tag {
 			$this->updatedate = $result->getValue("updatedate");
 			$this->updateuser = $result->getValue("updateuser");
 			
-			$query_refs = "SELECT tag2refs.reference_id FROM ". rex::getTablePrefix() ."d2u_references_tag2refs AS tag2refs "
-				."LEFT JOIN ". rex::getTablePrefix() ."d2u_references_references_lang AS lang "
-					."ON tag2refs.reference_id = lang.reference_id "
+			$query_refs = "SELECT tag2refs.tag_id FROM ". rex::getTablePrefix() ."d2u_references_tag2refs AS tag2refs "
+				."LEFT JOIN ". rex::getTablePrefix() ."d2u_references_tags_lang AS lang "
+					."ON tag2refs.tag_id = lang.tag_id "
 				."WHERE tag_id = ". $this->tag_id ." AND clang_id = ". $this->clang_id ." "
 				."ORDER BY name";
 			$result_refs = rex_sql::factory();
 			$result_refs->setQuery($query_refs);
 			for($i = 0; $i < $result_refs->getRows(); $i++) {
-				$this->reference_ids[] = $result_refs->getValue("reference_id");
+				$this->tag_ids[] = $result_refs->getValue("tag_id");
 				$result_refs->next();
 			}
 		}
@@ -99,27 +99,27 @@ class Tag {
 	 * FALSE, only this translation will be deleted.
 	 */
 	public function delete($delete_all = TRUE) {
-		if($delete_all) {
-			$query_lang = "DELETE FROM ". rex::getTablePrefix() ."d2u_references_tags_lang "
-				."WHERE tag_id = ". $this->tag_id;
-			$result_lang = rex_sql::factory();
-			$result_lang->setQuery($query_lang);
-
+		$query_lang = "DELETE FROM ". rex::getTablePrefix() ."d2u_references_tags_lang "
+			."WHERE tag_id = ". $this->tag_id
+			. ($delete_all ? '' : ' AND clang_id = '. $this->clang_id) ;
+		$result_lang = rex_sql::factory();
+		$result_lang->setQuery($query_lang);
+		
+		// If no more lang objects are available, delete
+		$query_main = "SELECT * FROM ". rex::getTablePrefix() ."d2u_references_tags_lang "
+			."WHERE tag_id = ". $this->tag_id;
+		$result_main = rex_sql::factory();
+		$result_main->setQuery($query_main);
+		if($result_main->getRows() == 0) {
 			$query = "DELETE FROM ". rex::getTablePrefix() ."d2u_references_tags "
 				."WHERE tag_id = ". $this->tag_id;
 			$result = rex_sql::factory();
 			$result->setQuery($query);
-			
-			$query = "DELETE FROM ". rex::getTablePrefix() ."d2u_references_tag2refs "
+
+			$query_tags = "DELETE FROM ". rex::getTablePrefix() ."d2u_references_tag2refs "
 				."WHERE tag_id = ". $this->tag_id;
-			$result = rex_sql::factory();
-			$result->setQuery($query);
-		}
-		else {
-			$query_lang = "DELETE FROM ". rex::getTablePrefix() ."d2u_references_tags_lang "
-				."WHERE tag_id = ". $this->tag_id ." AND clang_id = ". $this->clang_id;
-			$result_lang = rex_sql::factory();
-			$result_lang->setQuery($query_lang);
+			$result_tags = rex_sql::factory();
+			$result_tags->setQuery($query_tags);
 		}
 	}
 	
@@ -202,21 +202,21 @@ class Tag {
 	 * @return Reference[] Array with Reference objects.
 	 */
 	public function getReferences($online_only = TRUE) {
-		$query = "SELECT tag2refs.reference_id FROM ". rex::getTablePrefix() ."d2u_references_tag2refs AS tag2refs "
-			."LEFT JOIN ". rex::getTablePrefix() ."d2u_references_references AS refs "
-				."ON tag2refs.reference_id = refs.reference_id "
+		$query = "SELECT tag2refs.tag_id FROM ". rex::getTablePrefix() ."d2u_references_tag2refs AS tag2refs "
+			."LEFT JOIN ". rex::getTablePrefix() ."d2u_references_tags AS refs "
+				."ON tag2refs.tag_id = refs.tag_id "
 			."WHERE tag_id = ". $this->tag_id ." ";
 		if($online_only) {
 			$query .= "AND online_status = 'online' ";
 		}
-		$query .= "GROUP BY reference_id "
+		$query .= "GROUP BY tag_id "
 			."ORDER BY `date` DESC";
 		$result = rex_sql::factory();
 		$result->setQuery($query);
 		
 		$references = [];
 		for($i = 0; $i < $result->getRows(); $i++) {
-			$references[$result->getValue("reference_id")] = new Reference($result->getValue("reference_id"), $this->clang_id);
+			$references[$result->getValue("tag_id")] = new Reference($result->getValue("tag_id"), $this->clang_id);
 			$result->next();
 		}
 		return $references;
@@ -278,8 +278,8 @@ class Tag {
 			$result_del_refs = rex_sql::factory();
 			$result_del_refs->setQuery($query_del_refs);
 				
-			foreach($this->reference_ids as $reference_id) {
-				$query_add_refs = "REPLACE INTO ". rex::getTablePrefix() ."d2u_references_tag2refs SET reference_id = ". $reference_id .", tag_id = ". $this->tag_id;
+			foreach($this->tag_ids as $tag_id) {
+				$query_add_refs = "REPLACE INTO ". rex::getTablePrefix() ."d2u_references_tag2refs SET tag_id = ". $tag_id .", tag_id = ". $this->tag_id;
 				$result_add_tags = rex_sql::factory();
 				$result_add_tags->setQuery($query_add_refs);
 			}

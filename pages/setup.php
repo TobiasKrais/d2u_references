@@ -30,6 +30,7 @@ $d2u_module_manager->showManagerList();
 <p>1.0.1 (NEXT):</p>
 <ul>
 	<li>Bugfix: Speichern wenn zweite Sprache Standardsprache ist schlug fehl.</li>
+	<li>Bugfix: Löschen einer Sprache hat Objekte nicht gelöscht.</li>
 	<li>Weitere kleine Bugfixes.</li>
 	<li>Neues Modul: Horizontale Mini Reihe.</li>
 	<li>Einbindung von Videos nun möglich.</li>
