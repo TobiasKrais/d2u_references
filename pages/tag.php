@@ -67,6 +67,7 @@ else if(filter_input(INPUT_POST, "btn_delete") == 1 || $func == 'delete') {
 		$tag_id = $form['tag_id'];
 	}
 	$tag = new Tag($tag_id, rex_config::get("d2u_helper", "default_lang"));
+	$tag->tag_id = $tag_id; // Ensure correct ID in case first language has no object
 	$tag->delete();
 	
 	$func = '';
