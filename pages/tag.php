@@ -124,7 +124,7 @@ if ($func == 'edit' || $func == 'add') {
 								$readonly = FALSE;
 							}
 							
-//							d2u_addon_backend_helper::form_mediafield('d2u_references_picture', '1', $tag->picture, $readonly);
+//							d2u_addon_backend_helper::form_mediafield('d2u_helper_picture', '1', $tag->picture, $readonly);
 							$options_tags = [];
 							foreach (Reference::getAll(rex_config::get("d2u_helper", "default_lang"), FALSE) as $reference) {
 								$options_tags[$reference->reference_id] = $reference->name;
@@ -164,7 +164,10 @@ if ($func == '') {
     $list->addTableAttribute('class', 'table-striped table-hover');
 
     $tdIcon = '<i class="rex-icon fa-tags"></i>';
-    $thIcon = '<a href="' . $list->getUrl(['func' => 'add']) . '" title="' . rex_i18n::msg('add') . '"><i class="rex-icon rex-icon-add-module"></i></a>';
+	$thIcon = "";
+	if(rex::getUser()->isAdmin() || rex::getUser()->hasPerm('d2u_references[edit_data]')) {
+	    $thIcon = '<a href="' . $list->getUrl(['func' => 'add']) . '" title="' . rex_i18n::msg('add') . '"><i class="rex-icon rex-icon-add-module"></i></a>';
+	}
     $list->addColumn($thIcon, $tdIcon, 0, ['<th class="rex-table-icon">###VALUE###</th>', '<td class="rex-table-icon">###VALUE###</td>']);
     $list->setColumnParams($thIcon, ['func' => 'edit', 'entry_id' => '###tag_id###']);
 
@@ -178,10 +181,12 @@ if ($func == '') {
     $list->setColumnLayout(rex_i18n::msg('module_functions'), ['<th class="rex-table-action" colspan="2">###VALUE###</th>', '<td class="rex-table-action">###VALUE###</td>']);
     $list->setColumnParams(rex_i18n::msg('module_functions'), ['func' => 'edit', 'entry_id' => '###tag_id###']);
 
-    $list->addColumn(rex_i18n::msg('delete_module'), '<i class="rex-icon rex-icon-delete"></i> ' . rex_i18n::msg('delete'));
-    $list->setColumnLayout(rex_i18n::msg('delete_module'), ['', '<td class="rex-table-action">###VALUE###</td>']);
-    $list->setColumnParams(rex_i18n::msg('delete_module'), ['func' => 'delete', 'entry_id' => '###tag_id###']);
-    $list->addLinkAttribute(rex_i18n::msg('delete_module'), 'data-confirm', rex_i18n::msg('d2u_helper_confirm_delete'));
+	if(rex::getUser()->isAdmin() || rex::getUser()->hasPerm('d2u_references[edit_data]')) {
+		$list->addColumn(rex_i18n::msg('delete_module'), '<i class="rex-icon rex-icon-delete"></i> ' . rex_i18n::msg('delete'));
+		$list->setColumnLayout(rex_i18n::msg('delete_module'), ['', '<td class="rex-table-action">###VALUE###</td>']);
+		$list->setColumnParams(rex_i18n::msg('delete_module'), ['func' => 'delete', 'entry_id' => '###tag_id###']);
+		$list->addLinkAttribute(rex_i18n::msg('delete_module'), 'data-confirm', rex_i18n::msg('d2u_helper_confirm_delete'));
+	}
 
     $list->setNoRowsMessage(rex_i18n::msg('d2u_references_no_tags_found'));
 
