@@ -35,6 +35,7 @@ $d2u_module_manager->showManagerList();
 	<li>Neues Modul: Horizontale Mini Reihe.</li>
 	<li>Einbindung von Videos nun möglich.</li>
 	<li>Editierrechte für Übersetzer eingeschränkt.</li>
+	<li>Anpassungen an URL Addon 1.0.1.</li>
 </ul>
 <p>1.0.0:</p>
 <ul>
