@@ -8,7 +8,7 @@
 /**
  * Tag
  */
-class Tag {
+class Tag implements \D2U_Helper\ITranslationHelper {
 	/**
 	 * @var int Database ID
 	 */
@@ -221,6 +221,38 @@ class Tag {
 		}
 		return $references;
 	}
+	
+	/**
+	 * Get objects concerning translation updates
+	 * @param int $clang_id Redaxo language ID
+	 * @param string $type 'update' or 'missing'
+	 * @return Tag[] Array with Tag objects.
+	 */
+	public static function getTranslationHelperObjects($clang_id, $type) {
+		$query = 'SELECT tag_id FROM '. \rex::getTablePrefix() .'d2u_references_tags_lang '
+				."WHERE clang_id = ". $clang_id ." AND translation_needs_update = 'yes' "
+				.'ORDER BY name';
+		if($type == 'missing') {
+			$query = 'SELECT main.tag_id FROM '. \rex::getTablePrefix() .'d2u_references_tags AS main '
+					.'LEFT JOIN '. \rex::getTablePrefix() .'d2u_references_tags_lang AS target_lang '
+						.'ON main.tag_id = target_lang.tag_id AND target_lang.clang_id = '. $clang_id .' '
+					.'LEFT JOIN '. \rex::getTablePrefix() .'d2u_references_tags_lang AS default_lang '
+						.'ON main.tag_id = default_lang.tag_id AND default_lang.clang_id = '. \rex_config::get('d2u_helper', 'default_lang') .' '
+					."WHERE target_lang.tag_id IS NULL "
+					.'ORDER BY default_lang.name';
+			$clang_id = \rex_config::get('d2u_helper', 'default_lang');
+		}
+		$result = \rex_sql::factory();
+		$result->setQuery($query);
+
+		$objects = [];
+		for($i = 0; $i < $result->getRows(); $i++) {
+			$objects[] = new Tag($result->getValue("tag_id"), $clang_id);
+			$result->next();
+		}
+		
+		return $objects;
+    }
 
 	/*
 	 * Returns the URL of this object.
