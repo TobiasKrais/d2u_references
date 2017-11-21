@@ -82,7 +82,7 @@ class Tag implements \D2U_Helper\ITranslationHelper {
 			$query_refs = "SELECT tag2refs.tag_id FROM ". rex::getTablePrefix() ."d2u_references_tag2refs AS tag2refs "
 				."LEFT JOIN ". rex::getTablePrefix() ."d2u_references_tags_lang AS lang "
 					."ON tag2refs.tag_id = lang.tag_id "
-				."WHERE tag_id = ". $this->tag_id ." AND clang_id = ". $this->clang_id ." "
+				."WHERE tag2refs.tag_id = ". $this->tag_id ." AND clang_id = ". $this->clang_id ." "
 				."ORDER BY name";
 			$result_refs = rex_sql::factory();
 			$result_refs->setQuery($query_refs);

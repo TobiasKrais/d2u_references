@@ -27,6 +27,10 @@ $d2u_module_manager->showManagerList();
 <h2>Support</h2>
 <p>Fehlermeldungen bitte im <a href="https://github.com/TobiasKrais/d2u_references" target="_blank">GitHub Repository</a> melden.</p>
 <h2>Changelog</h2>
+<p>1.0.2:</p>
+<ul>
+	<li>Bugfix in Tag class.</li>
+</ul>
 <p>1.0.1:</p>
 <ul>
 	<li>Übersetzungshilfe im D2U Helper Addon intergriert.</li>

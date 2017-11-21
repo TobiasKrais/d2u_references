@@ -1,5 +1,5 @@
 package: d2u_references
-version: '1.0.1'
+version: '1.0.2'
 author: Tobias Krais
 supportpage: http://github.com/tobiaskrais/d2u_references
 
@@ -21,5 +21,5 @@ requires:
         d2u_helper: '>=1.3.0'
         sprog: '>=1.0.0'
         tinymce4: '>=0.10'
-        url: '>=1.0.0beta4'
+        url: '>=1.0.1'
         yrewrite: '>=2.0.1'
