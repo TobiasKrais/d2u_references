@@ -1,0 +1,24 @@
+d2u_references = D2U References
+d2u_references_references = References
+d2u_references_tags = Tags
+d2u_references_settings = Settings
+d2u_references_setup = Setup
+
+d2u_references_date = Date
+d2u_references_description = Decription
+d2u_references_install_module_03_2 = Module 03-2 from D2U Helper Addon is needed for this module.
+d2u_references_name = Name
+d2u_references_no_references_found = No References
+d2u_references_no_tags_found = No tags found.
+d2u_references_no_video = No Video selected
+d2u_references_reference = Reference
+d2u_references_tags = Tags
+d2u_references_teaser = Short description
+d2u_references_url = External URL
+
+d2u_references_settings_article = Reference article
+
+d2u_references_rights = D2U References addon
+d2u_references_rights_edit_data = D2U References addon: edit rights for data
+d2u_references_rights_edit_lang = D2U References addon: edit rights for translations (languages set in user roles apply)
+d2u_references_rights_settings = D2U References addon: settings
