@@ -202,21 +202,21 @@ class Tag implements \D2U_Helper\ITranslationHelper {
 	 * @return Reference[] Array with Reference objects.
 	 */
 	public function getReferences($online_only = TRUE) {
-		$query = "SELECT tag2refs.tag_id FROM ". rex::getTablePrefix() ."d2u_references_tag2refs AS tag2refs "
-			."LEFT JOIN ". rex::getTablePrefix() ."d2u_references_tags AS refs "
-				."ON tag2refs.tag_id = refs.tag_id "
-			."WHERE tag_id = ". $this->tag_id ." ";
+		$query = "SELECT refs.reference_id FROM ". rex::getTablePrefix() ."d2u_references_tag2refs AS tag2refs "
+			."LEFT JOIN ". rex::getTablePrefix() ."d2u_references_references AS refs "
+				."ON tag2refs.reference_id = refs.reference_id "
+			."WHERE tag2refs.tag_id = ". $this->tag_id ." ";
 		if($online_only) {
 			$query .= "AND online_status = 'online' ";
 		}
-		$query .= "GROUP BY tag_id "
+		$query .= "GROUP BY tag2refs.reference_id "
 			."ORDER BY `date` DESC";
 		$result = rex_sql::factory();
 		$result->setQuery($query);
 		
 		$references = [];
 		for($i = 0; $i < $result->getRows(); $i++) {
-			$references[$result->getValue("tag_id")] = new Reference($result->getValue("tag_id"), $this->clang_id);
+			$references[$result->getValue("reference_id")] = new Reference($result->getValue("reference_id"), $this->clang_id);
 			$result->next();
 		}
 		return $references;
