@@ -8,6 +8,13 @@
 		url("./assets/addons/be_style/fonts/fontawesome-webfont.svg?v=4.6.3#fontawesomeregular") format('svg');
 }
 
+.reference-box {
+    box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3);
+    padding: 8px;
+    border-radius: 8px;
+    height:  100%;
+}
+
 .reference-box img {
 	padding-bottom: 1em;
 }
@@ -15,11 +22,18 @@
 	font-size: 1.25em;
 	text-align: center;
 }
+.reference-box a:hover {
+	text-decoration: none;
+	color: footer_color_bg;
+}
 
 .tag-list {
 	float: left;
     list-style: none;
 	padding-left: 0px;
+}
+.tag-list a:hover {
+	text-decoration: none;
 }
 .tag-list li {
 	background-color: article_color_box;
@@ -32,10 +46,10 @@
 .tag-list li a, .tag-list li .icon {
 	color: subhead_color_bg;
 }
-.tag-list li.active {
+.tag-list li.active, .tag-list li:hover {
 	background-color: navi_color_bg;
 }
-.tag-list li.active a, .tag-list li.active a:hover, .tag-list li.active a:focus, .tag-list li.active a:visited, .tag-list li.active .icon {
+.tag-list li.active a, .tag-list li.active a:hover, .tag-list li.active a:focus, .tag-list li.active a:visited, .tag-list li.active .icon, .tag-list li:hover a, .tag-list li:hover .icon {
 	color: navi_color_font;
 }
 .icon {
