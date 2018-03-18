@@ -72,7 +72,7 @@ if(!function_exists('printReferenceList')) {
 			}
 			print '</div>';
 			print '<div class="reference-box-heading"><b>'. $reference->name .'</b><br>'
-				. $reference->teaser .'</div>';
+				. d2u_addon_frontend_helper::prepareEditorField($reference->teaser) .'</div>';
 			if(strlen($reference->name) > 10) {
 				print '</a>';
 			}
@@ -129,7 +129,7 @@ else if(filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' 
 	print '<div class="col-12 col-lg-'. $cols_lg . $offset_lg .'">';
 	print '<div class="reference-detail">';
 	print '<h1>'. $reference->name .'</h1>';
-    print $reference->description;
+    print d2u_addon_frontend_helper::prepareEditorField($reference->description);
 	if($reference->external_url_lang != '' || $reference->external_url != "") {
 		print '<a href="'. ($reference->external_url_lang != '' ? $reference->external_url_lang : $reference->external_url) .'">»&nbsp;&nbsp;'. $tag_open .'d2u_references_external_url'. $tag_close .'</a>';
 	}

@@ -57,7 +57,7 @@ foreach($references as $reference) {
 	}
 
 	print '<div class="reference-box-text">';
-	print $reference->teaser;
+	print d2u_addon_frontend_helper::prepareEditorField($reference->teaser);
 	print '</div>';
 	
 	print '</div>'; // END reference-box

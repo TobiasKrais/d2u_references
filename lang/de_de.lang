@@ -5,7 +5,6 @@ d2u_references_settings = Einstellungen
 d2u_references_setup = Setup
 
 d2u_references_date = Datum
-d2u_references_description = Beschreibung
 d2u_references_install_module_03_2 = Das Modul 03-2 aus dem D2U Helper Addon wird für dieses Modul benötigt.
 d2u_references_name = Name
 d2u_references_no_references_found = Es wurden noch keine Referenzen angelegt.

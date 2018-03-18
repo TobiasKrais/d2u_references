@@ -133,7 +133,7 @@ else if(filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' 
 	print '<div class="col-12">';
 	print '<div class="reference-detail">';
 	print '<h1>'. $reference->name .'</h1>';
-    print $reference->description;
+    print d2u_addon_frontend_helper::prepareEditorField($reference->description);
 	if($reference->external_url_lang != '' || $reference->external_url != "") {
 		print '<a href="'. ($reference->external_url_lang != '' ? $reference->external_url_lang : $reference->external_url) .'">»&nbsp;&nbsp;'. $tag_open .'d2u_references_external_url'. $tag_close .'</a>';
 	}

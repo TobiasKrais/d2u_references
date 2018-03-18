@@ -108,16 +108,8 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 		if ($num_rows > 0) {
 			$this->reference_id = $result->getValue("reference_id");
 			$this->name = $result->getValue("name");
-			$this->teaser = $result->getValue("teaser");
-			// Convert redaxo://123 to URL
-			$this->description = preg_replace_callback(
-					'@redaxo://(\d+)(?:-(\d+))?/?@i',
-					create_function(
-							'$matches',
-							'return rex_getUrl($matches[1], isset($matches[2]) ? $matches[2] : "");'
-					),
-					stripslashes(htmlspecialchars_decode($result->getValue("description")))
-			);
+			$this->teaser = stripslashes(htmlspecialchars_decode($result->getValue("teaser")));
+			$this->description = stripslashes(htmlspecialchars_decode($result->getValue("description")));
 			$this->external_url = $result->getValue("url");
 			$this->external_url_lang = $result->getValue("url_lang");
 			$this->online_status = $result->getValue("online_status");
@@ -379,7 +371,7 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 						."reference_id = '". $this->reference_id ."', "
 						."clang_id = '". $this->clang_id ."', "
 						."name = '". $this->name ."', "
-						."teaser = '". $this->teaser ."', "
+						."teaser = '". addslashes(htmlspecialchars($this->teaser)) ."', "
 						."description = '". addslashes(htmlspecialchars($this->description)) ."', "
 						."url_lang = '". $this->external_url_lang ."', "
 						."translation_needs_update = '". $this->translation_needs_update ."', "
