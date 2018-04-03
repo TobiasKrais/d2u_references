@@ -107,7 +107,7 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 
 		if ($num_rows > 0) {
 			$this->reference_id = $result->getValue("reference_id");
-			$this->name = $result->getValue("name");
+			$this->name = stripslashes($result->getValue("name"));
 			$this->teaser = stripslashes(htmlspecialchars_decode($result->getValue("teaser")));
 			$this->description = stripslashes(htmlspecialchars_decode($result->getValue("description")));
 			$this->external_url = $result->getValue("url");
@@ -375,7 +375,7 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 				$query = "REPLACE INTO ". rex::getTablePrefix() ."d2u_references_references_lang SET "
 						."reference_id = '". $this->reference_id ."', "
 						."clang_id = '". $this->clang_id ."', "
-						."name = '". $this->name ."', "
+						."name = '". addslashes($this->name) ."', "
 						."teaser = '". addslashes(htmlspecialchars($this->teaser)) ."', "
 						."description = '". addslashes(htmlspecialchars($this->description)) ."', "
 						."url_lang = '". $this->external_url_lang ."', "

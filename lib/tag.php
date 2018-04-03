@@ -71,7 +71,7 @@ class Tag implements \D2U_Helper\ITranslationHelper {
 
 		if ($num_rows > 0) {
 			$this->tag_id = $result->getValue("tag_id");
-			$this->name = $result->getValue("name");
+			$this->name = stripslashes($result->getValue("name"));
 			$this->picture = $result->getValue("picture");
 			if($result->getValue("translation_needs_update") != "") {
 				$this->translation_needs_update = $result->getValue("translation_needs_update");
@@ -329,7 +329,7 @@ class Tag implements \D2U_Helper\ITranslationHelper {
 				$query = "REPLACE INTO ". rex::getTablePrefix() ."d2u_references_tags_lang SET "
 						."tag_id = '". $this->tag_id ."', "
 						."clang_id = '". $this->clang_id ."', "
-						."name = '". $this->name ."', "
+						."name = '". addslashes($this->name) ."', "
 						."translation_needs_update = '". $this->translation_needs_update ."', "
 						."updatedate = ". time() .", "
 						."updateuser = '". rex::getUser()->getLogin() ."' ";
