@@ -115,13 +115,13 @@ if ($func == 'edit' || $func == 'add') {
 									$options_translations["yes"] = rex_i18n::msg('d2u_helper_translation_needs_update');
 									$options_translations["no"] = rex_i18n::msg('d2u_helper_translation_is_uptodate');
 									$options_translations["delete"] = rex_i18n::msg('d2u_helper_translation_delete');
-									d2u_addon_backend_helper::form_select('d2u_helper_translation', 'form[lang]['. $rex_clang->getId() .'][translation_needs_update]', $options_translations, array($reference->translation_needs_update), 1, FALSE, $readonly_lang);
+									d2u_addon_backend_helper::form_select('d2u_helper_translation', 'form[lang]['. $rex_clang->getId() .'][translation_needs_update]', $options_translations, [$reference->translation_needs_update], 1, FALSE, $readonly_lang);
 								}
 								else {
 									print '<input type="hidden" name="form[lang]['. $rex_clang->getId() .'][translation_needs_update]" value="">';
 								}
 								
-								d2u_addon_backend_helper::form_input('d2u_references_name', "form[lang][". $rex_clang->getId() ."][name]", $reference->name, $required, $readonly_lang, "text");
+								d2u_addon_backend_helper::form_input('d2u_helper_name', "form[lang][". $rex_clang->getId() ."][name]", $reference->name, $required, $readonly_lang, "text");
 								d2u_addon_backend_helper::form_textarea('d2u_references_teaser', "form[lang][". $rex_clang->getId() ."][teaser]", $reference->teaser, 5, FALSE, $readonly_lang, TRUE);
 								d2u_addon_backend_helper::form_textarea('d2u_helper_description', "form[lang][". $rex_clang->getId() ."][description]", $reference->description, 5, FALSE, $readonly_lang, TRUE);
 								d2u_addon_backend_helper::form_input('d2u_references_url', "form[lang][". $rex_clang->getId() ."][url_lang]", $reference->external_url_lang, FALSE, $readonly_lang, "text");
@@ -206,7 +206,7 @@ if ($func == '') {
     $list->setColumnLabel('reference_id', rex_i18n::msg('id'));
     $list->setColumnLayout('reference_id', ['<th class="rex-table-id">###VALUE###</th>', '<td class="rex-table-id">###VALUE###</td>']);
 
-    $list->setColumnLabel('name', rex_i18n::msg('d2u_references_name'));
+    $list->setColumnLabel('name', rex_i18n::msg('d2u_helper_name'));
     $list->setColumnParams('name', ['func' => 'edit', 'entry_id' => '###reference_id###']);
 
     $list->setColumnLabel('date', rex_i18n::msg('d2u_references_date'));
