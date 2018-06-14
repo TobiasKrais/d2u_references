@@ -14,6 +14,9 @@ if(class_exists(D2UModuleManager)) {
 	$modules[] = new D2UModule("50-3",
 		"D2U Referenzen - Horizontale Mini Referenzboxen mit Detailansicht",
 		1);
+	$modules[] = new D2UModule("50-4",
+		"D2U Referenzen - Farbboxen mit seitlichem Bild",
+		1);
 	$d2u_module_manager = new D2UModuleManager($modules, "", "d2u_references");
 	$d2u_module_manager->autoupdate();
 }
@@ -24,6 +27,11 @@ $sql->setQuery("SHOW COLUMNS FROM ". rex::getTablePrefix() ."d2u_references_refe
 if($sql->getRows() == 0) {
 	$sql->setQuery("ALTER TABLE ". rex::getTablePrefix() ."d2u_references_references "
 		. "ADD video_id INT(10) NULL DEFAULT NULL AFTER pictures;");
+}
+$sql->setQuery("SHOW COLUMNS FROM ". \rex::getTablePrefix() ."d2u_references_references LIKE 'background_color';");
+if($sql->getRows() == 0) {
+	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_references_references "
+		. "ADD background_color VARCHAR(7) NULL DEFAULT NULL AFTER pictures;");
 }
 
 if(rex_addon::get("url")->isAvailable()) {

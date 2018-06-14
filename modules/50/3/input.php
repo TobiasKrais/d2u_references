@@ -58,12 +58,21 @@
 	</div>
 	<div class="col-xs-12 col-md-9">
 		<?php
-			$editor_class = "";
-			if(rex_addon::get('tinymce4')->isAvailable()) {
-				$editor_class = " tinyMCEEditor";
+			$wysiwyg_class = ' ';
+			if(rex_config::get('d2u_helper', 'editor') == 'tinymce4' && rex_addon::get('tinymce4')->isAvailable()) {
+				$wysiwyg_class .= 'tinyMCEEditor';
 			}
-			else if(rex_addon::get('redactor2')->isAvailable()) {
-				$editor_class = " redactorEditor2-full";
+			else if(rex_config::get('d2u_helper', 'editor') == 'redactor2' && rex_addon::get('redactor2')->isAvailable()) {
+				$wysiwyg_class .= 'redactorEditor2-full';
+			}
+			else if(rex_config::get('d2u_helper', 'editor') == 'ckeditor' && rex_addon::get('ckeditor')->isAvailable()) {
+				$wysiwyg_class .= 'ckeditor';
+			}
+			else if(rex_config::get('d2u_helper', 'editor') == 'markitup' && rex_addon::get('markitup')->isAvailable()) {
+				$wysiwyg_class .= 'markitupEditor-markdown_full';
+			}
+			else if(rex_config::get('d2u_helper', 'editor') == 'markitup_textile' && rex_addon::get('markitup')->isAvailable()) {
+				$wysiwyg_class .= 'markitupEditor-textile_full';
 			}
 		?>
 		<textarea name="REX_INPUT_VALUE[1]" class="<?php print $editor_class; ?>" >

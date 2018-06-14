@@ -48,7 +48,7 @@ if(!function_exists('printReferenceList')) {
 		$tag_open = $sprog->getConfig('wildcard_open_tag');
 		$tag_close = $sprog->getConfig('wildcard_close_tag');
 		
-		$numebr_references = 'REX_VALUE[2]' > 0 ? 'REX_VALUE[2]' : 6;
+		$number_references = 'REX_VALUE[2]' > 0 ? 'REX_VALUE[2]' : 6;
 		
 		// Text
 		if ('REX_VALUE[id=1 isset=1]') {

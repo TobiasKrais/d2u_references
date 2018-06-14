@@ -4,6 +4,7 @@ $sql = rex_sql::factory();
 $sql->setQuery("CREATE TABLE IF NOT EXISTS ". rex::getTablePrefix() ."d2u_references_references (
 	reference_id int(10) unsigned NOT NULL auto_increment,
 	pictures text collate utf8_general_ci default NULL,
+	background_color varchar(7) collate utf8_general_ci default NULL,
 	video_id int(10) NULL default NULL,
 	url varchar(255) collate utf8_general_ci default NULL,
 	online_status varchar(10) collate utf8_general_ci default 'online',

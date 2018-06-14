@@ -45,6 +45,11 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 	var $pictures = [];
 	
 	/**
+	 * @var string Background color (hex)
+	 */
+	var $background_color = "";
+	
+	/**
 	 * @var Video Videomanager Video
 	 */
 	var $video = FALSE;
@@ -114,6 +119,7 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 			$this->external_url_lang = $result->getValue("url_lang");
 			$this->online_status = $result->getValue("online_status");
 			$this->pictures = preg_grep('/^\s*$/s', explode(",", $result->getValue("pictures")), PREG_GREP_INVERT);
+			$this->background_color = $result->getValue("background_color");
 			if(rex_addon::get('d2u_videos')->isAvailable() && $result->getValue("video_id") > 0) {
 				$this->video = new Video($result->getValue("video_id"), $clang_id, TRUE);
 			}
@@ -338,6 +344,7 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 			$query = rex::getTablePrefix() ."d2u_references_references SET "
 					."online_status = '". $this->online_status ."', "
 					."pictures = '". implode(",", $this->pictures) ."', "
+					."background_color = '". $this->background_color ."', "
 					."video_id = ". ($this->video !== FALSE ? $this->video->video_id : 0) .", "
 					."url = '". $this->external_url ."', "
 					."`date` = '". $this->date ."' ";

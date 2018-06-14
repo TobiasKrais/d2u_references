@@ -29,6 +29,8 @@ $d2u_module_manager->showManagerList();
 <h2>Changelog</h2>
 <p>1.0.4-DEV:</p>
 <ul>
+	<li>Neues Modul mit seitlichem Bild.</li>
+	<li>Bugfix: Fehler beim Ändern des status der Referenz behoben.</li>
 	<li>Bugfix: Fehler beim Speichern von Namen mit einfachem Anführungszeichen behoben.</li>
 	<li>YRewrite Multidomain Anpassungen.</li>
 	<li>Lieblingseditor aus D2U Helper Addon frei wählbar.</li>

@@ -23,6 +23,7 @@ if (filter_input(INPUT_POST, "btn_save") == 1 || filter_input(INPUT_POST, "btn_a
 			$reference = new Reference($reference_id, $rex_clang->getId());
 			$reference->reference_id = $reference_id; // Ensure correct ID in case first language has no object
 			$reference->pictures = preg_grep('/^\s*$/s', explode(",", $input_media_list[1]), PREG_GREP_INVERT);
+			$reference->background_color = $form['background_color'];
 			$reference->video = $form['video_id'] > 0 ? new Video($form['video_id'], $rex_clang->getId()) : FALSE;
 			$reference->external_url = $form['url'];
 			$reference->date = $form['date'];
@@ -80,6 +81,7 @@ else if(filter_input(INPUT_POST, "btn_delete") == 1 || $func == 'delete') {
 }
 // Change online status of reference
 else if($func == 'changestatus') {
+	$reference_id = $entry_id;
 	$reference = new Reference($reference_id, rex_config::get("d2u_helper", "default_lang"));
 	$reference->reference_id = $reference_id; // Ensure correct ID in case first language has no object
 	$reference->changeStatus();
@@ -143,6 +145,7 @@ if ($func == 'edit' || $func == 'add') {
 							}
 							
 							d2u_addon_backend_helper::form_medialistfield('d2u_helper_pictures', '1', $reference->pictures, $readonly);
+							d2u_addon_backend_helper::form_input('d2u_references_background_color', 'form[background_color]', $reference->background_color, FALSE, FALSE, "color");
 							d2u_addon_backend_helper::form_input('d2u_references_url', "form[url]", $reference->external_url, FALSE, $readonly, "text");
 							d2u_addon_backend_helper::form_checkbox('d2u_helper_online_status', 'form[online_status]', 'online', $reference->online_status == "online", $readonly);
 							d2u_addon_backend_helper::form_input('d2u_references_date', "form[date]", $reference->date, TRUE, $readonly, "date");

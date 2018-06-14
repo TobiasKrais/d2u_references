@@ -4,6 +4,7 @@ d2u_references_tags = Tags
 d2u_references_settings = Settings
 d2u_references_setup = Setup
 
+d2u_references_background_color = Background color
 d2u_references_date = Date
 d2u_references_no_references_found = No References
 d2u_references_no_tags_found = No tags found.

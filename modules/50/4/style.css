@@ -1,0 +1,103 @@
+.heading-rf-mod-4 {
+	text-align: center;
+}
+
+.references-spacer {
+	margin: 1em 0;
+}
+.references-teaser-rf-mod-4 {
+	flex: 1 0 auto;
+}
+.references-title-rf-mod-4 {
+	font-size: 1.25em;
+	margin: 0.5em 0;
+}
+
+.picbox-left-inner, .picbox-right-inner {
+	position: relative;
+}
+.border-rf-mod-4 {
+	border: 1.5rem solid transparent;
+	bottom: auto;
+	content: " ";
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+}
+.picbox-left-inner .border-rf-mod-4 {
+	left: auto;
+	right: 0;
+}
+.references-content-rf-mod-4 {
+	color: white;
+	text-align: center;
+}
+.references-mod-4 img {
+	min-height: 150px;
+}
+.gallery-pic-box-rf-mod-4 {
+	padding-bottom: 30px;
+}
+.fa-back:before {
+	content: "\f104";
+}
+.back-spacer {
+	margin-left: 15px;
+	margin-right: 1em;
+	padding-right: 1em;
+}
+.back-spacer:hover {
+	background-color: navi_color_hover_bg;
+	color: navi_color_hover_font;
+	transition: all 0.5s;
+}
+.reference-detail a:hover {
+	text-decoration: none;
+}
+@media screen and (min-width: 768px) {
+	.references-content-rf-mod-4 {
+		position: absolute;
+		right: 50%;
+		top: 50%;
+		transform: translateY(-50%) translateX(50%);
+	}
+	.picbox-left-inner .border-rf-mod-4, .picbox-right-inner .border-rf-mod-4 {
+		border-bottom-color: transparent !important;
+		border-top-color: transparent  !important;
+	}
+	.picbox-left-inner .border-rf-mod-4 {
+		border-left-color: transparent !important;
+	}
+	.picbox-right-inner .border-rf-mod-4 {
+		border-right-color: transparent !important;
+	}
+	.picbox-left-outer {
+		padding-right: 0;
+	}
+	.picbox-right-outer {
+		padding-left: 0;
+	}
+}
+@media screen and (max-width: 767px) {
+	.references-content-rf-mod-4 {
+		color: white;
+		padding: 2em 1em;
+		text-align: center;
+	}
+	.picbox-left-inner .border-rf-mod-4, .picbox-right-inner .border-rf-mod-4 {
+		border-left-color: transparent !important;
+		border-right-color: transparent  !important;
+	}
+	.picbox-left-inner .border-rf-mod-4 {
+		border-top-color: transparent !important;
+		bottom: -1px;
+		right: 50%;
+		transform: translateX(50%);	
+	}
+	.picbox-right-inner .border-rf-mod-4 {
+		border-bottom-color: transparent !important;
+		top: 0;
+		left: 50%;
+		transform: translateX(-50%);	
+	}
+}
