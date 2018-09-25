@@ -155,7 +155,7 @@ if ($func == 'edit' || $func == 'add') {
 							}
 							d2u_addon_backend_helper::form_select('d2u_references_tags', 'form[tag_ids][]', $options_tags, $reference->tag_ids, 10, TRUE, $readonly);
 
-							if(rex_addon::get('d2u_videos')->isAvailable()) {
+							if(\rex_addon::get('d2u_videos')->isAvailable()) {
 								$options_videos = [0 => rex_i18n::msg('d2u_references_no_video')];
 								foreach(Video::getAll(rex_config::get("d2u_helper", "default_lang")) as $video) {
 									$options_videos[$video->video_id] = $video->name;

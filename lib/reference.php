@@ -120,7 +120,7 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 			$this->online_status = $result->getValue("online_status");
 			$this->pictures = preg_grep('/^\s*$/s', explode(",", $result->getValue("pictures")), PREG_GREP_INVERT);
 			$this->background_color = $result->getValue("background_color");
-			if(rex_addon::get('d2u_videos')->isAvailable() && $result->getValue("video_id") > 0) {
+			if(\rex_addon::get('d2u_videos')->isAvailable() && $result->getValue("video_id") > 0) {
 				$this->video = new Video($result->getValue("video_id"), $clang_id, TRUE);
 			}
 			if($result->getValue("translation_needs_update") != "") {
@@ -318,8 +318,8 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 		}
 
 		if($including_domain) {
-			if(rex_addon::get('yrewrite')->isAvailable())  {
-				return str_replace(rex_yrewrite::getCurrentDomain()->getUrl() .'/', rex_yrewrite::getCurrentDomain()->getUrl(), rex_yrewrite::getCurrentDomain()->getUrl() . $this->url);
+			if(\rex_addon::get('yrewrite')->isAvailable())  {
+				return str_replace(\rex_yrewrite::getCurrentDomain()->getUrl() .'/', \rex_yrewrite::getCurrentDomain()->getUrl(), \rex_yrewrite::getCurrentDomain()->getUrl() . $this->url);
 			}
 			else {
 				return str_replace(\rex::getServer(). '/', \rex::getServer(), \rex::getServer() . $this->url);
@@ -397,7 +397,7 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 		}
 		
 		// Update URLs
-		if(rex_addon::get("url")->isAvailable()) {
+		if(\rex_addon::get("url")->isAvailable()) {
 			UrlGenerator::generatePathFile([]);
 		}
 		

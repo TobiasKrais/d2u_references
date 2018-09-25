@@ -3,7 +3,7 @@
 d2u_references_lang_helper::factory()->install();
 
 // Update modules
-if(class_exists(D2UModuleManager)) {
+if(class_exists('D2UModuleManager')) {
 	$modules = [];
 	$modules[] = new D2UModule("50-1",
 		"D2U Referenzen - Vertikale Referenzboxen ohne Detailansicht",
@@ -13,7 +13,7 @@ if(class_exists(D2UModuleManager)) {
 		2);
 	$modules[] = new D2UModule("50-3",
 		"D2U Referenzen - Horizontale Mini Referenzboxen mit Detailansicht",
-		1);
+		2);
 	$modules[] = new D2UModule("50-4",
 		"D2U Referenzen - Farbboxen mit seitlichem Bild",
 		1);
@@ -34,7 +34,7 @@ if($sql->getRows() == 0) {
 		. "ADD background_color VARCHAR(7) NULL DEFAULT NULL AFTER pictures;");
 }
 
-if(rex_addon::get("url")->isAvailable()) {
+if(\rex_addon::get("url")->isAvailable()) {
 	$clang_id = count(rex_clang::getAllIds()) == 1 ? rex_clang::getStartId() : 0;
 	$sql_replace = rex_sql::factory();
 	$sql->setQuery("SELECT * FROM ". rex::getTablePrefix() ."url_generate WHERE `table` = '1_xxx_". rex::getTablePrefix() ."d2u_references_url_references'");

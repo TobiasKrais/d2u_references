@@ -62,7 +62,7 @@ $sql->setQuery('CREATE OR REPLACE VIEW '. rex::getTablePrefix() .'d2u_references
 	LEFT JOIN '. rex::getTablePrefix() .'clang AS clang ON lang.clang_id = clang.id
 	WHERE clang.status = 1 AND tags2ref.tag_id IS NOT NULL');
 // Insert url schemes
-if(rex_addon::get('url')->isAvailable()) {
+if(\rex_addon::get('url')->isAvailable()) {
 	$sql->setQuery("SELECT * FROM ". rex::getTablePrefix() ."url_generate WHERE `table` = '1_xxx_". rex::getTablePrefix() ."d2u_references_url_references'");
 	$clang_id = count(rex_clang::getAllIds()) == 1 ? rex_clang::getStartId() : 0;
 	if($sql->getRows() == 0) {

@@ -4,7 +4,7 @@ $sprog = rex_addon::get("sprog");
 $tag_open = $sprog->getConfig('wildcard_open_tag');
 $tag_close = $sprog->getConfig('wildcard_close_tag');
 $urlParamKey = "";
-if(rex_addon::get("url")->isAvailable()) {
+if(\rex_addon::get("url")->isAvailable()) {
 	$url_data = UrlGenerator::getData();
 	$urlParamKey = isset($url_data->urlParamKey) ? $url_data->urlParamKey : "";
 }
@@ -14,7 +14,7 @@ $tag_selected = FALSE;
 $references = [];
 if(filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT, ['options' => ['default'=> 0]]) > 0 || (rex_addon::get("url")->isAvailable() && $urlParamKey === "tag_id")) {
 	$tag_id = filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT);
-	if(rex_addon::get("url")->isAvailable() && UrlGenerator::getId() > 0) {
+	if(\rex_addon::get("url")->isAvailable() && UrlGenerator::getId() > 0) {
 		$tag_id = UrlGenerator::getId();
 	}
 	$tag_selected = new Tag($tag_id, rex_clang::getCurrentId());

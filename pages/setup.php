@@ -27,10 +27,12 @@ $d2u_module_manager->showManagerList();
 <h2>Support</h2>
 <p>Fehlermeldungen bitte im <a href="https://github.com/TobiasKrais/d2u_references" target="_blank">GitHub Repository</a> melden.</p>
 <h2>Changelog</h2>
-<p>1.0.4-DEV:</p>
+<p>1.0.4:</p>
 <ul>
+	<li>Methode zum Erstellen von Meta Tags d2u_references_frontend_helper::getAlternateURLs() hinzugefügt.</li>
+	<li>Methode zum Erstellen von Meta Tags d2u_references_frontend_helper::getMetaTags() hinzugefügt.</li>
 	<li>Neues Modul mit seitlichem Bild.</li>
-	<li>Bugfix: Fehler beim Ändern des status der Referenz behoben.</li>
+	<li>Bugfix: Fehler beim Ändern des Status der Referenz behoben.</li>
 	<li>Bugfix: Fehler beim Speichern von Namen mit einfachem Anführungszeichen behoben.</li>
 	<li>YRewrite Multidomain Anpassungen.</li>
 	<li>Lieblingseditor aus D2U Helper Addon frei wählbar.</li>

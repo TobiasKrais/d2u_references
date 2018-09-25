@@ -127,7 +127,7 @@ else {
 	$tag_open = $sprog->getConfig('wildcard_open_tag');
 	$tag_close = $sprog->getConfig('wildcard_close_tag');
 	$urlParamKey = "";
-	if(rex_addon::get("url")->isAvailable()) {
+	if(\rex_addon::get("url")->isAvailable()) {
 		$url_data = UrlGenerator::getData();
 		$urlParamKey = isset($url_data->urlParamKey) ? $url_data->urlParamKey : "";
 	}
@@ -137,7 +137,7 @@ else {
 	$references = [];
 	if(filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT, ['options' => ['default'=> 0]]) > 0 || (rex_addon::get("url")->isAvailable() && $urlParamKey === "tag_id")) {
 		$tag_id = filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT);
-		if(rex_addon::get("url")->isAvailable() && UrlGenerator::getId() > 0) {
+		if(\rex_addon::get("url")->isAvailable() && UrlGenerator::getId() > 0) {
 			$tag_id = UrlGenerator::getId();
 		}
 		$tag_selected = new Tag($tag_id, rex_clang::getCurrentId());
@@ -146,7 +146,7 @@ else {
 	}
 	else if(filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' => ['default'=> 0]]) > 0 || (rex_addon::get("url")->isAvailable() && $urlParamKey === "reference_id")) {
 		$reference_id = filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT);
-		if(rex_addon::get("url")->isAvailable() && UrlGenerator::getId() > 0) {
+		if(\rex_addon::get("url")->isAvailable() && UrlGenerator::getId() > 0) {
 			$reference_id = UrlGenerator::getId();
 		}
 		$reference = new Reference($reference_id, rex_clang::getCurrentId());
@@ -158,7 +158,7 @@ else {
 		if($reference->external_url_lang != '' || $reference->external_url != "") {
 			print '<a href="'. ($reference->external_url_lang != '' ? $reference->external_url_lang : $reference->external_url) .'">»&nbsp;&nbsp;'. $tag_open .'d2u_references_external_url'. $tag_close .'</a>';
 		}
-		if(rex_addon::get('d2u_videos')->isAvailable() && $reference->video !== FALSE) {
+		if(\rex_addon::get('d2u_videos')->isAvailable() && $reference->video !== FALSE) {
 			$videomanager = new Videomanager();
 			$videomanager->printVideo($reference->video);
 		}
