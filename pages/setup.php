@@ -27,6 +27,10 @@ $d2u_module_manager->showManagerList();
 <h2>Support</h2>
 <p>Fehlermeldungen bitte im <a href="https://github.com/TobiasKrais/d2u_references" target="_blank">GitHub Repository</a> melden.</p>
 <h2>Changelog</h2>
+<p>1.0.5-DEV:</p>
+<ul>
+	<li>...</li>
+</ul>
 <p>1.0.4:</p>
 <ul>
 	<li>Methode zum Erstellen von Meta Tags d2u_references_frontend_helper::getAlternateURLs() hinzugefügt.</li>
