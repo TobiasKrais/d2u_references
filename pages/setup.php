@@ -29,6 +29,7 @@ $d2u_module_manager->showManagerList();
 <h2>Changelog</h2>
 <p>1.0.5-DEV:</p>
 <ul>
+	<li>Sprachdetails werden ausgeblendet, wenn Speicherung der Sprache nicht vorgesehen ist.</li>
 	<li>Bugfix: VIEW blieb in Datenbank bei Deinstallation übrig.</li>
 	<li>Bugfix: Deaktiviertes Addon zu deinstallieren führte zu fatal error.</li>
 	<li>In den Einstellungen gibt es jetzt eine Option, eigene Übersetzungen in SProg dauerhaft zu erhalten.</li>
