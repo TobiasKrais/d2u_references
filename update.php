@@ -57,6 +57,13 @@ if(\rex_addon::get("url")->isAvailable()) {
 	UrlGenerator::generatePathFile([]);
 }
 
+// Update database to 1.0.5
+$sql->setQuery("ALTER TABLE `". rex::getTablePrefix() ."d2u_references_references` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
+$sql->setQuery("ALTER TABLE `". rex::getTablePrefix() ."d2u_references_references_lang` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
+$sql->setQuery("ALTER TABLE `". rex::getTablePrefix() ."d2u_references_tags` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
+$sql->setQuery("ALTER TABLE `". rex::getTablePrefix() ."d2u_references_tags_lang` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
+$sql->setQuery("ALTER TABLE `". rex::getTablePrefix() ."d2u_references_tag2refs` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
+
 // remove default lang setting
 if (!$this->hasConfig()) {
 	$this->removeConfig('default_lang');
