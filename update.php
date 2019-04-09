@@ -74,8 +74,6 @@ if(\rex_addon::get('url')->isAvailable()) {
 			. "'1_xxx_rex_d2u_references_url_tags', "
 			. "'{\"column_id\":\"tag_id\",\"column_clang_id\":\"clang_id\",\"restriction_1_column\":\"\",\"restriction_1_comparison_operator\":\"=\",\"restriction_1_value\":\"\",\"restriction_2_logical_operator\":\"\",\"restriction_2_column\":\"\",\"restriction_2_comparison_operator\":\"=\",\"restriction_2_value\":\"\",\"restriction_3_logical_operator\":\"\",\"restriction_3_column\":\"\",\"restriction_3_comparison_operator\":\"=\",\"restriction_3_value\":\"\",\"column_segment_part_1\":\"name\",\"column_segment_part_2_separator\":\"\\/\",\"column_segment_part_2\":\"\",\"column_segment_part_3_separator\":\"\\/\",\"column_segment_part_3\":\"\",\"relation_1_column\":\"\",\"relation_1_position\":\"BEFORE\",\"relation_2_column\":\"\",\"relation_2_position\":\"BEFORE\",\"relation_3_column\":\"\",\"relation_3_position\":\"BEFORE\",\"append_user_paths\":\"\",\"append_structure_categories\":\"0\",\"column_seo_title\":\"seo_title\",\"column_seo_description\":\"seo_description\",\"column_seo_image\":\"picture\",\"sitemap_add\":\"1\",\"sitemap_frequency\":\"monthly\",\"sitemap_priority\":\"0.5\",\"column_sitemap_lastmod\":\"updatedate\"}', "
 			. "'', '[]', '', '[]', '', '[]', CURRENT_TIMESTAMP, '". rex::getUser()->getValue('login') ."', CURRENT_TIMESTAMP, '". rex::getUser()->getValue('login') ."');");
-		
-		// TODO Cache generieren
 	}
 	else {
 		// Insert url schemes Version 1.x
@@ -95,9 +93,9 @@ if(\rex_addon::get('url')->isAvailable()) {
 			. "'1_xxx_". rex::getTablePrefix() ."d2u_references_url_tags', "
 			. "'{\"1_xxx_". rex::getTablePrefix() ."d2u_references_url_tags_field_1\":\"tag_id\",\"1_xxx_". rex::getTablePrefix() ."d2u_references_url_tags_field_2\":\"name\",\"1_xxx_". rex::getTablePrefix() ."d2u_references_url_tags_field_3\":\"\",\"1_xxx_". rex::getTablePrefix() ."d2u_references_url_tags_id\":\"tag_id\",\"1_xxx_". rex::getTablePrefix() ."d2u_references_url_tags_clang_id\":\"". (count(rex_clang::getAllIds()) > 1 ? "clang_id" : "") ."\",\"1_xxx_". rex::getTablePrefix() ."d2u_references_url_tags_restriction_field\":\"\",\"1_xxx_". rex::getTablePrefix() ."d2u_references_url_tags_restriction_operator\":\"=\",\"1_xxx_". rex::getTablePrefix() ."d2u_references_url_tags_restriction_value\":\"\",\"1_xxx_". rex::getTablePrefix() ."d2u_references_url_tags_url_param_key\":\"tag_id\",\"1_xxx_". rex::getTablePrefix() ."d2u_references_url_tags_seo_title\":\"seo_title\",\"1_xxx_". rex::getTablePrefix() ."d2u_references_url_tags_seo_description\":\"seo_description\",\"1_xxx_". rex::getTablePrefix() ."d2u_references_url_tags_seo_image\":\"picture\",\"1_xxx_". rex::getTablePrefix() ."d2u_references_url_tags_sitemap_add\":\"1\",\"1_xxx_". rex::getTablePrefix() ."d2u_references_url_tags_sitemap_frequency\":\"always\",\"1_xxx_". rex::getTablePrefix() ."d2u_references_url_tags_sitemap_priority\":\"0.3\",\"1_xxx_". rex::getTablePrefix() ."d2u_references_url_tags_sitemap_lastmod\":\"updatedate\",\"1_xxx_". rex::getTablePrefix() ."d2u_references_url_tags_path_names\":\"\",\"1_xxx_". rex::getTablePrefix() ."d2u_references_url_tags_path_categories\":\"0\",\"1_xxx_". rex::getTablePrefix() ."d2u_references_url_tags_relation_field\":\"\"}', "
 			. "'', '[]', 'before', UNIX_TIMESTAMP(), '". rex::getUser()->getValue('login') ."', UNIX_TIMESTAMP(), '". rex::getUser()->getValue('login') ."');");
-
-		\UrlGenerator::generatePathFile([]);		
 	}
+
+	d2u_addon_backend_helper::generateUrlCache();
 }
 
 // Update database to 1.0.5

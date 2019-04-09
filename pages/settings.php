@@ -21,7 +21,7 @@ if (filter_input(INPUT_POST, "btn_save") == 'save') {
 		if(\rex_addon::get('url')->isAvailable()) {
 			d2u_addon_backend_helper::update_url_scheme(rex::getTablePrefix() ."d2u_references_url_references", $settings['article_id']);
 			d2u_addon_backend_helper::update_url_scheme(rex::getTablePrefix() ."d2u_references_url_tags", $settings['article_id']);
-			\UrlGenerator::generatePathFile([]);
+			d2u_addon_backend_helper::generateUrlCache();
 		}
 	}
 	else {
