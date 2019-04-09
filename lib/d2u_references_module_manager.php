@@ -13,16 +13,16 @@ class D2UReferencesModules {
 		$modules = [];
 		$modules[] = new D2UModule("50-1",
 			"D2U Referenzen - Vertikale Referenzboxen ohne Detailansicht",
-			2);
+			3);
 		$modules[] = new D2UModule("50-2",
 			"D2U Referenzen - Horizontale Referenzboxen mit Detailansicht",
-			2);
+			3);
 		$modules[] = new D2UModule("50-3",
 			"D2U Referenzen - Horizontale Mini Referenzboxen mit Detailansicht",
-			2);
+			3);
 		$modules[] = new D2UModule("50-4",
 			"D2U Referenzen - Farbboxen mit seitlichem Bild",
-			1);
+			2);
 		return $modules;
 	}
 }

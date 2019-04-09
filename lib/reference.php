@@ -80,14 +80,9 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 	var $date = "";
 	
 	/**
-	 * @var int Unix timestamp containing the last update date
+	 * @var string Timestamp containing the last update date
 	 */
-	var $updatedate = 0;
-	
-	/**
-	 * @var string Redaxo update user name
-	 */
-	var $updateuser = "";
+	var $updatedate = "";
 	
 	/**
 	 * @var string URL
@@ -128,7 +123,6 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 			}
 			$this->date = $result->getValue("date");
 			$this->updatedate = $result->getValue("updatedate");
-			$this->updateuser = $result->getValue("updateuser");
 			
 			$query_tags = "SELECT tag_refs.tag_id FROM ". rex::getTablePrefix() ."d2u_references_tag2refs AS tag_refs "
 				."LEFT JOIN ". rex::getTablePrefix() ."d2u_references_tags_lang AS lang "
@@ -387,8 +381,7 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 						."description = '". addslashes(htmlspecialchars($this->description)) ."', "
 						."url_lang = '". $this->external_url_lang ."', "
 						."translation_needs_update = '". $this->translation_needs_update ."', "
-						."updatedate = ". time() .", "
-						."updateuser = '". rex::getUser()->getLogin() ."' ";
+						."updatedate = CURRENT_TIMESTAMP ";
 
 				$result = rex_sql::factory();
 				$result->setQuery($query);
@@ -398,7 +391,7 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 		
 		// Update URLs
 		if(\rex_addon::get("url")->isAvailable()) {
-			UrlGenerator::generatePathFile([]);
+			\UrlGenerator::generatePathFile([]);
 		}
 		
 		return $error;

@@ -3,24 +3,22 @@
 $sprog = rex_addon::get("sprog");
 $tag_open = $sprog->getConfig('wildcard_open_tag');
 $tag_close = $sprog->getConfig('wildcard_close_tag');
-$urlParamKey = "";
-if(\rex_addon::get("url")->isAvailable()) {
-	$url_data = UrlGenerator::getData();
-	$urlParamKey = isset($url_data->urlParamKey) ? $url_data->urlParamKey : "";
-}
+
+$url_namespace = d2u_addon_frontend_helper::getUrlNamespace();
+$url_id = d2u_addon_frontend_helper::getUrlId();
 
 $tags = Tag::getAll(rex_clang::getCurrentId());
 $tag_selected = FALSE;
 $references = [];
-if(filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT, ['options' => ['default'=> 0]]) > 0 || (rex_addon::get("url")->isAvailable() && $urlParamKey === "tag_id")) {
+if(filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT, ['options' => ['default'=> 0]]) > 0 || $url_namespace === "tag_id") {
 	$tag_id = filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT);
-	if(\rex_addon::get("url")->isAvailable() && UrlGenerator::getId() > 0) {
-		$tag_id = UrlGenerator::getId();
+	if(\rex_addon::get("url")->isAvailable() && $url_id > 0) {
+		$tag_id = $url_id;
 	}
 	$tag_selected = new Tag($tag_id, rex_clang::getCurrentId());
 	$references = $tag_selected->getReferences();
 }
-else if(filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' => ['default'=> 0]]) > 0 || (rex_addon::get("url")->isAvailable() && $urlParamKey === "reference_id")) {
+else if(filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' => ['default'=> 0]]) > 0 || $url_namespace === "reference_id") {
 	header("Location: ". rex_getUrl());
 	exit;
 }

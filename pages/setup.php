@@ -29,6 +29,8 @@ $d2u_module_manager->showManagerList();
 <h2>Changelog</h2>
 <p>1.0.5-DEV:</p>
 <ul>
+	<li>Bild in sitemap.xml aufgenommen.</li>
+	<li>Anpassungen an URL Addon 2.x.</li>
 	<li>Listen im Backend werden jetzt nicht mehr in Seiten unterteilt.</li>
 	<li>YRewrite Multidomain support.</li>
 	<li>Konvertierung der Datenbanktabellen zu utf8mb4.</li>

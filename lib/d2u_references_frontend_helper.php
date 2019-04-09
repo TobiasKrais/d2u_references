@@ -11,16 +11,13 @@ class d2u_references_frontend_helper {
 		$alternate_URLs = [];
 
 		// Prepare objects first for sorting in correct order
-		$urlParamKey = "";
-		if(\rex_addon::get("url")->isAvailable()) {
-			$url_data = UrlGenerator::getData();
-			$urlParamKey = isset($url_data->urlParamKey) ? $url_data->urlParamKey : "";
-		}		
-		
-		if(filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' => ['default'=> 0]]) > 0 || (rex_addon::get("url")->isAvailable() && isset($url_data->urlParamKey) && $url_data->urlParamKey === "reference_id")) {
+		$url_namespace = d2u_addon_frontend_helper::getUrlNamespace();
+		$url_id = d2u_addon_frontend_helper::getUrlId();
+	
+		if(filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' => ['default'=> 0]]) > 0 || $url_namespace === "reference_id") {
 			$reference_id = filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT);
-			if(\rex_addon::get("url")->isAvailable() && UrlGenerator::getId() > 0) {
-				$reference_id = UrlGenerator::getId();
+			if(\rex_addon::get("url")->isAvailable() && $url_id > 0) {
+				$reference_id = $url_id;
 			}
 			foreach(rex_clang::getAllIds(TRUE) as $this_lang_key) {
 				$lang_references = new Reference($reference_id, $this_lang_key);
@@ -29,10 +26,10 @@ class d2u_references_frontend_helper {
 				}
 			}
 		}
-		else if(filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT, ['options' => ['default'=> 0]]) > 0 || (rex_addon::get("url")->isAvailable() && isset($url_data->urlParamKey) && $url_data->urlParamKey === "tag_id")) {
+		else if(filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT, ['options' => ['default'=> 0]]) > 0 || $url_namespace === "tag_id") {
 			$tag_id = filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT);
-			if(\rex_addon::get("url")->isAvailable() && UrlGenerator::getId() > 0) {
-				$tag_id = UrlGenerator::getId();
+			if(\rex_addon::get("url")->isAvailable() && $url_id > 0) {
+				$tag_id = $url_id;
 			}
 			foreach(rex_clang::getAllIds(TRUE) as $this_lang_key) {
 				$lang_tag = new Tag($tag_id, $this_lang_key);
@@ -55,21 +52,21 @@ class d2u_references_frontend_helper {
 		// Prepare objects first for sorting in correct order
 		$tag = FALSE;
 		$reference = FALSE;
-		$url_data = [];
-		if(\rex_addon::get("url")->isAvailable()) {
-			$url_data = UrlGenerator::getData();
-		}
-		if(filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' => ['default'=> 0]]) > 0 || (rex_addon::get("url")->isAvailable() && isset($url_data->urlParamKey) && $url_data->urlParamKey === "reference_id")) {
+
+		$url_namespace = d2u_addon_frontend_helper::getUrlNamespace();
+		$url_id = d2u_addon_frontend_helper::getUrlId();
+
+		if(filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' => ['default'=> 0]]) > 0 || $url_namespace === "reference_id") {
 			$reference_id = filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT);
-			if(\rex_addon::get("url")->isAvailable() && UrlGenerator::getId() > 0) {
-				$reference_id = UrlGenerator::getId();
+			if(\rex_addon::get("url")->isAvailable() && $url_id > 0) {
+				$reference_id = $url_id;
 			}
 			$reference = new Reference($reference_id, rex_clang::getCurrentId());
 		}
-		if(filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT, ['options' => ['default'=> 0]]) > 0 || (rex_addon::get("url")->isAvailable() && isset($url_data->urlParamKey) && $url_data->urlParamKey === "tag_id")) {
+		if(filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT, ['options' => ['default'=> 0]]) > 0 || $url_namespace === "tag_id") {
 			$tag_id = filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT);
-			if(\rex_addon::get("url")->isAvailable() && UrlGenerator::getId() > 0) {
-				$tag_id = UrlGenerator::getId();
+			if(\rex_addon::get("url")->isAvailable() && $url_id > 0) {
+				$tag_id = $url_id;
 			}
 			$tag = new Tag($tag_id, rex_clang::getCurrentId());
 		}
@@ -93,17 +90,14 @@ class d2u_references_frontend_helper {
 		$meta_tags = "";
 
 		// Prepare objects first for sorting in correct order
-		$urlParamKey = "";
-		if(\rex_addon::get("url")->isAvailable()) {
-			$url_data = UrlGenerator::getData();
-			$urlParamKey = isset($url_data->urlParamKey) ? $url_data->urlParamKey : "";
-		}
+		$url_namespace = d2u_addon_frontend_helper::getUrlNamespace();
+		$url_id = d2u_addon_frontend_helper::getUrlId();
 
 		// References
-		if(filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' => ['default'=> 0]]) > 0 || (rex_addon::get("url")->isAvailable() && isset($url_data->urlParamKey) && $url_data->urlParamKey === "reference_id")) {
+		if(filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' => ['default'=> 0]]) > 0 || $url_namespace === "reference_id") {
 			$reference_id = filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT);
-			if(\rex_addon::get("url")->isAvailable() && UrlGenerator::getId() > 0) {
-				$reference_id = UrlGenerator::getId();
+			if(\rex_addon::get("url")->isAvailable() && $url_id > 0) {
+				$reference_id = $url_id;
 			}
 			$reference = new Reference($reference_id, rex_clang::getCurrentId());
 			$meta_tags .= $reference->getMetaAlternateHreflangTags();
@@ -112,10 +106,10 @@ class d2u_references_frontend_helper {
 			$meta_tags .= $reference->getTitleTag() . PHP_EOL;
 		}
 		// Tags
-		if(filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT, ['options' => ['default'=> 0]]) > 0 || (rex_addon::get("url")->isAvailable() && isset($url_data->urlParamKey) && $url_data->urlParamKey === "tag_id")) {
+		if(filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT, ['options' => ['default'=> 0]]) > 0 || $url_namespace === "tag_id") {
 			$tag_id = filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT);
-			if(\rex_addon::get("url")->isAvailable() && UrlGenerator::getId() > 0) {
-				$tag_id = UrlGenerator::getId();
+			if(\rex_addon::get("url")->isAvailable() && $url_id > 0) {
+				$tag_id = $url_id;
 			}
 			$tag = new Tag($tag_id, rex_clang::getCurrentId());
 			$meta_tags .= $tag->getMetaAlternateHreflangTags();
