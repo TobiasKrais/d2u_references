@@ -34,6 +34,16 @@ class d2u_references_lang_helper extends \D2U_Helper\ALangHelper {
 	];
 
 	/**
+	 * @var string[] Array with russian replacements. Key is the wildcard,
+	 * value the replacement. 
+	 */
+	protected $replacements_russian = [
+		'd2u_references_all_tags' => 'все теги',
+		'd2u_references_external_url' => 'Перейти на сайт',
+		'd2u_references_references' => 'Референции',
+	];
+	
+	/**
 	 * @var string[] Array with german replacements. Key is the wildcard,
 	 * value the replacement. 
 	 */
@@ -65,6 +75,9 @@ class d2u_references_lang_helper extends \D2U_Helper\ALangHelper {
 				}
 				else if($lang_replacement === 'french' && isset($this->replacements_francaise) && isset($this->replacements_francaise[$key])) {
 					$value = $this->replacements_francaise[$key];
+				}
+				else if($lang_replacement === 'russian' && isset($this->$replacements_russian) && isset($this->$replacements_russian[$key])) {
+					$value = $this->$replacements_russian[$key];
 				}
 				else if($lang_replacement === 'slovak' && isset($this->replacements_slovak) && isset($this->replacements_slovak[$key])) {
 					$value = $this->replacements_slovak[$key];
