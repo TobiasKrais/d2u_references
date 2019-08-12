@@ -29,7 +29,7 @@ $d2u_module_manager->showManagerList();
 <h2>Changelog</h2>
 <p>1.0.7-DEV:</p>
 <ul>
-	<li>...</li>
+	<li>Russische Frontend Übersetzung hinzugefügt.</li>
 </ul>
 <p>1.0.6:</p>
 <ul>
