@@ -284,9 +284,9 @@ class Tag implements \D2U_Helper\ITranslationHelper {
 		$error = 0;
 
 		// Save the not language specific part
-		$pre_save_tag = new Tag($this->tag_id, $this->clang_id);
+		$pre_save_object = new Tag($this->tag_id, $this->clang_id);
 	
-		if($this->tag_id == 0 || $pre_save_tag != $this) {
+		if($this->tag_id == 0 || $pre_save_object != $this) {
 			$query = rex::getTablePrefix() ."d2u_references_tags SET "
 					."picture = '". $this->picture ."' ";
 
@@ -319,8 +319,8 @@ class Tag implements \D2U_Helper\ITranslationHelper {
 		$regenerate_urls = false;
 		if($error == 0) {
 			// Save the language specific part
-			$pre_save_tag = new Tag($this->tag_id, $this->clang_id);
-			if($pre_save_tag != $this) {
+			$pre_save_object = new Tag($this->tag_id, $this->clang_id);
+			if($pre_save_object != $this) {
 				$query = "REPLACE INTO ". rex::getTablePrefix() ."d2u_references_tags_lang SET "
 						."tag_id = '". $this->tag_id ."', "
 						."clang_id = '". $this->clang_id ."', "
@@ -332,7 +332,7 @@ class Tag implements \D2U_Helper\ITranslationHelper {
 				$result->setQuery($query);
 				$error = $result->hasError();
 				
-				if(!$error && $pre_save_tag->name != $this->name) {
+				if(!$error && $pre_save_object->name != $this->name) {
 					$regenerate_urls = true;
 				}
 			}

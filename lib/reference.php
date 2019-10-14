@@ -332,9 +332,9 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 		$error = 0;
 
 		// Save the not language specific part
-		$pre_save_reference = new Reference($this->reference_id, $this->clang_id);
+		$pre_save_object = new Reference($this->reference_id, $this->clang_id);
 	
-		if($this->reference_id == 0 || $pre_save_reference != $this) {
+		if($this->reference_id == 0 || $pre_save_object != $this) {
 			$query = rex::getTablePrefix() ."d2u_references_references SET "
 					."online_status = '". $this->online_status ."', "
 					."pictures = '". implode(",", $this->pictures) ."', "
@@ -372,8 +372,8 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 		$regenerate_urls = false;
 		if($error == 0) {
 			// Save the language specific part
-			$pre_save_reference = new Reference($this->reference_id, $this->clang_id);
-			if($pre_save_reference != $this) {
+			$pre_save_object = new Reference($this->reference_id, $this->clang_id);
+			if($pre_save_object != $this) {
 				$query = "REPLACE INTO ". rex::getTablePrefix() ."d2u_references_references_lang SET "
 						."reference_id = '". $this->reference_id ."', "
 						."clang_id = '". $this->clang_id ."', "
@@ -388,7 +388,7 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 				$result->setQuery($query);
 				$error = $result->hasError();
 				
-				if(!$error && $pre_save_reference->name != $this->name) {
+				if(!$error && $pre_save_object->name != $this->name) {
 					$regenerate_urls = true;
 				}
 			}
