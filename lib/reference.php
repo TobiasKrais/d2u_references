@@ -369,6 +369,7 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 			}
 		}
 		
+		$regenerate_urls = false;
 		if($error == 0) {
 			// Save the language specific part
 			$pre_save_reference = new Reference($this->reference_id, $this->clang_id);
@@ -386,11 +387,17 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 				$result = rex_sql::factory();
 				$result->setQuery($query);
 				$error = $result->hasError();
+				
+				if(!$error && $pre_save_reference->name != $this->name) {
+					$regenerate_urls = true;
+				}
 			}
 		}
 		
 		// Update URLs
-		\d2u_addon_backend_helper::generateUrlCache('reference_id');
+		if($regenerate_urls) {
+			\d2u_addon_backend_helper::generateUrlCache('reference_id');
+		}
 		
 		return $error;
 	}

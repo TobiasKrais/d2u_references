@@ -316,6 +316,7 @@ class Tag implements \D2U_Helper\ITranslationHelper {
 			}
 		}
 		
+		$regenerate_urls = false;
 		if($error == 0) {
 			// Save the language specific part
 			$pre_save_tag = new Tag($this->tag_id, $this->clang_id);
@@ -330,11 +331,17 @@ class Tag implements \D2U_Helper\ITranslationHelper {
 				$result = rex_sql::factory();
 				$result->setQuery($query);
 				$error = $result->hasError();
+				
+				if(!$error && $pre_save_tag->name != $this->name) {
+					$regenerate_urls = true;
+				}
 			}
 		}
 		
 		// Update URLs
-		\d2u_addon_backend_helper::generateUrlCache('tag_id');
+		if($regenerate_urls) {
+			\d2u_addon_backend_helper::generateUrlCache('tag_id');
+		}
 		
 		return $error;
 	}
