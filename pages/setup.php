@@ -27,11 +27,11 @@ $d2u_module_manager->showManagerList();
 <h2>Support</h2>
 <p>Fehlermeldungen bitte im <a href="https://github.com/TobiasKrais/d2u_references" target="_blank">GitHub Repository</a> melden.</p>
 <h2>Changelog</h2>
-<p>1.0.7-DEV:</p>
+<p>1.0.7:</p>
 <ul>
 	<li>Backend: Einstellungen und Setup Tabs rechts eingeordnet um sie vom Inhalt besser zu unterscheiden.</li>
 	<li>Anpassungen an neueste Version des URL Addons Version 2.</li>
-	<li>Bugfix: das Löschen eines Bildes im Medienpool wurde unter Umständen mit der Begründung verhindet, dass das Bild in Benutzung sei, obwohl das nicht der Fall war.</li>
+	<li>Bugfix: das Löschen eines Bildes im Medienpool wurde unter Umständen mit der Begründung verhindert, dass das Bild in Benutzung sei, obwohl das nicht der Fall war.</li>
 	<li>Russische Frontend Übersetzung hinzugefügt.</li>
 </ul>
 <p>1.0.6:</p>
