@@ -32,7 +32,7 @@ class Tag implements \D2U_Helper\ITranslationHelper {
 	/**
 	 * @var int[] Reference IDs
 	 */
-	var $tag_ids = [];
+	var $reference_ids = [];
 
 	/**
 	 * @var string "yes" if translation needs update
@@ -73,7 +73,7 @@ class Tag implements \D2U_Helper\ITranslationHelper {
 			}
 			$this->updatedate = $result->getValue("updatedate");
 			
-			$query_refs = "SELECT tag2refs.tag_id FROM ". rex::getTablePrefix() ."d2u_references_tag2refs AS tag2refs "
+			$query_refs = "SELECT tag2refs.tag_id, tag2refs.reference_id FROM ". rex::getTablePrefix() ."d2u_references_tag2refs AS tag2refs "
 				."LEFT JOIN ". rex::getTablePrefix() ."d2u_references_tags_lang AS lang "
 					."ON tag2refs.tag_id = lang.tag_id "
 				."WHERE tag2refs.tag_id = ". $this->tag_id ." AND clang_id = ". $this->clang_id ." "
@@ -81,7 +81,7 @@ class Tag implements \D2U_Helper\ITranslationHelper {
 			$result_refs = rex_sql::factory();
 			$result_refs->setQuery($query_refs);
 			for($i = 0; $i < $result_refs->getRows(); $i++) {
-				$this->tag_ids[] = $result_refs->getValue("tag_id");
+				$this->reference_ids[] = $result_refs->getValue("reference_id");
 				$result_refs->next();
 			}
 		}
@@ -309,8 +309,8 @@ class Tag implements \D2U_Helper\ITranslationHelper {
 			$result_del_refs = rex_sql::factory();
 			$result_del_refs->setQuery($query_del_refs);
 				
-			foreach($this->tag_ids as $tag_id) {
-				$query_add_refs = "REPLACE INTO ". rex::getTablePrefix() ."d2u_references_tag2refs SET tag_id = ". $tag_id .", tag_id = ". $this->tag_id;
+			foreach($this->reference_ids as $reference_id) {
+				$query_add_refs = "REPLACE INTO ". rex::getTablePrefix() ."d2u_references_tag2refs SET reference_id = ". $reference_id .", tag_id = ". $this->tag_id;
 				$result_add_tags = rex_sql::factory();
 				$result_add_tags->setQuery($query_add_refs);
 			}

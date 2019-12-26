@@ -8,23 +8,23 @@
 		url("./assets/addons/be_style/fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular") format('svg');
 }
 
-.reference-box {
-    box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3);
-    padding: 8px;
-    border-radius: 8px;
-    height:  100%;
-}
-
 .reference-box img {
 	padding-bottom: 1em;
 }
+.reference-box:hover img {
+	height: auto;
+	-webkit-transition: all 0.2s ease-out;
+	opacity: 0.7;
+    transition: all 0.2s ease-out;
+	width: 100%;
+}
 .reference-box-heading {
 	font-size: 1.25em;
-	text-align: center;
+	padding: 0.5em 1em;
 }
-.reference-box a:hover {
-	text-decoration: none;
-	color: footer_color_bg;
+.reference-box-text {
+	padding: 0.5em 1em;
+	font-size: 0.9em;
 }
 
 .tag-list {

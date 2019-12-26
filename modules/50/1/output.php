@@ -38,9 +38,16 @@ if(count($tags) > 0){
 	print '</div>';
 }
 
+print '<div class="col-12 abstand">';
+print '<div class="row" data-match-height>';
+
 foreach($references as $reference) {
 	print '<div class="col-sm-12 col-md-6 col-lg-4 abstand">';
-	print '<div class="reference-box">'; // START reference-box
+	$bg_color = "";
+	if($reference->background_color != "") {
+		$bg_color = ' style="background-color: '. $reference->background_color .'"';
+	}
+	print '<div class="reference-box"'. $bg_color .' data-height-watch>'; // START reference-box
 
 	if($reference->external_url_lang != '' || $reference->external_url != '') {
 		print '<a href="'. ($reference->external_url_lang != '' ? $reference->external_url_lang : $reference->external_url) .'">';
@@ -61,4 +68,5 @@ foreach($references as $reference) {
 	print '</div>'; // END reference-box
 	print '</div>';
 }
-?>
+print '</div>'; // END row
+print '</div>';

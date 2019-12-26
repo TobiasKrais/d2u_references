@@ -29,7 +29,8 @@ $d2u_module_manager->showManagerList();
 <h2>Changelog</h2>
 <p>1.0.8-DEV:</p>
 <ul>
-	<li>...</li>
+	<li>Modul 50-1 wurde Schatten entfernt und unterstützt nur die in der Referenz gewählte Hintergrundfarbe.</li>
+	<li>Bugfix: beim Speichern eines Tags mit gewählter Referenzen gab es einen fatal error.</li>
 </ul>
 <p>1.0.7:</p>
 <ul>
