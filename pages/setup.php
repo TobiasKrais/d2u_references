@@ -29,6 +29,7 @@ $d2u_module_manager->showManagerList();
 <h2>Changelog</h2>
 <p>1.0.8-DEV:</p>
 <ul>
+	<li>Backend: Beim online stellen einer Referenz in der Referenzenliste gab es beim Aufruf im Frontend einen Fatal Error, da der URL cache nicht neu generiert wurde.</li>
 	<li>Modul 50-1 wurde Schatten entfernt und unterstützt nur die in der Referenz gewählte Hintergrundfarbe.</li>
 	<li>Bugfix: beim Speichern eines Tags mit gewählter Referenzen gab es einen fatal error.</li>
 </ul>
