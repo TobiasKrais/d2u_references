@@ -51,13 +51,14 @@ if (filter_input(INPUT_POST, "btn_save") == 'save') {
 							print '<dt><label>'. $rex_clang->getName() .'</label></dt>';
 							print '<dd>';
 							print '<select class="form-control" name="settings[lang_replacement_'. $rex_clang->getId() .']">';
-							$replacement_options = array(
+							$replacement_options = [
 								'd2u_helper_lang_english' => 'english',
 								'd2u_helper_lang_french' => 'french',
 								'd2u_helper_lang_german' => 'german',
 								'd2u_helper_lang_russian' => 'russian',
+								'd2u_helper_lang_spanish' => 'spanish',
 								'd2u_helper_lang_slovak' => 'slovak'
-							);
+							];
 							foreach($replacement_options as $key => $value) {
 								$selected = $value == $this->getConfig('lang_replacement_'. $rex_clang->getId()) ? ' selected="selected"' : '';
 								print '<option value="'. $value .'"'. $selected .'>'. rex_i18n::msg('d2u_helper_lang_replacements_install') .' '. rex_i18n::msg($key) .'</option>';

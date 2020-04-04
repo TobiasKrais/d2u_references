@@ -34,6 +34,16 @@ class d2u_references_lang_helper extends \D2U_Helper\ALangHelper {
 	];
 
 	/**
+	 * @var string[] Array with spanish replacements. Key is the wildcard,
+	 * value the replacement. 
+	 */
+	protected $replacements_spanish = [
+		'd2u_references_all_tags' => 'Todas las etiquetas',
+		'd2u_references_external_url' => 'Ir a ubicación del producto',
+		'd2u_references_references' => 'Referencias',
+	];
+	
+	/**
 	 * @var string[] Array with russian replacements. Key is the wildcard,
 	 * value the replacement. 
 	 */
