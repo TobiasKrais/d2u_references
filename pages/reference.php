@@ -46,6 +46,8 @@ if (filter_input(INPUT_POST, "btn_save") == 1 || filter_input(INPUT_POST, "btn_a
 			$success = FALSE;
 		}
 		else {
+			\d2u_addon_backend_helper::update_searchit_url_index();
+
 			// remember id, for each database lang object needs same id
 			$reference_id = $reference->reference_id;
 		}
@@ -77,6 +79,8 @@ else if(filter_input(INPUT_POST, "btn_delete") == 1 || $func == 'delete') {
 	$reference->reference_id = $reference_id; // Ensure correct ID in case first language has no object
 	$reference->delete();
 	
+	\d2u_addon_backend_helper::update_searchit_url_index();
+
 	$func = '';
 }
 // Change online status of reference
@@ -85,6 +89,8 @@ else if($func == 'changestatus') {
 	$reference = new Reference($reference_id, rex_config::get("d2u_helper", "default_lang"));
 	$reference->reference_id = $reference_id; // Ensure correct ID in case first language has no object
 	$reference->changeStatus();
+
+	\d2u_addon_backend_helper::update_searchit_url_index();
 	
 	header("Location: ". rex_url::currentBackendPage());
 	exit;

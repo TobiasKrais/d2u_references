@@ -39,6 +39,8 @@ if (filter_input(INPUT_POST, "btn_save") == 1 || filter_input(INPUT_POST, "btn_a
 			$success = FALSE;
 		}
 		else {
+			\d2u_addon_backend_helper::update_searchit_url_index();
+
 			// remember id, for each database lang object needs same id
 			$tag_id = $tag->tag_id;
 		}
@@ -70,6 +72,8 @@ else if(filter_input(INPUT_POST, "btn_delete") == 1 || $func == 'delete') {
 	$tag->tag_id = $tag_id; // Ensure correct ID in case first language has no object
 	$tag->delete();
 	
+	\d2u_addon_backend_helper::update_searchit_url_index();
+
 	$func = '';
 }
 
