@@ -27,10 +27,9 @@ $d2u_module_manager->showManagerList();
 <h2>Support</h2>
 <p>Fehlermeldungen bitte im <a href="https://github.com/TobiasKrais/d2u_references" target="_blank">GitHub Repository</a> melden.</p>
 <h2>Changelog</h2>
-<p>1.0.8-DEV:</p>
+<p>1.0.8:</p>
 <ul>
 	<li>Benötigt Redaxo >= 5.10, da die neue Klasse rex_version verwendet wird.</li>
-	<li>Aktualisiert beim Speichern automatisch den search_it index.</li>
 	<li>Spanische Frontend Übersetzungen hinzugefügt.</li>
 	<li>Backend: Beim online stellen einer Referenz in der Referenzenliste gab es beim Aufruf im Frontend einen Fatal Error, da der URL cache nicht neu generiert wurde.</li>
 	<li>Modul 50-1 wurde Schatten entfernt und unterstützt nur die in der Referenz gewählte Hintergrundfarbe.</li>
