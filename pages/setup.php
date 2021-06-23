@@ -29,7 +29,8 @@ $d2u_module_manager->showManagerList();
 <h2>Changelog</h2>
 <p>1.0.9-DEV:</p>
 <ul>
-	<li>...</li>
+	<li>Methode d2u_references_frontend_helper::getMetaTags() entfernt, da das URL Addon eine bessere Funktion anbietet.
+		Ebenso die Methoden getMetaAlternateHreflangTags(), getMetaDescriptionTag(), getCanonicalTag und getTitleTag() der aller Klassen, die diese Methoden abgeboten hatten.</li>
 </ul>
 <p>1.0.8:</p>
 <ul>

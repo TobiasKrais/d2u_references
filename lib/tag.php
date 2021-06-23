@@ -147,50 +147,6 @@ class Tag implements \D2U_Helper\ITranslationHelper {
 	}
 	
 	/**
-	 * Get the <link rel="canonical"> tag for page header.
-	 * @return Complete tag.
-	 */
-	public function getCanonicalTag() {
-		return '<link rel="canonical" href="'. $this->getURL() .'">';
-	}
-	
-	/**
-	 * Get the <title> tag for page header.
-	 * @return Complete title tag.
-	 */
-	public function getTitleTag() {
-		return '<title>'. $this->name .' / '. rex::getServerName() .'</title>';
-	}
-	
-	/**
-	 * Get the <meta rel="alternate" hreflang=""> tags for page header.
-	 * @return Complete tags.
-	 */
-	public function getMetaAlternateHreflangTags() {
-		$hreflang_tags = "";
-		foreach(rex_clang::getAll() as $rex_clang) {
-			if($rex_clang->getId() == $this->clang_id && $this->translation_needs_update != "delete") {
-				$hreflang_tags .= '<link rel="alternate" type="text/html" hreflang="'. $rex_clang->getCode() .'" href="'. $this->getURL() .'" title="'. str_replace('"', '', $this->name) .'">';
-			}
-			else {
-				$reference = new Tag($this->tag_id, $rex_clang->getId());
-				if($reference->translation_needs_update != "delete") {
-					$hreflang_tags .= '<link rel="alternate" type="text/html" hreflang="'. $rex_clang->getCode() .'" href="'. $reference->getURL() .'" title="'. str_replace('"', '', $reference->name) .'">';
-				}
-			}
-		}
-		return $hreflang_tags;
-	}
-	
-	/**
-	 * Get the <meta name="description"> tag for page header.
-	 * @return Complete tag.
-	 */
-	public function getMetaDescriptionTag() {
-		return '<meta name="description" content="'. $this->name .'">';
-	}
-	
-	/**
 	 * Get all References for this Tag.
 	 * @param boolean $online_only If TRUE, only online References are returned..
 	 * @return Reference[] Array with Reference objects.

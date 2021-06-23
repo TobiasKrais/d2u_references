@@ -105,18 +105,6 @@ class d2u_references_frontend_helper {
 			$meta_tags .= $reference->getMetaDescriptionTag() . PHP_EOL;
 			$meta_tags .= $reference->getTitleTag() . PHP_EOL;
 		}
-		// Tags
-		if(filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT, ['options' => ['default'=> 0]]) > 0 || $url_namespace === "tag_id") {
-			$tag_id = filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT);
-			if(\rex_addon::get("url")->isAvailable() && $url_id > 0) {
-				$tag_id = $url_id;
-			}
-			$tag = new Tag($tag_id, rex_clang::getCurrentId());
-			$meta_tags .= $tag->getMetaAlternateHreflangTags();
-			$meta_tags .= $tag->getCanonicalTag() . PHP_EOL;
-			$meta_tags .= $tag->getMetaDescriptionTag() . PHP_EOL;
-			$meta_tags .= $tag->getTitleTag() . PHP_EOL;
-		}
 
 		return $meta_tags;
 	}
