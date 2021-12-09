@@ -38,6 +38,7 @@ $d2u_module_manager->showManagerList();
 	<li>Spanische Frontend Übersetzungen hinzugefügt.</li>
 	<li>Backend: Beim online stellen einer Referenz in der Referenzenliste gab es beim Aufruf im Frontend einen Fatal Error, da der URL cache nicht neu generiert wurde.</li>
 	<li>Modul 50-1 wurde Schatten entfernt und unterstützt nur die in der Referenz gewählte Hintergrundfarbe.</li>
+	<li>Modul 50-3 und 50-4: Anpassungen der Eingabefelder an den Redaxo 13 Dark Mode.</li>
 	<li>Bugfix: beim Speichern eines Tags mit gewählter Referenzen gab es einen fatal error.</li>
 </ul>
 <p>1.0.7:</p>

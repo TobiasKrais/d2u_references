@@ -19,10 +19,10 @@ class D2UReferencesModules {
 			3);
 		$modules[] = new D2UModule("50-3",
 			"D2U Referenzen - Horizontale Mini Referenzboxen mit Detailansicht",
-			3);
+			4);
 		$modules[] = new D2UModule("50-4",
 			"D2U Referenzen - Farbboxen mit seitlichem Bild",
-			2);
+			3);
 		return $modules;
 	}
 }

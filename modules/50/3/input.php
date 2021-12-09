@@ -46,7 +46,7 @@
 		Maximale Anzahl angezeigter Referenzen
 	</div>
 	<div class="col-xs-8">
-		<input type="number" size="5" name="REX_INPUT_VALUE[2]" value="REX_VALUE[2]" />
+		<input  class="form-control"type="number" size="5" name="REX_INPUT_VALUE[2]" value="REX_VALUE[2]" />
 	</div>
 </div>
 <div class="row">

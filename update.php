@@ -17,10 +17,10 @@ if(class_exists('D2UModuleManager')) {
 		3);
 	$modules[] = new D2UModule("50-3",
 		"D2U Referenzen - Horizontale Mini Referenzboxen mit Detailansicht",
-		3);
+		4);
 	$modules[] = new D2UModule("50-4",
 		"D2U Referenzen - Farbboxen mit seitlichem Bild",
-		2);
+		3);
 	$d2u_module_manager = new D2UModuleManager($modules, "", "d2u_references");
 	$d2u_module_manager->autoupdate();
 }
