@@ -102,6 +102,7 @@ function rex_d2u_references_media_is_in_use(rex_extension_point $ep) {
 		if(!in_array($message, $warning)) {
 			$warning[] = $message;
 		}
+		$sql_references->next();
     }
 	
 	// Tags
@@ -111,6 +112,7 @@ function rex_d2u_references_media_is_in_use(rex_extension_point $ep) {
 		if(!in_array($message, $warning)) {
 			$warning[] = $message;
 		}
+		$sql_tags->next();
     }
 
 	return $warning;
