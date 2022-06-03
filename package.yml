@@ -1,4 +1,7 @@
-package: d2u_references
+
+        
+installer_ignore:
+    - .githubpackage: d2u_references
 version: '1.0.9'
 author: Tobias Krais
 supportpage: http://github.com/tobiaskrais/d2u_references
