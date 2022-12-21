@@ -73,7 +73,7 @@ else if(filter_input(INPUT_POST, "btn_delete") == 1 || $func == 'delete') {
 		$form = (array) rex_post('form', 'array', []);
 		$reference_id = $form['reference_id'];
 	}
-	$reference = new Reference($reference_id, rex_config::get("d2u_helper", "default_lang"));
+	$reference = new Reference($reference_id, intval(rex_config::get("d2u_helper", "default_lang")));
 	$reference->reference_id = $reference_id; // Ensure correct ID in case first language has no object
 	$reference->delete();
 	
@@ -82,7 +82,7 @@ else if(filter_input(INPUT_POST, "btn_delete") == 1 || $func == 'delete') {
 // Change online status of reference
 else if($func == 'changestatus') {
 	$reference_id = $entry_id;
-	$reference = new Reference($reference_id, rex_config::get("d2u_helper", "default_lang"));
+	$reference = new Reference($reference_id, intval(rex_config::get("d2u_helper", "default_lang")));
 	$reference->reference_id = $reference_id; // Ensure correct ID in case first language has no object
 	$reference->changeStatus();
 
@@ -101,7 +101,7 @@ if ($func == 'edit' || $func == 'add') {
 				<?php
 					foreach(rex_clang::getAll() as $rex_clang) {
 						$reference = new Reference($entry_id, $rex_clang->getId());
-						$required = $rex_clang->getId() == rex_config::get("d2u_helper", "default_lang") ? TRUE : FALSE;
+						$required = $rex_clang->getId() === intval(rex_config::get("d2u_helper", "default_lang")) ? TRUE : FALSE;
 						
 						$readonly_lang = TRUE;
 						if(rex::getUser()->isAdmin() || (rex::getUser()->hasPerm('d2u_references[edit_lang]') && rex::getUser()->getComplexPerm('clang')->hasPerm($rex_clang->getId()))) {
@@ -112,7 +112,7 @@ if ($func == 'edit' || $func == 'add') {
 						<legend><?php echo rex_i18n::msg('d2u_helper_text_lang') .' "'. $rex_clang->getName() .'"'; ?></legend>
 						<div class="panel-body-wrapper slide">
 							<?php
-								if($rex_clang->getId() != rex_config::get("d2u_helper", "default_lang")) {
+								if($rex_clang->getId() !== intval(rex_config::get("d2u_helper", "default_lang"))) {
 									$options_translations = [];
 									$options_translations["yes"] = rex_i18n::msg('d2u_helper_translation_needs_update');
 									$options_translations["no"] = rex_i18n::msg('d2u_helper_translation_is_uptodate');
@@ -152,7 +152,7 @@ if ($func == 'edit' || $func == 'add') {
 					<div class="panel-body-wrapper slide">
 						<?php
 							// Do not use last object from translations, because you don't know if it exists in DB
-							$reference = new Reference($entry_id, rex_config::get("d2u_helper", "default_lang"));
+							$reference = new Reference($entry_id, intval(rex_config::get("d2u_helper", "default_lang")));
 							$readonly = TRUE;
 							if(rex::getUser()->isAdmin() || rex::getUser()->hasPerm('d2u_references[edit_data]')) {
 								$readonly = FALSE;
@@ -164,14 +164,14 @@ if ($func == 'edit' || $func == 'add') {
 							d2u_addon_backend_helper::form_checkbox('d2u_helper_online_status', 'form[online_status]', 'online', $reference->online_status == "online", $readonly);
 							d2u_addon_backend_helper::form_input('d2u_references_date', "form[date]", $reference->date, TRUE, $readonly, "date");
 							$options_tags = [];
-							foreach (Tag::getAll(rex_config::get("d2u_helper", "default_lang")) as $tag) {
+							foreach (Tag::getAll(intval(rex_config::get("d2u_helper", "default_lang"))) as $tag) {
 								$options_tags[$tag->tag_id] = $tag->name;
 							}
 							d2u_addon_backend_helper::form_select('d2u_references_tags', 'form[tag_ids][]', $options_tags, $reference->tag_ids, 10, TRUE, $readonly);
 
 							if(\rex_addon::get('d2u_videos')->isAvailable()) {
 								$options_videos = [0 => rex_i18n::msg('d2u_references_no_video')];
-								foreach(Video::getAll(rex_config::get("d2u_helper", "default_lang")) as $video) {
+								foreach(Video::getAll(intval(rex_config::get("d2u_helper", "default_lang"))) as $video) {
 									$options_videos[$video->video_id] = $video->name;
 								}
 								d2u_addon_backend_helper::form_select('d2u_videos_video', 'form[video_id]', $options_videos, [($reference->video !== FALSE ? $reference->video->video_id : 0)], 1, FALSE, $readonly);
@@ -206,7 +206,7 @@ if ($func == '') {
 	$query = 'SELECT refs.reference_id, name, `date`, online_status '
 		. 'FROM '. rex::getTablePrefix() .'d2u_references_references AS refs '
 		. 'LEFT JOIN '. rex::getTablePrefix() .'d2u_references_references_lang AS lang '
-			. 'ON refs.reference_id = lang.reference_id AND lang.clang_id = '. rex_config::get("d2u_helper", "default_lang") .' '
+			. 'ON refs.reference_id = lang.reference_id AND lang.clang_id = '. intval(rex_config::get("d2u_helper", "default_lang")) .' '
 		.'ORDER BY `date` DESC';
     $list = rex_list::factory($query, 1000);
 
