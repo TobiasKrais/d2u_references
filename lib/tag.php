@@ -104,7 +104,7 @@ class Tag implements \D2U_Helper\ITranslationHelper {
 			."WHERE tag_id = ". $this->tag_id;
 		$result_main = rex_sql::factory();
 		$result_main->setQuery($query_main);
-		if($result_main->getRows() == 0) {
+		if(intval($result_main->getRows()) === 0) {
 			$query = "DELETE FROM ". rex::getTablePrefix() ."d2u_references_tags "
 				."WHERE tag_id = ". $this->tag_id;
 			$result = rex_sql::factory();
