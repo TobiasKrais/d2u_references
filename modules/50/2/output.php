@@ -41,9 +41,9 @@ if(!function_exists('printReferenceList')) {
 	 * Prints reference list
 	 * @param Reference[] $references Array with reference objects
 	 * @param Tag[] $tags Array with tag objects
-	 * @param Tag $tag_selected Selected Tag object, default is FALSE
+	 * @param Tag $tag_selected Selected Tag object, default is false
 	 */
-	function printReferenceList($references, $tags, $tag_selected = FALSE) {
+	function printReferenceList($references, $tags, $tag_selected = false) {
 		$sprog = rex_addon::get("sprog");
 		$tag_open = $sprog->getConfig('wildcard_open_tag');
 		$tag_close = $sprog->getConfig('wildcard_close_tag');
@@ -58,9 +58,9 @@ if(!function_exists('printReferenceList')) {
 		if(count($tags) > 0){
 			print '<div class="col-12">';
 			print '<ul class="tag-list">';
-			print '<li'. (($tag_selected === FALSE) ? ' class="active"' : '') .'><span class="icon tags"></span><a href="'. rex_getUrl() .'">'. $tag_open .'d2u_references_all_tags'. $tag_close .'</a></li>';
+			print '<li'. (($tag_selected === false) ? ' class="active"' : '') .'><span class="icon tags"></span><a href="'. rex_getUrl() .'">'. $tag_open .'d2u_references_all_tags'. $tag_close .'</a></li>';
 			foreach($tags as $tag) {
-				$class = ($tag_selected !== FALSE && $tag->tag_id == $tag_selected->tag_id) ? ' class="active"' : '';
+				$class = ($tag_selected !== false && $tag->tag_id == $tag_selected->tag_id) ? ' class="active"' : '';
 				print '<li'. $class .'><span class="icon tag"></span><a href="'. $tag->getURL() .'">'. $tag->name .'</a></li>';
 			}
 			print '</ul>';
@@ -109,8 +109,8 @@ $tag_close = $sprog->getConfig('wildcard_close_tag');
 $url_namespace = d2u_addon_frontend_helper::getUrlNamespace();
 $url_id = d2u_addon_frontend_helper::getUrlId();
 
-$tags = Tag::getAll(rex_clang::getCurrentId(), TRUE);
-$tag_selected = FALSE;
+$tags = Tag::getAll(rex_clang::getCurrentId(), true);
+$tag_selected = false;
 $references = [];
 if(filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT, ['options' => ['default'=> 0]]) > 0 || $url_namespace === "tag_id") {
 	$tag_id = filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT);
@@ -135,7 +135,7 @@ else if(filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' 
 	if($reference->external_url_lang != '' || $reference->external_url != "") {
 		print '<a href="'. ($reference->external_url_lang != '' ? $reference->external_url_lang : $reference->external_url) .'">»&nbsp;&nbsp;'. $tag_open .'d2u_references_external_url'. $tag_close .'</a>';
 	}
-	if(\rex_addon::get('d2u_videos')->isAvailable() && $reference->video !== FALSE) {
+	if(\rex_addon::get('d2u_videos') instanceof rex_addon && \rex_addon::get('d2u_videos')->isAvailable() && $reference->video !== false) {
 		$videomanager = new Videomanager();
 		$videomanager->printVideo($reference->video);
 	}
@@ -148,7 +148,7 @@ else if(filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' 
 else {
 	// Reference list
 	if(count($references) == 0) {
-		$references = Reference::getAll(rex_clang::getCurrentId(), TRUE);
+		$references = Reference::getAll(rex_clang::getCurrentId(), true);
 	}
 	
 	printReferenceList($references, $tags);

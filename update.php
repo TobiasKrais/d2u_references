@@ -28,12 +28,12 @@ if(class_exists('D2UModuleManager')) {
 // 1.0.1 Update database: add video support
 $sql = rex_sql::factory();
 $sql->setQuery("SHOW COLUMNS FROM ". rex::getTablePrefix() ."d2u_references_references LIKE 'video_id';");
-if($sql->getRows() == 0) {
+if(intval($sql->getRows()) === 0) {
 	$sql->setQuery("ALTER TABLE ". rex::getTablePrefix() ."d2u_references_references "
 		. "ADD video_id INT(10) NULL DEFAULT NULL AFTER pictures;");
 }
 $sql->setQuery("SHOW COLUMNS FROM ". \rex::getTablePrefix() ."d2u_references_references LIKE 'background_color';");
-if($sql->getRows() == 0) {
+if(intval($sql->getRows()) === 0) {
 	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_references_references "
 		. "ADD background_color VARCHAR(7) NULL DEFAULT NULL AFTER pictures;");
 }

@@ -19,7 +19,7 @@ class d2u_references_frontend_helper {
 			if(\rex_addon::get("url")->isAvailable() && $url_id > 0) {
 				$reference_id = $url_id;
 			}
-			foreach(rex_clang::getAllIds(TRUE) as $this_lang_key) {
+			foreach(rex_clang::getAllIds(true) as $this_lang_key) {
 				$lang_references = new Reference($reference_id, $this_lang_key);
 				if($lang_references->translation_needs_update != "delete") {
 					$alternate_URLs[$this_lang_key] = $lang_references->getURL();
@@ -31,7 +31,7 @@ class d2u_references_frontend_helper {
 			if(\rex_addon::get("url")->isAvailable() && $url_id > 0) {
 				$tag_id = $url_id;
 			}
-			foreach(rex_clang::getAllIds(TRUE) as $this_lang_key) {
+			foreach(rex_clang::getAllIds(true) as $this_lang_key) {
 				$lang_tag = new Tag($tag_id, $this_lang_key);
 				if($lang_tag->translation_needs_update != "delete") {
 					$alternate_URLs[$this_lang_key] = $lang_tag->getURL();
@@ -50,8 +50,8 @@ class d2u_references_frontend_helper {
 		$breadcrumbs = [];
 
 		// Prepare objects first for sorting in correct order
-		$tag = FALSE;
-		$reference = FALSE;
+		$tag = false;
+		$reference = false;
 
 		$url_namespace = d2u_addon_frontend_helper::getUrlNamespace();
 		$url_id = d2u_addon_frontend_helper::getUrlId();
@@ -72,10 +72,10 @@ class d2u_references_frontend_helper {
 		}
 
 		// Breadcrumbs
-		if($tag !== FALSE) {
+		if($tag !== false) {
 			$breadcrumbs[] = '<a href="' . $tag->getUrl() . '">' . $tag->name . '</a>';
 		}
-		if($reference !== FALSE) {
+		if($reference !== false) {
 			$breadcrumbs[] = '<a href="' . $reference->getUrl() . '">' . $reference->name . '</a>';
 		}
 		

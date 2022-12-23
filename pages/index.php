@@ -1,4 +1,4 @@
 <?php
-echo rex_view::title($this->i18n('d2u_references'));
+echo rex_view::title(rex_i18n::msg('d2u_references'));
 
 rex_be_controller::includeCurrentPageSubPath();

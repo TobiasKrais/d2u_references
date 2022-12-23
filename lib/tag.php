@@ -89,10 +89,10 @@ class Tag implements \D2U_Helper\ITranslationHelper {
 	
 	/**
 	 * Deletes the object in all languages.
-	 * @param int $delete_all If TRUE, all translations and main object are deleted. If 
-	 * FALSE, only this translation will be deleted.
+	 * @param bool $delete_all If true, all translations and main object are deleted. If 
+	 * false, only this translation will be deleted.
 	 */
-	public function delete($delete_all = TRUE) {
+	public function delete($delete_all = true):void {
 		$query_lang = "DELETE FROM ". rex::getTablePrefix() ."d2u_references_tags_lang "
 			."WHERE tag_id = ". $this->tag_id
 			. ($delete_all ? '' : ' AND clang_id = '. $this->clang_id) ;
@@ -123,7 +123,7 @@ class Tag implements \D2U_Helper\ITranslationHelper {
 	 * @param boolean $online_only Only tags that are used.
 	 * @return Tag[] Array with Tag objects.
 	 */
-	public static function getAll($clang_id, $online_only = FALSE) {
+	public static function getAll($clang_id, $online_only = false) {
 		$query = "SELECT tag_id FROM ". rex::getTablePrefix() ."d2u_references_tags_lang "
 			."WHERE clang_id = ". $clang_id ." "
 			."ORDER BY name";
@@ -148,10 +148,10 @@ class Tag implements \D2U_Helper\ITranslationHelper {
 	
 	/**
 	 * Get all References for this Tag.
-	 * @param boolean $online_only If TRUE, only online References are returned..
+	 * @param boolean $online_only If true, only online References are returned..
 	 * @return Reference[] Array with Reference objects.
 	 */
-	public function getReferences($online_only = TRUE) {
+	public function getReferences($online_only = true) {
 		$query = "SELECT refs.reference_id FROM ". rex::getTablePrefix() ."d2u_references_tag2refs AS tag2refs "
 			."LEFT JOIN ". rex::getTablePrefix() ."d2u_references_references AS refs "
 				."ON tag2refs.reference_id = refs.reference_id "
@@ -182,7 +182,7 @@ class Tag implements \D2U_Helper\ITranslationHelper {
 		$query = 'SELECT tag_id FROM '. \rex::getTablePrefix() .'d2u_references_tags_lang '
 				."WHERE clang_id = ". $clang_id ." AND translation_needs_update = 'yes' "
 				.'ORDER BY name';
-		if($type == 'missing') {
+		if($type === 'missing') {
 			$query = 'SELECT main.tag_id FROM '. \rex::getTablePrefix() .'d2u_references_tags AS main '
 					.'LEFT JOIN '. \rex::getTablePrefix() .'d2u_references_tags_lang AS target_lang '
 						.'ON main.tag_id = target_lang.tag_id AND target_lang.clang_id = '. $clang_id .' '
@@ -206,10 +206,10 @@ class Tag implements \D2U_Helper\ITranslationHelper {
 
 	/*
 	 * Returns the URL of this object.
-	 * @param string $including_domain TRUE if Domain name should be included
+	 * @param string $including_domain true if Domain name should be included
 	 * @return string URL
 	 */
-	public function getURL($including_domain = FALSE) {
+	public function getURL($including_domain = false) {
 		if($this->url == "") {
 			$d2u_references = rex_addon::get("d2u_references");
 				
@@ -234,7 +234,7 @@ class Tag implements \D2U_Helper\ITranslationHelper {
 	
 	/**
 	 * Updates or inserts the object into database.
-	 * @return boolean TRUE if error occured
+	 * @return boolean true if error occured
 	 */
 	public function save() {
 		$error = 0;
@@ -242,11 +242,11 @@ class Tag implements \D2U_Helper\ITranslationHelper {
 		// Save the not language specific part
 		$pre_save_object = new Tag($this->tag_id, $this->clang_id);
 	
-		if($this->tag_id == 0 || $pre_save_object != $this) {
+		if($this->tag_id === 0 || $pre_save_object != $this) {
 			$query = rex::getTablePrefix() ."d2u_references_tags SET "
 					."picture = '". $this->picture ."' ";
 
-			if($this->tag_id == 0) {
+			if($this->tag_id === 0) {
 				$query = "INSERT INTO ". $query;
 			}
 			else {
@@ -255,8 +255,8 @@ class Tag implements \D2U_Helper\ITranslationHelper {
 
 			$result = rex_sql::factory();
 			$result->setQuery($query);
-			if($this->tag_id == 0) {
-				$this->tag_id = $result->getLastId();
+			if($this->tag_id === 0) {
+				$this->tag_id = intval($result->getLastId());
 				$error = $result->hasError();
 			}
 

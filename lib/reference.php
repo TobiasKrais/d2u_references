@@ -52,7 +52,7 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 	/**
 	 * @var Video Videomanager Video
 	 */
-	var $video = FALSE;
+	var $video = false;
 
 	/**
 	 * @var string External URL 
@@ -115,8 +115,8 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 			$this->online_status = $result->getValue("online_status");
 			$this->pictures = preg_grep('/^\s*$/s', explode(",", $result->getValue("pictures")), PREG_GREP_INVERT);
 			$this->background_color = $result->getValue("background_color");
-			if(\rex_addon::get('d2u_videos')->isAvailable() && $result->getValue("video_id") > 0) {
-				$this->video = new Video($result->getValue("video_id"), $clang_id, TRUE);
+			if(\rex_addon::get('d2u_videos') instanceof rex_addon && \rex_addon::get('d2u_videos')->isAvailable() && $result->getValue("video_id") > 0) {
+				$this->video = new Video($result->getValue("video_id"), $clang_id, true);
 			}
 			if($result->getValue("translation_needs_update") != "") {
 				$this->translation_needs_update = $result->getValue("translation_needs_update");
@@ -141,8 +141,8 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 	/**
 	 * Changes the online status of this object
 	 */
-	public function changeStatus() {
-		if($this->online_status == "online") {
+	public function changeStatus():void {
+		if($this->online_status === "online") {
 			if($this->reference_id > 0) {
 				$query = "UPDATE ". rex::getTablePrefix() ."d2u_references_references "
 					."SET online_status = 'offline' "
@@ -172,10 +172,10 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 
 	/**
 	 * Deletes the object in all languages.
-	 * @param boolean $delete_all If TRUE, all translations and main object are deleted. If 
-	 * FALSE, only this translation will be deleted.
+	 * @param boolean $delete_all If true, all translations and main object are deleted. If 
+	 * false, only this translation will be deleted.
 	 */
-	public function delete($delete_all = TRUE) {
+	public function delete($delete_all = true):void {
 		$query_lang = "DELETE FROM ". rex::getTablePrefix() ."d2u_references_references_lang "
 			."WHERE reference_id = ". $this->reference_id
 			. ($delete_all ? '' : ' AND clang_id = '. $this->clang_id) ;
@@ -203,10 +203,10 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 	/**
 	 * Get all references.
 	 * @param int $clang_id Redaxo clang id.
-	 * @param boolean $online_only If TRUE, only online References are returned..
+	 * @param boolean $online_only If true, only online References are returned..
 	 * @return Reference[] Array with Reference objects.
 	 */
-	public static function getAll($clang_id, $online_only = TRUE) {
+	public static function getAll($clang_id, $online_only = true) {
 		$query = "SELECT lang.reference_id FROM ". rex::getTablePrefix() ."d2u_references_references_lang AS lang "
 			."LEFT JOIN ". rex::getTablePrefix() ."d2u_references_references AS refs "
 				."ON lang.reference_id = refs.reference_id "
@@ -236,7 +236,7 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 		$query = 'SELECT reference_id FROM '. \rex::getTablePrefix() .'d2u_references_references_lang '
 				."WHERE clang_id = ". $clang_id ." AND translation_needs_update = 'yes' "
 				.'ORDER BY name';
-		if($type == 'missing') {
+		if($type === 'missing') {
 			$query = 'SELECT main.reference_id FROM '. \rex::getTablePrefix() .'d2u_references_references AS main '
 					.'LEFT JOIN '. \rex::getTablePrefix() .'d2u_references_references_lang AS target_lang '
 						.'ON main.reference_id = target_lang.reference_id AND target_lang.clang_id = '. $clang_id .' '
@@ -260,10 +260,10 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 	
 	/*
 	 * Returns the URL of this object.
-	 * @param string $including_domain TRUE if Domain name should be included
+	 * @param string $including_domain true if Domain name should be included
 	 * @return string URL
 	 */
-	public function getURL($including_domain = FALSE) {
+	public function getURL($including_domain = false) {
 		if($this->url == "") {
 			$d2u_references = rex_addon::get("d2u_references");
 				
@@ -288,7 +288,7 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 	
 	/**
 	 * Updates or inserts the object into database.
-	 * @return boolean TRUE if error occured
+	 * @return boolean true if error occured
 	 */
 	public function save() {
 		$error = 0;
@@ -296,16 +296,16 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 		// Save the not language specific part
 		$pre_save_object = new Reference($this->reference_id, $this->clang_id);
 	
-		if($this->reference_id == 0 || $pre_save_object != $this) {
+		if($this->reference_id === 0 || $pre_save_object != $this) {
 			$query = rex::getTablePrefix() ."d2u_references_references SET "
 					."online_status = '". $this->online_status ."', "
 					."pictures = '". implode(",", $this->pictures) ."', "
 					."background_color = '". $this->background_color ."', "
-					."video_id = ". ($this->video !== FALSE ? $this->video->video_id : 0) .", "
+					."video_id = ". ($this->video !== false ? $this->video->video_id : 0) .", "
 					."url = '". $this->external_url ."', "
 					."`date` = '". $this->date ."' ";
 
-			if($this->reference_id == 0) {
+			if($this->reference_id === 0) {
 				$query = "INSERT INTO ". $query;
 			}
 			else {
@@ -314,8 +314,8 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 
 			$result = rex_sql::factory();
 			$result->setQuery($query);
-			if($this->reference_id == 0) {
-				$this->reference_id = $result->getLastId();
+			if($this->reference_id === 0) {
+				$this->reference_id = intval($result->getLastId());
 				$error = $result->hasError();
 			}
 

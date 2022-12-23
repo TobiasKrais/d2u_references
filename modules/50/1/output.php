@@ -8,7 +8,7 @@ $url_namespace = d2u_addon_frontend_helper::getUrlNamespace();
 $url_id = d2u_addon_frontend_helper::getUrlId();
 
 $tags = Tag::getAll(rex_clang::getCurrentId());
-$tag_selected = FALSE;
+$tag_selected = false;
 $references = [];
 if(filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT, ['options' => ['default'=> 0]]) > 0 || $url_namespace === "tag_id") {
 	$tag_id = filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT);
@@ -23,7 +23,7 @@ else if(filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' 
 	exit;
 }
 else {
-	$references = Reference::getAll(rex_clang::getCurrentId(), TRUE);
+	$references = Reference::getAll(rex_clang::getCurrentId(), true);
 }
 
 if(count($tags) > 0){
@@ -31,7 +31,7 @@ if(count($tags) > 0){
 	print '<ul class="tag-list">';
 	print '<li'. ($tag_id == 0 ? ' class="active"' : '') .'><span class="icon tags"></span><a href="'. rex_getUrl() .'">'. $tag_open .'d2u_references_all_tags'. $tag_close .'</a></li>';
 	foreach($tags as $tag) {
-		$class = ($tag_selected !== FALSE && $tag->tag_id == $tag_selected->tag_id) ? ' class="active"' : '';
+		$class = ($tag_selected !== false && $tag->tag_id == $tag_selected->tag_id) ? ' class="active"' : '';
 		print '<li'. $class .'><span class="icon tag"></span><a href="'. $tag->getURL() .'">'. $tag->name .'</a></li>';
 	}
 	print '</ul>';

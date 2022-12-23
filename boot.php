@@ -54,13 +54,13 @@ function rex_d2u_references_clang_deleted(rex_extension_point $ep) {
 	$clang_id = $params['id'];
 
 	// Delete
-	$references = Reference::getAll($clang_id, FALSE);
+	$references = Reference::getAll($clang_id, false);
 	foreach ($references as $reference) {
-		$reference->delete(FALSE);
+		$reference->delete(false);
 	}
-	$tags = Tag::getAll($clang_id, FALSE);
+	$tags = Tag::getAll($clang_id, false);
 	foreach ($tags as $tag) {
-		$tag->delete(FALSE);
+		$tag->delete(false);
 	}
 
 	// Delete language settings

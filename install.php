@@ -85,7 +85,7 @@ if(\rex_addon::get('url')->isAvailable()) {
 
 // Media Manager media types
 $sql->setQuery("SELECT * FROM ". rex::getTablePrefix() ."media_manager_type WHERE name = 'd2u_references_list_flat'");
-if($sql->getRows() == 0) {
+if(intval($sql->getRows()) === 0) {
 	$sql->setQuery("INSERT INTO ". rex::getTablePrefix() ."media_manager_type (`status`, `name`, `description`) VALUES
 		(0, 'd2u_references_list_flat', 'Liste Vorschaubild Modul 50-2');");
 	$last_id_d2u_machinery_list_tile = $sql->getLastId();

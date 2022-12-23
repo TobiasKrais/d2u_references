@@ -10,16 +10,16 @@ if($message != "") {
 
 // save settings
 if (intval(filter_input(INPUT_POST, "btn_save")) === 1 || intval(filter_input(INPUT_POST, "btn_apply")) === 1) {
-	$form = (array) rex_post('form', 'array', []);
+	$form = rex_post('form', 'array', []);
 
 	// Media fields and links need special treatment
-	$input_media = (array) rex_post('REX_INPUT_MEDIA', 'array', array());
+	$input_media = rex_post('REX_INPUT_MEDIA', 'array', []);
 
-	$success = TRUE;
-	$tag = FALSE;
+	$success = true;
+	$tag = false;
 	$tag_id = $form['tag_id'];
 	foreach(rex_clang::getAll() as $rex_clang) {
-		if($tag === FALSE) {
+		if($tag === false) {
 			$tag = new Tag($tag_id, $rex_clang->getId());
 			$tag->tag_id = $tag_id; // Ensure correct ID in case first language has no object
 //			$tag->picture = $input_media[1];
@@ -32,11 +32,11 @@ if (intval(filter_input(INPUT_POST, "btn_save")) === 1 || intval(filter_input(IN
 		$tag->name = $form['lang'][$rex_clang->getId()]['name'];
 		$tag->translation_needs_update = $form['lang'][$rex_clang->getId()]['translation_needs_update'];
 		
-		if($tag->translation_needs_update == "delete") {
-			$tag->delete(FALSE);
+		if($tag->translation_needs_update === "delete") {
+			$tag->delete(false);
 		}
 		else if($tag->save() > 0){
-			$success = FALSE;
+			$success = false;
 		}
 		else {
 			// remember id, for each database lang object needs same id
@@ -51,19 +51,19 @@ if (intval(filter_input(INPUT_POST, "btn_save")) === 1 || intval(filter_input(IN
 	}
 	
 	// Redirect to make reload and thus double save impossible
-	if(filter_input(INPUT_POST, "btn_apply") == 1 && $tag !== FALSE) {
-		header("Location: ". rex_url::currentBackendPage(array("entry_id"=>$tag->tag_id, "func"=>'edit', "message"=>$message), FALSE));
+	if(intval(filter_input(INPUT_POST, "btn_apply", FILTER_VALIDATE_INT)) === 1 &&$tag !== false) {
+		header("Location: ". rex_url::currentBackendPage(array("entry_id"=>$tag->tag_id, "func"=>'edit', "message"=>$message), false));
 	}
 	else {
-		header("Location: ". rex_url::currentBackendPage(array("message"=>$message), FALSE));
+		header("Location: ". rex_url::currentBackendPage(array("message"=>$message), false));
 	}
 	exit;
 }
 // Delete
-else if(filter_input(INPUT_POST, "btn_delete") == 1 || $func == 'delete') {
+else if(intval(filter_input(INPUT_POST, "btn_delete", FILTER_VALIDATE_INT)) === 1 || $func === 'delete') {
 	$tag_id = $entry_id;
-	if($tag_id == 0) {
-		$form = (array) rex_post('form', 'array', []);
+	if($tag_id === 0) {
+		$form = rex_post('form', 'array', []);
 		$tag_id = $form['tag_id'];
 	}
 	$tag = new Tag($tag_id, intval(rex_config::get("d2u_helper", "default_lang")));
@@ -74,7 +74,7 @@ else if(filter_input(INPUT_POST, "btn_delete") == 1 || $func == 'delete') {
 }
 
 // Form
-if ($func == 'edit' || $func == 'add') {
+if ($func === 'edit' || $func === 'add') {
 ?>
 	<form action="<?php print rex_url::currentBackendPage(); ?>" method="post">
 		<div class="panel panel-edit">
@@ -84,11 +84,11 @@ if ($func == 'edit' || $func == 'add') {
 				<?php
 					foreach(rex_clang::getAll() as $rex_clang) {
 						$tag = new Tag($entry_id, $rex_clang->getId());
-						$required = $rex_clang->getId() === intval(rex_config::get("d2u_helper", "default_lang")) ? TRUE : FALSE;
+						$required = $rex_clang->getId() === intval(rex_config::get("d2u_helper", "default_lang")) ? true : false;
 						
-						$readonly_lang = TRUE;
+						$readonly_lang = true;
 						if(rex::getUser()->isAdmin() || (rex::getUser()->hasPerm('d2u_references[edit_lang]') && rex::getUser()->getComplexPerm('clang')->hasPerm($rex_clang->getId()))) {
-							$readonly_lang = FALSE;
+							$readonly_lang = false;
 						}
 				?>
 					<fieldset>
@@ -100,7 +100,7 @@ if ($func == 'edit' || $func == 'add') {
 									$options_translations["yes"] = rex_i18n::msg('d2u_helper_translation_needs_update');
 									$options_translations["no"] = rex_i18n::msg('d2u_helper_translation_is_uptodate');
 									$options_translations["delete"] = rex_i18n::msg('d2u_helper_translation_delete');
-									d2u_addon_backend_helper::form_select('d2u_helper_translation', 'form[lang]['. $rex_clang->getId() .'][translation_needs_update]', $options_translations, [$tag->translation_needs_update], 1, FALSE, $readonly_lang);
+									d2u_addon_backend_helper::form_select('d2u_helper_translation', 'form[lang]['. $rex_clang->getId() .'][translation_needs_update]', $options_translations, [$tag->translation_needs_update], 1, false, $readonly_lang);
 								}
 								else {
 									print '<input type="hidden" name="form[lang]['. $rex_clang->getId() .'][translation_needs_update]" value="">';
@@ -133,17 +133,17 @@ if ($func == 'edit' || $func == 'add') {
 						<?php
 							// Do not use last object from translations, because you don't know if it exists in DB
 							$tag = new Tag($entry_id, intval(rex_config::get("d2u_helper", "default_lang")));
-							$readonly = TRUE;
+							$readonly = true;
 							if(rex::getUser()->isAdmin() || rex::getUser()->hasPerm('d2u_references[edit_data]')) {
-								$readonly = FALSE;
+								$readonly = false;
 							}
 							
 //							d2u_addon_backend_helper::form_mediafield('d2u_helper_picture', '1', $tag->picture, $readonly);
 							$options_tags = [];
-							foreach (Reference::getAll(intval(rex_config::get("d2u_helper", "default_lang")), FALSE) as $reference) {
+							foreach (Reference::getAll(intval(rex_config::get("d2u_helper", "default_lang")), false) as $reference) {
 								$options_tags[$reference->reference_id] = $reference->name;
 							}
-							d2u_addon_backend_helper::form_select('d2u_references_references', 'form[reference_ids][]', $options_tags, $tag->reference_ids, 10, TRUE, $readonly);
+							d2u_addon_backend_helper::form_select('d2u_references_references', 'form[reference_ids][]', $options_tags, $tag->reference_ids, 10, true, $readonly);
 						?>
 					</div>
 				</fieldset>
@@ -171,7 +171,7 @@ if ($func == 'edit' || $func == 'add') {
 		print d2u_addon_backend_helper::getJSOpenAll();
 }
 
-if ($func == '') {
+if ($func === '') {
 	$query = 'SELECT tags.tag_id, name '
 		. 'FROM '. rex::getTablePrefix() .'d2u_references_tags AS tags '
 		. 'LEFT JOIN '. rex::getTablePrefix() .'d2u_references_tags_lang AS lang '
