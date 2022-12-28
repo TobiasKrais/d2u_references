@@ -22,7 +22,8 @@ if (intval(filter_input(INPUT_POST, "btn_save")) === 1 || intval(filter_input(IN
 		if($reference === false) {
 			$reference = new Reference($reference_id, $rex_clang->getId());
 			$reference->reference_id = $reference_id; // Ensure correct ID in case first language has no object
-			$reference->pictures = preg_grep('/^\s*$/s', explode(",", $input_media_list[1]), PREG_GREP_INVERT);
+			$pictures = preg_grep('/^\s*$/s', explode(",", $input_media_list[1]), PREG_GREP_INVERT);
+			$reference->pictures = is_array($pictures) ? $pictures : [];
 			$reference->background_color = $form['background_color'];
 			$reference->video = $form['video_id'] > 0 ? new Video($form['video_id'], $rex_clang->getId()) : false;
 			$reference->external_url = $form['url'];

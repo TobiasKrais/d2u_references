@@ -113,7 +113,8 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 			$this->external_url = $result->getValue("url");
 			$this->external_url_lang = $result->getValue("url_lang");
 			$this->online_status = $result->getValue("online_status");
-			$this->pictures = preg_grep('/^\s*$/s', explode(",", $result->getValue("pictures")), PREG_GREP_INVERT);
+			$pictures = preg_grep('/^\s*$/s', explode(",", $result->getValue("pictures")), PREG_GREP_INVERT);
+			$this->pictures = is_array($pictures) ? $pictures : [];
 			$this->background_color = $result->getValue("background_color");
 			if(\rex_addon::get('d2u_videos') instanceof rex_addon && \rex_addon::get('d2u_videos')->isAvailable() && $result->getValue("video_id") > 0) {
 				$this->video = new Video($result->getValue("video_id"), $clang_id, true);
