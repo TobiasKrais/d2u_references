@@ -4,60 +4,60 @@
  */
 class d2u_references_lang_helper extends \D2U_Helper\ALangHelper {
 	/**
-	 * @var string[] Array with english replacements. Key is the wildcard,
+	 * @var array<string, string> Array with english replacements. Key is the wildcard,
 	 * value the replacement. 
 	 */
-	protected $replacements_english = [
+	protected array $replacements_english = [
 		'd2u_references_all_tags' => 'All tags',
 		'd2u_references_external_url' => 'Got to product site',
 		'd2u_references_references' => 'References',
 	];
 
 	/**
-	 * @var string[] Array with german replacements. Key is the wildcard,
+	 * @var array<string, string> Array with german replacements. Key is the wildcard,
 	 * value the replacement. 
 	 */
-	protected $replacements_francaise = [
+	protected array $replacements_francaise = [
 		'd2u_references_all_tags' => 'Tous les tags',
 		'd2u_references_external_url' => 'À la page du produit',
 		'd2u_references_references' => 'Références',
 	];
 
 	/**
-	 * @var string[] Array with german replacements. Key is the wildcard,
+	 * @var array<string, string> Array with german replacements. Key is the wildcard,
 	 * value the replacement. 
 	 */
-	protected $replacements_german = [
+	protected array $replacements_german = [
 		'd2u_references_all_tags' => 'Alle Tags',
 		'd2u_references_external_url' => 'Zur Produktseite',
 		'd2u_references_references' => 'Referenzen',
 	];
 
 	/**
-	 * @var string[] Array with spanish replacements. Key is the wildcard,
+	 * @var array<string, string> Array with spanish replacements. Key is the wildcard,
 	 * value the replacement. 
 	 */
-	protected $replacements_spanish = [
+	protected array $replacements_spanish = [
 		'd2u_references_all_tags' => 'Todas las etiquetas',
 		'd2u_references_external_url' => 'Ir a ubicación del producto',
 		'd2u_references_references' => 'Referencias',
 	];
 	
 	/**
-	 * @var string[] Array with russian replacements. Key is the wildcard,
+	 * @var array<string, string> Array with russian replacements. Key is the wildcard,
 	 * value the replacement. 
 	 */
-	protected $replacements_russian = [
+	protected array $replacements_russian = [
 		'd2u_references_all_tags' => 'все теги',
 		'd2u_references_external_url' => 'Перейти на сайт',
 		'd2u_references_references' => 'Референции',
 	];
 	
 	/**
-	 * @var string[] Array with german replacements. Key is the wildcard,
+	 * @var array<string, string> Array with german replacements. Key is the wildcard,
 	 * value the replacement. 
 	 */
-	protected $replacements_slovak = [
+	protected array $replacements_slovak = [
 		'd2u_references_all_tags' => 'Všetky tagy',
 		'd2u_references_external_url' => 'Stránka produktu',
 		'd2u_references_references' => 'Referencie',
