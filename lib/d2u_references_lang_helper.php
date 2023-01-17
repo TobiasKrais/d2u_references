@@ -7,7 +7,7 @@ class d2u_references_lang_helper extends \D2U_Helper\ALangHelper {
 	 * @var array<string, string> Array with english replacements. Key is the wildcard,
 	 * value the replacement. 
 	 */
-	protected array $replacements_english = [
+	var $replacements_english = [
 		'd2u_references_all_tags' => 'All tags',
 		'd2u_references_external_url' => 'Got to product site',
 		'd2u_references_references' => 'References',
@@ -74,7 +74,7 @@ class d2u_references_lang_helper extends \D2U_Helper\ALangHelper {
 	/**
 	 * Installs the replacement table for this addon.
 	 */
-	public function install() {
+	public function install():void {
 		foreach($this->replacements_english as $key => $value) {
 			foreach (rex_clang::getAllIds() as $clang_id) {
 				$lang_replacement = rex_config::get('d2u_references', 'lang_replacement_'. $clang_id, '');

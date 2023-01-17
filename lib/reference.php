@@ -40,7 +40,7 @@ class Reference implements \D2U_Helper\ITranslationHelper {
 	var $online_status = "";
 
 	/**
-	 * @var string[] Array with picture file names 
+	 * @var array<string> Array with picture file names 
 	 */
 	var $pictures = [];
 	

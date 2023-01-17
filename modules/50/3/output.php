@@ -120,7 +120,7 @@ else if(filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' 
 	}
 	$offset_lg_cols = intval("REX_VALUE[17]");
 	$offset_lg = "";
-	if($offset_lg_cols > 0) {
+	if($offset_lg_cols > 0) { /** @phpstan-ignore-line */
 		$offset_lg = " mr-lg-auto ml-lg-auto ";
 	}
 	
