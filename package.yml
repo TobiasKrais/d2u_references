@@ -1,4 +1,4 @@
-
+package: d2u_references
         
 installer_ignore:
     - .githubpackage: d2u_references
