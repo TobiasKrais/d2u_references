@@ -3,7 +3,7 @@
 		Text oberhalb der Referenzliste:
 	</div>
 	<div class="col-xs-12 col-md-9">
-		<textarea name="REX_INPUT_VALUE[1]" class="redactorEditor2-full" >
+		<textarea name="REX_INPUT_VALUE[1]" class="<?php print d2u_addon_backend_helper::getWYSIWYGEditorClass(); ?>">
 		REX_VALUE[1]
 		</textarea>
 	</div>
