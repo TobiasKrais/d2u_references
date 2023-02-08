@@ -7,6 +7,7 @@ $tag_close = $sprog->getConfig('wildcard_close_tag');
 $url_namespace = d2u_addon_frontend_helper::getUrlNamespace();
 $url_id = d2u_addon_frontend_helper::getUrlId();
 
+$tag_id = 0;
 $tags = Tag::getAll(rex_clang::getCurrentId());
 $tag_selected = false;
 $references = [];
@@ -29,7 +30,7 @@ else {
 if(count($tags) > 0){
 	print '<div class="col-12">';
 	print '<ul class="tag-list">';
-	print '<li'. ($tag_id == 0 ? ' class="active"' : '') .'><span class="icon tags"></span><a href="'. rex_getUrl() .'">'. $tag_open .'d2u_references_all_tags'. $tag_close .'</a></li>';
+	print '<li'. ($tag_id === 0 ? ' class="active"' : '') .'><span class="icon tags"></span><a href="'. rex_getUrl() .'">'. $tag_open .'d2u_references_all_tags'. $tag_close .'</a></li>';
 	foreach($tags as $tag) {
 		$class = ($tag_selected !== false && $tag->tag_id == $tag_selected->tag_id) ? ' class="active"' : '';
 		print '<li'. $class .'><span class="icon tag"></span><a href="'. $tag->getURL() .'">'. $tag->name .'</a></li>';
