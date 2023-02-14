@@ -29,7 +29,7 @@ function rex_d2u_references_article_is_in_use(rex_extension_point $ep) {
 	if($addon->hasConfig("article_id") && $addon->getConfig("article_id") == $article_id) {
 		$message = '<a href="index.php?page=d2u_references/settings">'.
 			 rex_i18n::msg('d2u_references_rights') ." - ". rex_i18n::msg('d2u_references_settings') . '</a>';
-		if(!in_array($message, $warning)) {
+		if(!in_array($message, $warning, true)) {
 			$warning[] = $message;
 		}
 	}
@@ -101,7 +101,7 @@ function rex_d2u_references_media_is_in_use(rex_extension_point $ep) {
 	for($i = 0; $i < $sql_references->getRows(); $i++) {
 		$message = '<a href="javascript:openPage(\'index.php?page=d2u_references/reference&func=edit&entry_id='.
 			$sql_references->getValue('reference_id') .'\')">'. rex_i18n::msg('d2u_references_rights') ." - ". rex_i18n::msg('d2u_references_references') .': '. $sql_references->getValue('name') .'</a>';
-		if(!in_array($message, $warning)) {
+		if(!in_array($message, $warning, true)) {
 			$warning[] = $message;
 		}
 		$sql_references->next();
@@ -111,7 +111,7 @@ function rex_d2u_references_media_is_in_use(rex_extension_point $ep) {
 	for($i = 0; $i < $sql_tags->getRows(); $i++) {
 		$message = '<a href="javascript:openPage(\'index.php?page=d2u_references/tag&func=edit&entry_id='. $sql_tags->getValue('tag_id') .'\')">'.
 			 rex_i18n::msg('d2u_references_rights') ." - ". rex_i18n::msg('d2u_references_tags') .': '. $sql_tags->getValue('name') . '</a>';
-		if(!in_array($message, $warning)) {
+		if(!in_array($message, $warning, true)) {
 			$warning[] = $message;
 		}
 		$sql_tags->next();
