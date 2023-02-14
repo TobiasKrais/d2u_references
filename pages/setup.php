@@ -27,9 +27,9 @@ $d2u_module_manager->showManagerList();
 <h2>Support</h2>
 <p>Fehlermeldungen bitte im <a href="https://github.com/TobiasKrais/d2u_references" target="_blank">GitHub Repository</a> melden.</p>
 <h2>Changelog</h2>
-<p>1.0.10-DEV:</p>
+<p>1.0.10:</p>
 <ul>
-	<li>...</li>
+	<li>Fehler Installer Action behoben.</li>
 </ul>
 <p>1.0.9:</p>
 <ul>
