@@ -1,5 +1,5 @@
 package: d2u_references
-version: '1.0.10'
+version: '1.0.11'
 author: Tobias Krais
 supportpage: http://github.com/tobiaskrais/d2u_references
 
@@ -20,7 +20,6 @@ requires:
         sprog: '>=1.0.0'
         url: '>=1.0.1'
         yrewrite: '>=2.0.1'
-        
-        
+
 installer_ignore:
     - .github
