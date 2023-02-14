@@ -27,12 +27,16 @@ $d2u_module_manager->showManagerList();
 <h2>Support</h2>
 <p>Fehlermeldungen bitte im <a href="https://github.com/TobiasKrais/d2u_references" target="_blank">GitHub Repository</a> melden.</p>
 <h2>Changelog</h2>
+<p>1.0.10-DEV:</p>
+<ul>
+	<li>...</li>
+</ul>
 <p>1.0.9:</p>
 <ul>
 	<li>Anpassungen an Publish Github Release to Redaxo.</li>
 	<li>Unterstützt nur noch URL Addon >= 2.0.</li>
 	<li>Methode d2u_references_frontend_helper::getMetaTags() entfernt, da das URL Addon eine bessere Funktion anbietet.
-		Ebenso die Methoden getMetaAlternateHreflangTags(), getMetaDescriptionTag(), getCanonicalTag und getTitleTag() der aller Klassen, die diese Methoden abgeboten hatten.</li>
+		Ebenso die Methoden getMetaAlternateHreflangTags(), getMetaDescriptionTag(), getCanonicalTag und getTitleTag() aller Klassen, die diese Methoden abgeboten hatten.</li>
 	<li>Bugfix: Beim Löschen von Medien die vom Addon verlinkt werden wurde der Name der verlinkenden Quelle in der Warnmeldung nicht immer korrekt angegeben.</li>
 </ul>
 <p>1.0.8:</p>
