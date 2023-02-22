@@ -1,41 +1,42 @@
 <?php
+
 // Update language replacements
-if(!class_exists('d2u_references_lang_helper')) {
-	// Load class in case addon is deactivated
-	require_once 'lib/d2u_references_lang_helper.php';
+if (!class_exists('d2u_references_lang_helper')) {
+    // Load class in case addon is deactivated
+    require_once 'lib/d2u_references_lang_helper.php';
 }
 d2u_references_lang_helper::factory()->install();
 
 // Update modules
-if(class_exists('D2UModuleManager')) {
-	$modules = [];
-	$modules[] = new D2UModule("50-1",
-		"D2U Referenzen - Vertikale Referenzboxen ohne Detailansicht",
-		3);
-	$modules[] = new D2UModule("50-2",
-		"D2U Referenzen - Horizontale Referenzboxen mit Detailansicht",
-		3);
-	$modules[] = new D2UModule("50-3",
-		"D2U Referenzen - Horizontale Mini Referenzboxen mit Detailansicht",
-		4);
-	$modules[] = new D2UModule("50-4",
-		"D2U Referenzen - Farbboxen mit seitlichem Bild",
-		3);
-	$d2u_module_manager = new D2UModuleManager($modules, "", "d2u_references");
-	$d2u_module_manager->autoupdate();
+if (class_exists('D2UModuleManager')) {
+    $modules = [];
+    $modules[] = new D2UModule('50-1',
+        'D2U Referenzen - Vertikale Referenzboxen ohne Detailansicht',
+        3);
+    $modules[] = new D2UModule('50-2',
+        'D2U Referenzen - Horizontale Referenzboxen mit Detailansicht',
+        3);
+    $modules[] = new D2UModule('50-3',
+        'D2U Referenzen - Horizontale Mini Referenzboxen mit Detailansicht',
+        4);
+    $modules[] = new D2UModule('50-4',
+        'D2U Referenzen - Farbboxen mit seitlichem Bild',
+        3);
+    $d2u_module_manager = new D2UModuleManager($modules, '', 'd2u_references');
+    $d2u_module_manager->autoupdate();
 }
 
 // 1.0.1 Update database: add video support
 $sql = rex_sql::factory();
-$sql->setQuery("SHOW COLUMNS FROM ". rex::getTablePrefix() ."d2u_references_references LIKE 'video_id';");
-if(intval($sql->getRows()) === 0) {
-	$sql->setQuery("ALTER TABLE ". rex::getTablePrefix() ."d2u_references_references "
-		. "ADD video_id INT(10) NULL DEFAULT NULL AFTER pictures;");
+$sql->setQuery('SHOW COLUMNS FROM '. rex::getTablePrefix() ."d2u_references_references LIKE 'video_id';");
+if (0 === (int) $sql->getRows()) {
+    $sql->setQuery('ALTER TABLE '. rex::getTablePrefix() .'d2u_references_references '
+        . 'ADD video_id INT(10) NULL DEFAULT NULL AFTER pictures;');
 }
-$sql->setQuery("SHOW COLUMNS FROM ". \rex::getTablePrefix() ."d2u_references_references LIKE 'background_color';");
-if(intval($sql->getRows()) === 0) {
-	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_references_references "
-		. "ADD background_color VARCHAR(7) NULL DEFAULT NULL AFTER pictures;");
+$sql->setQuery('SHOW COLUMNS FROM '. \rex::getTablePrefix() ."d2u_references_references LIKE 'background_color';");
+if (0 === (int) $sql->getRows()) {
+    $sql->setQuery('ALTER TABLE '. \rex::getTablePrefix() .'d2u_references_references '
+        . 'ADD background_color VARCHAR(7) NULL DEFAULT NULL AFTER pictures;');
 }
 
 // Create views for url addon
@@ -53,55 +54,55 @@ $sql->setQuery('CREATE OR REPLACE VIEW '. rex::getTablePrefix() .'d2u_references
 	WHERE clang.status = 1 AND lang.tag_id IN (SELECT tag_id FROM `'. rex::getTablePrefix() .'d2u_references_tag2refs` GROUP BY tag_id);');
 
 // Insert url schemes
-if(\rex_addon::get('url')->isAvailable()) {
-	$clang_id = count(rex_clang::getAllIds()) == 1 ? rex_clang::getStartId() : 0;
-	$article_id = rex_config::get('d2u_references', 'article_id', 0) > 0 ? rex_config::get('d2u_references', 'article_id') : rex_article::getSiteStartArticleId(); 
+if (\rex_addon::get('url')->isAvailable()) {
+    $clang_id = 1 == count(rex_clang::getAllIds()) ? rex_clang::getStartId() : 0;
+    $article_id = rex_config::get('d2u_references', 'article_id', 0) > 0 ? rex_config::get('d2u_references', 'article_id') : rex_article::getSiteStartArticleId();
 
-	// Insert url schemes Version 2.x
-	$sql->setQuery("DELETE FROM ". \rex::getTablePrefix() ."url_generator_profile WHERE `namespace` = 'reference_id';");
-	$sql->setQuery("INSERT INTO ". \rex::getTablePrefix() ."url_generator_profile (`namespace`, `article_id`, `clang_id`, `table_name`, `table_parameters`, `relation_1_table_name`, `relation_1_table_parameters`, `relation_2_table_name`, `relation_2_table_parameters`, `relation_3_table_name`, `relation_3_table_parameters`, `createdate`, `createuser`, `updatedate`, `updateuser`) VALUES
+    // Insert url schemes Version 2.x
+    $sql->setQuery('DELETE FROM '. \rex::getTablePrefix() ."url_generator_profile WHERE `namespace` = 'reference_id';");
+    $sql->setQuery('INSERT INTO '. \rex::getTablePrefix() ."url_generator_profile (`namespace`, `article_id`, `clang_id`, `table_name`, `table_parameters`, `relation_1_table_name`, `relation_1_table_parameters`, `relation_2_table_name`, `relation_2_table_parameters`, `relation_3_table_name`, `relation_3_table_parameters`, `createdate`, `createuser`, `updatedate`, `updateuser`) VALUES
 		('reference_id', "
-		. $article_id .", "
-		. $clang_id .", "
-		. "'1_xxx_". rex::getTablePrefix() ."d2u_references_url_references', "
-		. "'{\"column_id\":\"reference_id\",\"column_clang_id\":\"clang_id\",\"restriction_1_column\":\"\",\"restriction_1_comparison_operator\":\"=\",\"restriction_1_value\":\"\",\"restriction_2_logical_operator\":\"\",\"restriction_2_column\":\"\",\"restriction_2_comparison_operator\":\"=\",\"restriction_2_value\":\"\",\"restriction_3_logical_operator\":\"\",\"restriction_3_column\":\"\",\"restriction_3_comparison_operator\":\"=\",\"restriction_3_value\":\"\",\"column_segment_part_1\":\"name\",\"column_segment_part_2_separator\":\"\\/\",\"column_segment_part_2\":\"\",\"column_segment_part_3_separator\":\"\\/\",\"column_segment_part_3\":\"\",\"relation_1_column\":\"\",\"relation_1_position\":\"BEFORE\",\"relation_2_column\":\"\",\"relation_2_position\":\"BEFORE\",\"relation_3_column\":\"\",\"relation_3_position\":\"BEFORE\",\"append_user_paths\":\"\",\"append_structure_categories\":\"0\",\"column_seo_title\":\"seo_title\",\"column_seo_description\":\"seo_description\",\"column_seo_image\":\"picture\",\"sitemap_add\":\"1\",\"sitemap_frequency\":\"monthly\",\"sitemap_priority\":\"1.0\",\"column_sitemap_lastmod\":\"updatedate\"}', "
-		. "'', '[]', '', '[]', '', '[]', CURRENT_TIMESTAMP, '". rex::getUser()->getValue('login') ."', CURRENT_TIMESTAMP, '". rex::getUser()->getValue('login') ."');");
-	$sql->setQuery("DELETE FROM ". \rex::getTablePrefix() ."url_generator_profile WHERE `namespace` = 'tag_id';");
-	$sql->setQuery("INSERT INTO ". \rex::getTablePrefix() ."url_generator_profile (`namespace`, `article_id`, `clang_id`, `table_name`, `table_parameters`, `relation_1_table_name`, `relation_1_table_parameters`, `relation_2_table_name`, `relation_2_table_parameters`, `relation_3_table_name`, `relation_3_table_parameters`, `createdate`, `createuser`, `updatedate`, `updateuser`) VALUES
+        . $article_id .', '
+        . $clang_id .', '
+        . "'1_xxx_". rex::getTablePrefix() ."d2u_references_url_references', "
+        . "'{\"column_id\":\"reference_id\",\"column_clang_id\":\"clang_id\",\"restriction_1_column\":\"\",\"restriction_1_comparison_operator\":\"=\",\"restriction_1_value\":\"\",\"restriction_2_logical_operator\":\"\",\"restriction_2_column\":\"\",\"restriction_2_comparison_operator\":\"=\",\"restriction_2_value\":\"\",\"restriction_3_logical_operator\":\"\",\"restriction_3_column\":\"\",\"restriction_3_comparison_operator\":\"=\",\"restriction_3_value\":\"\",\"column_segment_part_1\":\"name\",\"column_segment_part_2_separator\":\"\\/\",\"column_segment_part_2\":\"\",\"column_segment_part_3_separator\":\"\\/\",\"column_segment_part_3\":\"\",\"relation_1_column\":\"\",\"relation_1_position\":\"BEFORE\",\"relation_2_column\":\"\",\"relation_2_position\":\"BEFORE\",\"relation_3_column\":\"\",\"relation_3_position\":\"BEFORE\",\"append_user_paths\":\"\",\"append_structure_categories\":\"0\",\"column_seo_title\":\"seo_title\",\"column_seo_description\":\"seo_description\",\"column_seo_image\":\"picture\",\"sitemap_add\":\"1\",\"sitemap_frequency\":\"monthly\",\"sitemap_priority\":\"1.0\",\"column_sitemap_lastmod\":\"updatedate\"}', "
+        . "'', '[]', '', '[]', '', '[]', CURRENT_TIMESTAMP, '". rex::getUser()->getValue('login') ."', CURRENT_TIMESTAMP, '". rex::getUser()->getValue('login') ."');");
+    $sql->setQuery('DELETE FROM '. \rex::getTablePrefix() ."url_generator_profile WHERE `namespace` = 'tag_id';");
+    $sql->setQuery('INSERT INTO '. \rex::getTablePrefix() ."url_generator_profile (`namespace`, `article_id`, `clang_id`, `table_name`, `table_parameters`, `relation_1_table_name`, `relation_1_table_parameters`, `relation_2_table_name`, `relation_2_table_parameters`, `relation_3_table_name`, `relation_3_table_parameters`, `createdate`, `createuser`, `updatedate`, `updateuser`) VALUES
 		('tag_id', "
-		. $article_id .", "
-		. $clang_id .", "
-		. "'1_xxx_". rex::getTablePrefix() ."d2u_references_url_tags', "
-		. "'{\"column_id\":\"tag_id\",\"column_clang_id\":\"clang_id\",\"restriction_1_column\":\"\",\"restriction_1_comparison_operator\":\"=\",\"restriction_1_value\":\"\",\"restriction_2_logical_operator\":\"\",\"restriction_2_column\":\"\",\"restriction_2_comparison_operator\":\"=\",\"restriction_2_value\":\"\",\"restriction_3_logical_operator\":\"\",\"restriction_3_column\":\"\",\"restriction_3_comparison_operator\":\"=\",\"restriction_3_value\":\"\",\"column_segment_part_1\":\"name\",\"column_segment_part_2_separator\":\"\\/\",\"column_segment_part_2\":\"\",\"column_segment_part_3_separator\":\"\\/\",\"column_segment_part_3\":\"\",\"relation_1_column\":\"\",\"relation_1_position\":\"BEFORE\",\"relation_2_column\":\"\",\"relation_2_position\":\"BEFORE\",\"relation_3_column\":\"\",\"relation_3_position\":\"BEFORE\",\"append_user_paths\":\"\",\"append_structure_categories\":\"0\",\"column_seo_title\":\"seo_title\",\"column_seo_description\":\"seo_description\",\"column_seo_image\":\"picture\",\"sitemap_add\":\"1\",\"sitemap_frequency\":\"monthly\",\"sitemap_priority\":\"0.5\",\"column_sitemap_lastmod\":\"updatedate\"}', "
-		. "'', '[]', '', '[]', '', '[]', CURRENT_TIMESTAMP, '". rex::getUser()->getValue('login') ."', CURRENT_TIMESTAMP, '". rex::getUser()->getValue('login') ."');");
-	\d2u_addon_backend_helper::generateUrlCache('reference_id');
-	\d2u_addon_backend_helper::generateUrlCache('tag_id');
+        . $article_id .', '
+        . $clang_id .', '
+        . "'1_xxx_". rex::getTablePrefix() ."d2u_references_url_tags', "
+        . "'{\"column_id\":\"tag_id\",\"column_clang_id\":\"clang_id\",\"restriction_1_column\":\"\",\"restriction_1_comparison_operator\":\"=\",\"restriction_1_value\":\"\",\"restriction_2_logical_operator\":\"\",\"restriction_2_column\":\"\",\"restriction_2_comparison_operator\":\"=\",\"restriction_2_value\":\"\",\"restriction_3_logical_operator\":\"\",\"restriction_3_column\":\"\",\"restriction_3_comparison_operator\":\"=\",\"restriction_3_value\":\"\",\"column_segment_part_1\":\"name\",\"column_segment_part_2_separator\":\"\\/\",\"column_segment_part_2\":\"\",\"column_segment_part_3_separator\":\"\\/\",\"column_segment_part_3\":\"\",\"relation_1_column\":\"\",\"relation_1_position\":\"BEFORE\",\"relation_2_column\":\"\",\"relation_2_position\":\"BEFORE\",\"relation_3_column\":\"\",\"relation_3_position\":\"BEFORE\",\"append_user_paths\":\"\",\"append_structure_categories\":\"0\",\"column_seo_title\":\"seo_title\",\"column_seo_description\":\"seo_description\",\"column_seo_image\":\"picture\",\"sitemap_add\":\"1\",\"sitemap_frequency\":\"monthly\",\"sitemap_priority\":\"0.5\",\"column_sitemap_lastmod\":\"updatedate\"}', "
+        . "'', '[]', '', '[]', '', '[]', CURRENT_TIMESTAMP, '". rex::getUser()->getValue('login') ."', CURRENT_TIMESTAMP, '". rex::getUser()->getValue('login') ."');");
+    \d2u_addon_backend_helper::generateUrlCache('reference_id');
+    \d2u_addon_backend_helper::generateUrlCache('tag_id');
 }
 
 // Update database to 1.0.5
-$sql->setQuery("ALTER TABLE `". rex::getTablePrefix() ."d2u_references_references` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-$sql->setQuery("ALTER TABLE `". rex::getTablePrefix() ."d2u_references_references_lang` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-$sql->setQuery("ALTER TABLE `". rex::getTablePrefix() ."d2u_references_tags` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-$sql->setQuery("ALTER TABLE `". rex::getTablePrefix() ."d2u_references_tags_lang` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-$sql->setQuery("ALTER TABLE `". rex::getTablePrefix() ."d2u_references_tag2refs` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
+$sql->setQuery('ALTER TABLE `'. rex::getTablePrefix() .'d2u_references_references` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;');
+$sql->setQuery('ALTER TABLE `'. rex::getTablePrefix() .'d2u_references_references_lang` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;');
+$sql->setQuery('ALTER TABLE `'. rex::getTablePrefix() .'d2u_references_tags` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;');
+$sql->setQuery('ALTER TABLE `'. rex::getTablePrefix() .'d2u_references_tags_lang` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;');
+$sql->setQuery('ALTER TABLE `'. rex::getTablePrefix() .'d2u_references_tag2refs` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;');
 $sql->setQuery('DROP VIEW IF EXISTS ' . rex::getTablePrefix() . 'd2u_references_url_tags2ref');
 
 if (rex_version::compare($this->getVersion(), '1.0.5', '<')) {
-	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_references_references_lang DROP updateuser;");
-	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_references_tags_lang DROP updateuser;");
-	
-	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_references_references_lang ADD COLUMN `updatedate_new` DATETIME NOT NULL AFTER `updatedate`;");
-	$sql->setQuery("UPDATE ". \rex::getTablePrefix() ."d2u_references_references_lang SET `updatedate_new` = FROM_UNIXTIME(`updatedate`);");
-	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_references_references_lang DROP updatedate;");
-	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_references_references_lang CHANGE `updatedate_new` `updatedate` DATETIME NOT NULL;");
+    $sql->setQuery('ALTER TABLE '. \rex::getTablePrefix() .'d2u_references_references_lang DROP updateuser;');
+    $sql->setQuery('ALTER TABLE '. \rex::getTablePrefix() .'d2u_references_tags_lang DROP updateuser;');
 
-	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_references_tags_lang ADD COLUMN `updatedate_new` DATETIME NOT NULL AFTER `updatedate`;");
-	$sql->setQuery("UPDATE ". \rex::getTablePrefix() ."d2u_references_tags_lang SET `updatedate_new` = FROM_UNIXTIME(`updatedate`);");
-	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_references_tags_lang DROP updatedate;");
-	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_references_tags_lang CHANGE `updatedate_new` `updatedate` DATETIME NOT NULL;");
+    $sql->setQuery('ALTER TABLE '. \rex::getTablePrefix() .'d2u_references_references_lang ADD COLUMN `updatedate_new` DATETIME NOT NULL AFTER `updatedate`;');
+    $sql->setQuery('UPDATE '. \rex::getTablePrefix() .'d2u_references_references_lang SET `updatedate_new` = FROM_UNIXTIME(`updatedate`);');
+    $sql->setQuery('ALTER TABLE '. \rex::getTablePrefix() .'d2u_references_references_lang DROP updatedate;');
+    $sql->setQuery('ALTER TABLE '. \rex::getTablePrefix() .'d2u_references_references_lang CHANGE `updatedate_new` `updatedate` DATETIME NOT NULL;');
+
+    $sql->setQuery('ALTER TABLE '. \rex::getTablePrefix() .'d2u_references_tags_lang ADD COLUMN `updatedate_new` DATETIME NOT NULL AFTER `updatedate`;');
+    $sql->setQuery('UPDATE '. \rex::getTablePrefix() .'d2u_references_tags_lang SET `updatedate_new` = FROM_UNIXTIME(`updatedate`);');
+    $sql->setQuery('ALTER TABLE '. \rex::getTablePrefix() .'d2u_references_tags_lang DROP updatedate;');
+    $sql->setQuery('ALTER TABLE '. \rex::getTablePrefix() .'d2u_references_tags_lang CHANGE `updatedate_new` `updatedate` DATETIME NOT NULL;');
 }
 
 // remove default lang setting
 if (!$this->hasConfig()) {
-	$this->removeConfig('default_lang');
+    $this->removeConfig('default_lang');
 }

@@ -1,6 +1,7 @@
 <?php
-if(rex_be_controller::getCurrentPage() != "install/packages/update") {
-	if(D2UModule::isModuleIDInstalled("03-2") === false) {
-		print rex_view::warning(rex_i18n::msg('d2u_helper_modules_install_module_03_2'));
-	}
+
+if ('install/packages/update' != rex_be_controller::getCurrentPage()) {
+    if (false === D2UModule::isModuleIDInstalled('03-2')) {
+        echo rex_view::warning(rex_i18n::msg('d2u_helper_modules_install_module_03_2'));
+    }
 }
