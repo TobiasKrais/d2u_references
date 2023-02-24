@@ -24,7 +24,7 @@ class d2u_references_frontend_helper
             foreach (rex_clang::getAllIds(true) as $this_lang_key) {
                 $lang_references = new Reference($reference_id, $this_lang_key);
                 if ('delete' != $lang_references->translation_needs_update) {
-                    $alternate_URLs[$this_lang_key] = $lang_references->getURL();
+                    $alternate_URLs[$this_lang_key] = $lang_references->getUrl();
                 }
             }
         } elseif (filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT, ['options' => ['default' => 0]]) > 0 || 'tag_id' === $url_namespace) {
@@ -35,7 +35,7 @@ class d2u_references_frontend_helper
             foreach (rex_clang::getAllIds(true) as $this_lang_key) {
                 $lang_tag = new Tag($tag_id, $this_lang_key);
                 if ('delete' != $lang_tag->translation_needs_update) {
-                    $alternate_URLs[$this_lang_key] = $lang_tag->getURL();
+                    $alternate_URLs[$this_lang_key] = $lang_tag->getUrl();
                 }
             }
         }

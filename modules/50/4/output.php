@@ -68,7 +68,7 @@ if (!function_exists('printReferenceList')) {
         $pic_orientation = 'left';
         foreach ($references as $reference) {
             echo '<div class="col-12">';
-            echo '<a href="'. $reference->getURL() .'">';
+            echo '<a href="'. $reference->getUrl() .'">';
 
             echo '<div class="references-mod-4"'. ('' != $reference->background_color ? ' style="background-color:'. $reference->background_color .'"' : '') .'>';
             echo '<div class="row">';

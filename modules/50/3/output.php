@@ -67,7 +67,7 @@ if (!function_exists('printReferenceList')) {
             echo '<div class="reference-box">'; // START reference-box
 
             if (strlen($reference->name) > 10) {
-                echo '<a href="'. $reference->getURL() .'">';
+                echo '<a href="'. $reference->getUrl() .'">';
             }
             echo '<div class="reference-box-image">';
             if (count($reference->pictures) > 0) {

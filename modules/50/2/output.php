@@ -64,7 +64,7 @@ if (!function_exists('printReferenceList')) {
             echo '<li'. ((false === $tag_selected) ? ' class="active"' : '') .'><span class="icon tags"></span><a href="'. rex_getUrl() .'">'. $tag_open .'d2u_references_all_tags'. $tag_close .'</a></li>';
             foreach ($tags as $tag) {
                 $class = (false !== $tag_selected && $tag->tag_id == $tag_selected->tag_id) ? ' class="active"' : '';
-                echo '<li'. $class .'><span class="icon tag"></span><a href="'. $tag->getURL() .'">'. $tag->name .'</a></li>';
+                echo '<li'. $class .'><span class="icon tag"></span><a href="'. $tag->getUrl() .'">'. $tag->name .'</a></li>';
             }
             echo '</ul>';
             echo '</div>';
@@ -84,7 +84,7 @@ if (!function_exists('printReferenceList')) {
             echo '<div class="reference-box-heading"><h3>'. $reference->name .'</h3></div>';
 
             if (strlen($reference->name) > 10) {
-                echo '<a href="'. $reference->getURL() .'">';
+                echo '<a href="'. $reference->getUrl() .'">';
             }
             echo '<div class="reference-box-image">';
             if (count($reference->pictures) > 0) {
