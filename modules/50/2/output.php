@@ -148,7 +148,7 @@ if (filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT, ['options' => ['defau
     echo '</div>';
 } else {
     // Reference list
-    if (0 == count($references)) {
+    if (0 === count($references)) {
         $references = Reference::getAll(rex_clang::getCurrentId(), true);
     }
 
