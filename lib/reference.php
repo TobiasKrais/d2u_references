@@ -89,7 +89,7 @@ class Reference implements \D2U_Helper\ITranslationHelper
             if (\rex_addon::get('d2u_videos') instanceof rex_addon && \rex_addon::get('d2u_videos')->isAvailable() && $result->getValue('video_id') > 0) {
                 $this->video = new Video($result->getValue('video_id'), $clang_id, true);
             }
-            if ('' != $result->getValue('translation_needs_update')) {
+            if ('' !== $result->getValue('translation_needs_update')) {
                 $this->translation_needs_update = $result->getValue('translation_needs_update');
             }
             $this->date = $result->getValue('date');
@@ -272,7 +272,7 @@ class Reference implements \D2U_Helper\ITranslationHelper
         // Save the not language specific part
         $pre_save_object = new self($this->reference_id, $this->clang_id);
 
-        if (0 === $this->reference_id || $pre_save_object != $this) {
+        if (0 === $this->reference_id || $pre_save_object !== $this) {
             $query = rex::getTablePrefix() .'d2u_references_references SET '
                     ."online_status = '". $this->online_status ."', "
                     ."pictures = '". implode(',', $this->pictures) ."', "
@@ -310,7 +310,7 @@ class Reference implements \D2U_Helper\ITranslationHelper
         if (0 == $error) {
             // Save the language specific part
             $pre_save_object = new self($this->reference_id, $this->clang_id);
-            if ($pre_save_object != $this) {
+            if ($pre_save_object !== $this) {
                 $query = 'REPLACE INTO '. rex::getTablePrefix() .'d2u_references_references_lang SET '
                         ."reference_id = '". $this->reference_id ."', "
                         ."clang_id = '". $this->clang_id ."', "
