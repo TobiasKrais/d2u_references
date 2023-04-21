@@ -35,7 +35,7 @@ if ('save' === filter_input(INPUT_POST, 'btn_save')) {
 				<legend><small><i class="rex-icon rex-icon-system"></i></small> <?= rex_i18n::msg('d2u_references_settings') ?></legend>
 				<div class="panel-body-wrapper slide">
 					<?php
-                        d2u_addon_backend_helper::form_linkfield('d2u_references_settings_article', '1', $this->getConfig('article_id'), (int) rex_config::get('d2u_helper', 'default_lang', rex_clang::getStartId()));
+                        d2u_addon_backend_helper::form_linkfield('d2u_references_settings_article', '1', (int) $this->getConfig('article_id'), (int) rex_config::get('d2u_helper', 'default_lang', rex_clang::getStartId()));
                     ?>
 				</div>
 			</fieldset>
@@ -43,7 +43,7 @@ if ('save' === filter_input(INPUT_POST, 'btn_save')) {
 				<legend><small><i class="rex-icon rex-icon-language"></i></small> <?= rex_i18n::msg('d2u_helper_lang_replacements') ?></legend>
 				<div class="panel-body-wrapper slide">
 					<?php
-                        d2u_addon_backend_helper::form_checkbox('d2u_helper_lang_wildcard_overwrite', 'settings[lang_wildcard_overwrite]', 'true', 'true' == $this->getConfig('lang_wildcard_overwrite'));
+                        d2u_addon_backend_helper::form_checkbox('d2u_helper_lang_wildcard_overwrite', 'settings[lang_wildcard_overwrite]', 'true', 'true' === $this->getConfig('lang_wildcard_overwrite'));
                         foreach (rex_clang::getAll() as $rex_clang) {
                             echo '<dl class="rex-form-group form-group">';
                             echo '<dt><label>'. $rex_clang->getName() .'</label></dt>';
