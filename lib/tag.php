@@ -54,7 +54,7 @@ class Tag implements \D2U_Helper\ITranslationHelper
             $this->tag_id = $result->getValue('tag_id');
             $this->name = stripslashes($result->getValue('name'));
             $this->picture = $result->getValue('picture');
-            if ('' !== $result->getValue('translation_needs_update')) {
+            if ('' !== $result->getValue('translation_needs_update') && null !== $result->getValue('translation_needs_update')) {
                 $this->translation_needs_update = $result->getValue('translation_needs_update');
             }
             $this->updatedate = $result->getValue('updatedate');

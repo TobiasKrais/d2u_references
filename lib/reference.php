@@ -89,7 +89,7 @@ class Reference implements \D2U_Helper\ITranslationHelper
             if (\rex_addon::get('d2u_videos') instanceof rex_addon && \rex_addon::get('d2u_videos')->isAvailable() && $result->getValue('video_id') > 0) {
                 $this->video = new Video($result->getValue('video_id'), $clang_id, true);
             }
-            if ('' !== $result->getValue('translation_needs_update')) {
+            if ('' !== $result->getValue('translation_needs_update') && null !== $result->getValue('translation_needs_update')) {
                 $this->translation_needs_update = $result->getValue('translation_needs_update');
             }
             $this->date = $result->getValue('date');
