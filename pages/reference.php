@@ -154,7 +154,7 @@ if ('edit' === $func || 'add' === $func) {
                                 $readonly = false;
                             }
 
-                            d2u_addon_backend_helper::form_medialistfield('d2u_helper_pictures', '1', $reference->pictures, $readonly);
+                            d2u_addon_backend_helper::form_imagelistfield('d2u_helper_pictures', '1', $reference->pictures, $readonly);
                             d2u_addon_backend_helper::form_input('d2u_references_background_color', 'form[background_color]', $reference->background_color, false, false, 'color');
                             d2u_addon_backend_helper::form_input('d2u_references_url', 'form[url]', $reference->external_url, false, $readonly, 'text');
                             d2u_addon_backend_helper::form_checkbox('d2u_helper_online_status', 'form[online_status]', 'online', 'online' === $reference->online_status, $readonly);
