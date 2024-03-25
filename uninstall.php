@@ -25,8 +25,8 @@ $sql->setQuery('DROP TABLE IF EXISTS ' . rex::getTablePrefix() . 'd2u_references
 $sql->setQuery('DROP TABLE IF EXISTS ' . rex::getTablePrefix() . 'd2u_references_references_lang');
 
 // Delete language replacements
-if (!class_exists('d2u_references_lang_helper')) {
+if (!class_exists(\TobiasKrais\D2UReferences\LangHelper::class)) {
     // Load class in case addon is deactivated
-    require_once 'lib/d2u_references_lang_helper.php';
+    require_once 'lib/LangHelper.php';
 }
-d2u_references_lang_helper::factory()->uninstall();
+\TobiasKrais\D2UReferences\LangHelper::factory()->uninstall();

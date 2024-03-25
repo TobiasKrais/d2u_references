@@ -1,8 +1,14 @@
 <?php
+
+namespace TobiasKrais\D2UReferences;
+
+use rex_clang;
+use rex_config;
+
 /**
  * Offers helper functions for language issues.
  */
-class d2u_references_lang_helper extends \D2U_Helper\ALangHelper
+class LangHelper extends \TobiasKrais\D2UHelper\ALangHelper
 {
     /**
      * @var array<string,string> Array with english replacements. Key is the wildcard,
@@ -66,7 +72,7 @@ class d2u_references_lang_helper extends \D2U_Helper\ALangHelper
 
     /**
      * Factory method.
-     * @return d2u_immo_lang_helper Object
+     * @return self Object
      */
     public static function factory()
     {
@@ -87,8 +93,8 @@ class d2u_references_lang_helper extends \D2U_Helper\ALangHelper
                     $value = $this->replacements_german[$key];
                 } elseif ('french' === $lang_replacement && isset($this->replacements_francaise) && isset($this->replacements_francaise[$key])) {
                     $value = $this->replacements_francaise[$key];
-                } elseif ('russian' === $lang_replacement && isset($this->$replacements_russian) && isset($this->$replacements_russian[$key])) {
-                    $value = $this->$replacements_russian[$key];
+                } elseif ('russian' === $lang_replacement && isset($this->replacements_russian) && isset($this->replacements_russian[$key])) {
+                    $value = $this->replacements_russian[$key];
                 } elseif ('slovak' === $lang_replacement && isset($this->replacements_slovak) && isset($this->replacements_slovak[$key])) {
                     $value = $this->replacements_slovak[$key];
                 } else {

@@ -1,6 +1,6 @@
-<b>D2U Referenzen</b>
-
-<br /><br />
-<p>Addon zum Verwalten und einheitlichen darstellen von Referenzen.</p>
-<p>Referenzen können Tags zugewiesen werden.</p>
-<p>Beispielseite: <a href="http://www.design-to-use.de">www.design-to-use.de</a></p>
+<?php
+$readmePath = rex_path::addon('d2u_references', 'README.md');
+$readmeContent = rex_file::get($readmePath);
+if(null !== $readmeContent) {
+    echo rex_markdown::factory()->parse($readmeContent);
+}

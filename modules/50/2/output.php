@@ -5,7 +5,7 @@ if (!function_exists('printImages')) {
      * Prints images in Ekko Lightbox module format.
      * @param string[] $pics Array with images
      */
-    function printImages($pics)
+    function printImages($pics): void
     {
         $type_thumb = 'd2u_helper_gallery_thumb';
         $type_detail = 'd2u_helper_gallery_detail';
@@ -38,21 +38,21 @@ if (!function_exists('printImages')) {
     }
 }
 
-if (!function_exists('printReferenceList')) {
+if (!function_exists('printReferenceList_mod_50_2')) {
     /**
      * Prints reference list.
-     * @param Reference[] $references Array with reference objects
-     * @param Tag[] $tags Array with tag objects
-     * @param Tag $tag_selected Selected Tag object, default is false
+     * @param \TobiasKrais\D2UReferences\Reference[] $references Array with reference objects
+     * @param \TobiasKrais\D2UReferences\Tag[] $tags Array with tag objects
+     * @param \TobiasKrais\D2UReferences\Tag|false $tag_selected Selected Tag object, default is false
      */
-    function printReferenceList($references, $tags, $tag_selected = false)
+    function printReferenceList_mod_50_2($references, $tags, $tag_selected = false): void
     {
         $sprog = rex_addon::get('sprog');
         $tag_open = $sprog->getConfig('wildcard_open_tag');
         $tag_close = $sprog->getConfig('wildcard_close_tag');
         // Text
         echo '<div class="col-12">';
-        if ('REX_VALUE[id=1 isset=1]') {
+        if ('' !== 'REX_VALUE[id=1 isset=1]') {
             echo 'REX_VALUE[id=1 output=html]';
         }
         echo '</div>';
@@ -63,7 +63,7 @@ if (!function_exists('printReferenceList')) {
             echo '<ul class="tag-list">';
             echo '<li'. ((false === $tag_selected) ? ' class="active"' : '') .'><span class="icon tags"></span><a href="'. rex_getUrl() .'">'. $tag_open .'d2u_references_all_tags'. $tag_close .'</a></li>';
             foreach ($tags as $tag) {
-                $class = (false !== $tag_selected && $tag->tag_id == $tag_selected->tag_id) ? ' class="active"' : '';
+                $class = (false !== $tag_selected && $tag->tag_id === $tag_selected->tag_id) ? ' class="active"' : '';
                 echo '<li'. $class .'><span class="icon tag"></span><a href="'. $tag->getUrl() .'">'. $tag->name .'</a></li>';
             }
             echo '</ul>';
@@ -73,15 +73,15 @@ if (!function_exists('printReferenceList')) {
         // Reference List
         $year = 0;
         foreach ($references as $reference) {
-            if ($year != date('Y', strtotime($reference->date))) {
+            if (strtotime($reference->date) > 0 && $year !== date('Y', strtotime($reference->date))) {
                 $year = date('Y', strtotime($reference->date));
                 echo '<div class="col-12 abstand">';
                 echo '<h2 class="section-title">'. $tag_open .'d2u_references_references'. $tag_close .' '. $year .'</h2>';
                 echo '</div>';
             }
-            echo '<div class="col-12 col-md-6 abstand">';
-            echo '<div class="reference-box">'; // START reference-box
-            echo '<div class="reference-box-heading"><h3>'. $reference->name .'</h3></div>';
+            echo '<div class="col-12 col-lg-6 abstand">';
+            echo '<div class="reference-box-mod-50-2">'; // START reference-box
+            echo '<div class="reference-box-heading-mod-50-2"><h3>'. $reference->name .'</h3></div>';
 
             if (strlen($reference->name) > 10) {
                 echo '<a href="'. $reference->getUrl() .'">';
@@ -109,36 +109,36 @@ $sprog = rex_addon::get('sprog');
 $tag_open = $sprog->getConfig('wildcard_open_tag');
 $tag_close = $sprog->getConfig('wildcard_close_tag');
 
-$url_namespace = d2u_addon_frontend_helper::getUrlNamespace();
-$url_id = d2u_addon_frontend_helper::getUrlId();
+$url_namespace = TobiasKrais\D2UHelper\FrontendHelper::getUrlNamespace();
+$url_id = TobiasKrais\D2UHelper\FrontendHelper::getUrlId();
 
-$tags = Tag::getAll(rex_clang::getCurrentId(), true);
+$tags = \TobiasKrais\D2UReferences\Tag::getAll(rex_clang::getCurrentId(), true);
 $tag_selected = false;
 $references = [];
 if (filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT, ['options' => ['default' => 0]]) > 0 || 'tag_id' === $url_namespace) {
-    $tag_id = filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT);
+    $tag_id = (int) filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT);
     if (\rex_addon::get('url')->isAvailable() && $url_id > 0) {
         $tag_id = $url_id;
     }
-    $tag_selected = new Tag($tag_id, rex_clang::getCurrentId());
+    $tag_selected = new \TobiasKrais\D2UReferences\Tag($tag_id, rex_clang::getCurrentId());
     $references = $tag_selected->getReferences();
-    printReferenceList($references, $tags, $tag_selected);
+    printReferenceList_mod_50_2($references, $tags, $tag_selected);
 } elseif (filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' => ['default' => 0]]) > 0 || 'reference_id' === $url_namespace) {
-    $reference_id = filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT);
+    $reference_id = (int) filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT);
     if (\rex_addon::get('url')->isAvailable() && $url_id > 0) {
         $reference_id = $url_id;
     }
-    $reference = new Reference($reference_id, rex_clang::getCurrentId());
+    $reference = new \TobiasKrais\D2UReferences\Reference($reference_id, rex_clang::getCurrentId());
 
     echo '<div class="col-12">';
     echo '<div class="reference-detail">';
     echo '<h1>'. $reference->name .'</h1>';
-    echo d2u_addon_frontend_helper::prepareEditorField($reference->description);
-    if ('' != $reference->external_url_lang || '' != $reference->external_url) {
-        echo '<a href="'. ('' != $reference->external_url_lang ? $reference->external_url_lang : $reference->external_url) .'">»&nbsp;&nbsp;'. $tag_open .'d2u_references_external_url'. $tag_close .'</a>';
+    echo TobiasKrais\D2UHelper\FrontendHelper::prepareEditorField($reference->description);
+    if ('' !== $reference->external_url_lang || '' !== $reference->external_url) {
+        echo '<a href="'. ('' !== $reference->external_url_lang ? $reference->external_url_lang : $reference->external_url) .'">»&nbsp;&nbsp;'. $tag_open .'d2u_references_external_url'. $tag_close .'</a>';
     }
     if (\rex_addon::get('d2u_videos') instanceof rex_addon && \rex_addon::get('d2u_videos')->isAvailable() && false !== $reference->video) {
-        $videomanager = new Videomanager();
+        $videomanager = new \TobiasKrais\D2UVideos\Videomanager();
         $videomanager->printVideo($reference->video);
     }
     if (count($reference->pictures) > 0) {
@@ -148,9 +148,7 @@ if (filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT, ['options' => ['defau
     echo '</div>';
 } else {
     // Reference list
-    if (0 === count($references)) {
-        $references = Reference::getAll(rex_clang::getCurrentId(), true);
-    }
+    $references = \TobiasKrais\D2UReferences\Reference::getAll(rex_clang::getCurrentId(), true);
 
-    printReferenceList($references, $tags);
+    printReferenceList_mod_50_2($references, $tags);
 }

@@ -1,6 +1,6 @@
 <?php
 $func = rex_request('func', 'string');
-$entry_id = (int) rex_request('entry_id', 'int');
+$entry_id = rex_request('entry_id', 'int');
 $message = rex_get('message', 'string');
 
 // Print comments
@@ -20,9 +20,9 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_save') || 1 === (int) filter_input
     $tag_id = $form['tag_id'];
     foreach (rex_clang::getAll() as $rex_clang) {
         if (false === $tag) {
-            $tag = new Tag($tag_id, $rex_clang->getId());
+            $tag = new \TobiasKrais\D2UReferences\Tag($tag_id, $rex_clang->getId());
             $tag->tag_id = $tag_id; // Ensure correct ID in case first language has no object
-//			$tag->picture = $input_media[1];
+			$tag->picture = $input_media[1];
 
             $tag->reference_ids = $form['reference_ids'] ?? [];
         } else {
@@ -62,7 +62,7 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_delete', FILTER_VALIDATE_INT) || '
         $form = rex_post('form', 'array', []);
         $tag_id = $form['tag_id'];
     }
-    $tag = new Tag($tag_id, (int) rex_config::get('d2u_helper', 'default_lang'));
+    $tag = new \TobiasKrais\D2UReferences\Tag($tag_id, (int) rex_config::get('d2u_helper', 'default_lang'));
     $tag->tag_id = $tag_id; // Ensure correct ID in case first language has no object
     $tag->delete();
 
@@ -79,11 +79,11 @@ if ('edit' === $func || 'add' === $func) {
 				<input type="hidden" name="form[tag_id]" value="<?= $entry_id ?>">
 				<?php
                     foreach (rex_clang::getAll() as $rex_clang) {
-                        $tag = new Tag($entry_id, $rex_clang->getId());
+                        $tag = new \TobiasKrais\D2UReferences\Tag($entry_id, $rex_clang->getId());
                         $required = $rex_clang->getId() === (int) (rex_config::get('d2u_helper', 'default_lang')) ? true : false;
 
                         $readonly_lang = true;
-                        if (rex::getUser()->isAdmin() || (rex::getUser()->hasPerm('d2u_references[edit_lang]') && rex::getUser()->getComplexPerm('clang')->hasPerm($rex_clang->getId()))) {
+                        if (\rex::getUser() instanceof rex_user && (\rex::getUser()->isAdmin() || (\rex::getUser()->hasPerm('d2u_references[edit_lang]') && \rex::getUser()->getComplexPerm('clang') instanceof rex_clang_perm && \rex::getUser()->getComplexPerm('clang')->hasPerm($rex_clang->getId())))) {
                             $readonly_lang = false;
                         }
                 ?>
@@ -96,7 +96,7 @@ if ('edit' === $func || 'add' === $func) {
                                     $options_translations['yes'] = rex_i18n::msg('d2u_helper_translation_needs_update');
                                     $options_translations['no'] = rex_i18n::msg('d2u_helper_translation_is_uptodate');
                                     $options_translations['delete'] = rex_i18n::msg('d2u_helper_translation_delete');
-                                    d2u_addon_backend_helper::form_select('d2u_helper_translation', 'form[lang]['. $rex_clang->getId() .'][translation_needs_update]', $options_translations, [$tag->translation_needs_update], 1, false, $readonly_lang);
+                                    \TobiasKrais\D2UHelper\BackendHelper::form_select('d2u_helper_translation', 'form[lang]['. $rex_clang->getId() .'][translation_needs_update]', $options_translations, [$tag->translation_needs_update], 1, false, $readonly_lang);
                                 } else {
                                     echo '<input type="hidden" name="form[lang]['. $rex_clang->getId() .'][translation_needs_update]" value="">';
                                 }
@@ -114,7 +114,7 @@ if ('edit' === $func || 'add' === $func) {
 							</script>
 							<div id="details_clang_<?= $rex_clang->getId() ?>">
 								<?php
-                                    d2u_addon_backend_helper::form_input('d2u_helper_name', 'form[lang]['. $rex_clang->getId() .'][name]', $tag->name, $required, $readonly_lang, 'text');
+                                    \TobiasKrais\D2UHelper\BackendHelper::form_input('d2u_helper_name', 'form[lang]['. $rex_clang->getId() .'][name]', $tag->name, $required, $readonly_lang, 'text');
                                 ?>
 							</div>
 						</div>
@@ -127,18 +127,18 @@ if ('edit' === $func || 'add' === $func) {
 					<div class="panel-body-wrapper slide">
 						<?php
                             // Do not use last object from translations, because you don't know if it exists in DB
-                            $tag = new Tag($entry_id, (int) rex_config::get('d2u_helper', 'default_lang'));
+                            $tag = new \TobiasKrais\D2UReferences\Tag($entry_id, (int) rex_config::get('d2u_helper', 'default_lang'));
                             $readonly = true;
                             if (rex::getUser() instanceof rex_user && (rex::getUser()->isAdmin() || rex::getUser()->hasPerm('d2u_references[edit_data]'))) {
                                 $readonly = false;
                             }
 
-//							d2u_addon_backend_helper::form_mediafield('d2u_helper_picture', '1', $tag->picture, $readonly);
+							\TobiasKrais\D2UHelper\BackendHelper::form_mediafield('d2u_helper_picture', '1', $tag->picture, $readonly);
                             $options_tags = [];
-                            foreach (Reference::getAll((int) rex_config::get('d2u_helper', 'default_lang'), false) as $reference) {
+                            foreach (\TobiasKrais\D2UReferences\Reference::getAll((int) rex_config::get('d2u_helper', 'default_lang'), false) as $reference) {
                                 $options_tags[$reference->reference_id] = $reference->name;
                             }
-                            d2u_addon_backend_helper::form_select('d2u_references_references', 'form[reference_ids][]', $options_tags, $tag->reference_ids, 10, true, $readonly);
+                            \TobiasKrais\D2UHelper\BackendHelper::form_select('d2u_references_references', 'form[reference_ids][]', $options_tags, $tag->reference_ids, 10, true, $readonly);
                         ?>
 					</div>
 				</fieldset>
@@ -161,9 +161,9 @@ if ('edit' === $func || 'add' === $func) {
 	</form>
 	<br>
 	<?php
-        echo d2u_addon_backend_helper::getCSS();
-        echo d2u_addon_backend_helper::getJS();
-        echo d2u_addon_backend_helper::getJSOpenAll();
+        echo \TobiasKrais\D2UHelper\BackendHelper::getCSS();
+        echo \TobiasKrais\D2UHelper\BackendHelper::getJS();
+        echo \TobiasKrais\D2UHelper\BackendHelper::getJSOpenAll();
 }
 
 if ('' === $func) {

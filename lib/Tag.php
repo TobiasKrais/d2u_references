@@ -1,4 +1,11 @@
 <?php
+
+namespace TobiasKrais\D2UReferences;
+
+use rex;
+use rex_addon;
+use rex_sql;
+
 /**
  * Redaxo D2U References Addon.
  * @author Tobias Krais
@@ -8,31 +15,31 @@
 /**
  * Tag.
  */
-class Tag implements \D2U_Helper\ITranslationHelper
+class Tag implements \TobiasKrais\D2UHelper\ITranslationHelper
 {
     /** @var int Database ID */
-    public $tag_id = 0;
+    public int $tag_id = 0;
 
     /** @var int Redaxo clang id */
-    public $clang_id = 0;
+    public int $clang_id = 0;
 
     /** @var string Name */
-    public $name = '';
+    public string $name = '';
 
     /** @var string picture file name */
-    public $picture = '';
+    public string $picture = '';
 
     /** @var int[] Reference IDs */
-    public $reference_ids = [];
+    public array $reference_ids = [];
 
     /** @var string "yes" if translation needs update */
-    public $translation_needs_update = 'delete';
+    public string $translation_needs_update = 'delete';
 
     /** @var string Timestamp containing the last update date */
-    public $updatedate = '';
+    private string $updatedate = '';
 
     /** @var string URL */
-    public $url = '';
+    private string $url = '';
 
     /**
      * Constructor. Reads the object stored in database.
@@ -51,13 +58,13 @@ class Tag implements \D2U_Helper\ITranslationHelper
         $num_rows = $result->getRows();
 
         if ($num_rows > 0) {
-            $this->tag_id = $result->getValue('tag_id');
-            $this->name = stripslashes($result->getValue('name'));
-            $this->picture = $result->getValue('picture');
+            $this->tag_id = (int) $result->getValue('tag_id');
+            $this->name = stripslashes((string) $result->getValue('name'));
+            $this->picture = (string) $result->getValue('picture');
             if ('' !== $result->getValue('translation_needs_update') && null !== $result->getValue('translation_needs_update')) {
-                $this->translation_needs_update = $result->getValue('translation_needs_update');
+                $this->translation_needs_update = (string) $result->getValue('translation_needs_update');
             }
-            $this->updatedate = $result->getValue('updatedate');
+            $this->updatedate = (string) $result->getValue('updatedate');
 
             $query_refs = 'SELECT tag2refs.tag_id, tag2refs.reference_id FROM '. rex::getTablePrefix() .'d2u_references_tag2refs AS tag2refs '
                 .'LEFT JOIN '. rex::getTablePrefix() .'d2u_references_tags_lang AS lang '
@@ -67,7 +74,7 @@ class Tag implements \D2U_Helper\ITranslationHelper
             $result_refs = rex_sql::factory();
             $result_refs->setQuery($query_refs);
             for ($i = 0; $i < $result_refs->getRows(); ++$i) {
-                $this->reference_ids[] = $result_refs->getValue('reference_id');
+                $this->reference_ids[] = (int) $result_refs->getValue('reference_id');
                 $result_refs->next();
             }
         }
@@ -128,7 +135,7 @@ class Tag implements \D2U_Helper\ITranslationHelper
 
         $tags = [];
         for ($i = 0; $i < $result->getRows(); ++$i) {
-            $tags[$result->getValue('tag_id')] = new self($result->getValue('tag_id'), $clang_id);
+            $tags[$result->getValue('tag_id')] = new self((int) $result->getValue('tag_id'), $clang_id);
             $result->next();
         }
         return $tags;
@@ -155,7 +162,7 @@ class Tag implements \D2U_Helper\ITranslationHelper
 
         $references = [];
         for ($i = 0; $i < $result->getRows(); ++$i) {
-            $references[$result->getValue('reference_id')] = new Reference($result->getValue('reference_id'), $this->clang_id);
+            $references[$result->getValue('reference_id')] = new Reference((int) $result->getValue('reference_id'), $this->clang_id);
             $result->next();
         }
         return $references;
@@ -180,14 +187,14 @@ class Tag implements \D2U_Helper\ITranslationHelper
                         .'ON main.tag_id = default_lang.tag_id AND default_lang.clang_id = '. \rex_config::get('d2u_helper', 'default_lang') .' '
                     .'WHERE target_lang.tag_id IS NULL '
                     .'ORDER BY default_lang.name';
-            $clang_id = \rex_config::get('d2u_helper', 'default_lang');
+            $clang_id = (int) \rex_config::get('d2u_helper', 'default_lang');
         }
         $result = \rex_sql::factory();
         $result->setQuery($query);
 
         $objects = [];
         for ($i = 0; $i < $result->getRows(); ++$i) {
-            $objects[] = new self($result->getValue('tag_id'), $clang_id);
+            $objects[] = new self((int) $result->getValue('tag_id'), $clang_id);
             $result->next();
         }
 
@@ -207,11 +214,11 @@ class Tag implements \D2U_Helper\ITranslationHelper
             $parameterArray = [];
             $parameterArray['tag_id'] = $this->tag_id;
 
-            $this->url = rex_getUrl($d2u_references->getConfig('article_id'), $this->clang_id, $parameterArray, '&');
+            $this->url = rex_getUrl((int) $d2u_references->getConfig('article_id'), $this->clang_id, $parameterArray, '&');
         }
 
         if ($including_domain) {
-            if (\rex_addon::get('yrewrite') instanceof \rex_addon_interface && \rex_addon::get('yrewrite')->isAvailable()) {
+            if (rex_addon::get('yrewrite')->isAvailable()) {
                 return str_replace(\rex_yrewrite::getCurrentDomain()->getUrl() .'/', \rex_yrewrite::getCurrentDomain()->getUrl(), \rex_yrewrite::getCurrentDomain()->getUrl() . $this->url);
             }
 
@@ -287,7 +294,7 @@ class Tag implements \D2U_Helper\ITranslationHelper
 
         // Update URLs
         if ($regenerate_urls) {
-            \d2u_addon_backend_helper::generateUrlCache('tag_id');
+            \TobiasKrais\D2UHelper\BackendHelper::generateUrlCache('tag_id');
         }
 
         return $error;

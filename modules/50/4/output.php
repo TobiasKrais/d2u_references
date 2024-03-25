@@ -4,7 +4,7 @@ if (!function_exists('printImages')) {
      * Prints images in Ekko Lightbox module format.
      * @param string[] $pics Array with images
      */
-    function printImages($pics)
+    function printImages($pics): void
     {
         $type_thumb = 'd2u_helper_gallery_thumb';
         $type_detail = 'd2u_helper_gallery_detail';
@@ -37,26 +37,18 @@ if (!function_exists('printImages')) {
     }
 }
 
-if (!function_exists('printReferenceList')) {
+if (!function_exists('printReferenceList_mod_50_4')) {
     /**
      * Prints reference list.
-     * @param Reference[] $references Array with reference objects
-     * @param Tag[] $tags Array with tag objects
-     * @param Tag $tag_selected Selected Tag object, default is false
+     * @param \TobiasKrais\D2UReferences\Reference[] $references Array with reference objects
      */
-    function printReferenceList($references, $tags, $tag_selected = false)
+    function printReferenceList_mod_50_4($references): void
     {
-        $sprog = rex_addon::get('sprog');
-        $tag_open = $sprog->getConfig('wildcard_open_tag');
-        $tag_close = $sprog->getConfig('wildcard_close_tag');
-
-        $number_references = 'REX_VALUE[2]' > 0 ? 'REX_VALUE[2]' : 6;
-
         echo '<div class="col-12 abstand">';
 
         // Text
         $heading = 'REX_VALUE[1]';
-        if ('' != $heading) {
+        if ('' !== $heading) {
             echo '<div class="row">';
             echo '<div class="col-12">';
             echo '<h1 class="heading-rf-mod-4">'. $heading .'</h1>';
@@ -70,7 +62,7 @@ if (!function_exists('printReferenceList')) {
             echo '<div class="col-12">';
             echo '<a href="'. $reference->getUrl() .'">';
 
-            echo '<div class="references-mod-4"'. ('' != $reference->background_color ? ' style="background-color:'. $reference->background_color .'"' : '') .'>';
+            echo '<div class="references-mod-4"'. ('' !== $reference->background_color ? ' style="background-color:'. $reference->background_color .'"' : '') .'>';
             echo '<div class="row">';
 
             // Picture
@@ -78,7 +70,7 @@ if (!function_exists('printReferenceList')) {
             if (count($reference->pictures) > 0) {
                 $picture .= '<div class="picbox-'. $pic_orientation .'-inner">';
                 $picture .= '<div><img src="index.php?rex_media_type=d2u_helper_sm&rex_media_file='. $reference->pictures[0] .'"></div>';
-                $picture .= '<div class="border-rf-mod-4"'. ('' != $reference->background_color ? ' style="border-color:'. $reference->background_color .'"' : '') .'></div>';
+                $picture .= '<div class="border-rf-mod-4"'. ('' !== $reference->background_color ? ' style="border-color:'. $reference->background_color .'"' : '') .'></div>';
                 $picture .= '</div>';
             }
             $picture .= '</div>';
@@ -87,14 +79,14 @@ if (!function_exists('printReferenceList')) {
             $text = '<div class="col-12 col-md-6">';
             $text .= '<div class="references-content-rf-mod-4">';
             $text .= '<div class="references-title-rf-mod-4">'. $reference->name .'</div>';
-            if ('' != $reference->teaser) {
+            if ('' !== $reference->teaser) {
                 $text .= '<div class="references-teaser-rf-mod-4">'. $reference->teaser .'</div>';
             }
 //			$external_url = $reference->external_url_lang == "" ? $reference->external_url : $reference->external_url_lang;
             $text .= '</div>';
             $text .= '</div>';
 
-            if ('left' == $pic_orientation) {
+            if ('left' === $pic_orientation) {
                 echo $picture. $text;
                 $pic_orientation = 'right';
             } else {
@@ -127,36 +119,36 @@ if (rex::isBackend()) {
     $tag_open = $sprog->getConfig('wildcard_open_tag');
     $tag_close = $sprog->getConfig('wildcard_close_tag');
 
-    $url_namespace = d2u_addon_frontend_helper::getUrlNamespace();
-    $url_id = d2u_addon_frontend_helper::getUrlId();
+    $url_namespace = TobiasKrais\D2UHelper\FrontendHelper::getUrlNamespace();
+    $url_id = TobiasKrais\D2UHelper\FrontendHelper::getUrlId();
 
-    $tags = Tag::getAll(rex_clang::getCurrentId(), true);
+    $tags = \TobiasKrais\D2UReferences\Tag::getAll(rex_clang::getCurrentId(), true);
     $tag_selected = false;
     $references = [];
     if (filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT, ['options' => ['default' => 0]]) > 0 || 'tag_id' === $url_namespace) {
-        $tag_id = filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT);
+        $tag_id = (int) filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT);
         if (\rex_addon::get('url')->isAvailable() && $url_id > 0) {
             $tag_id = $url_id;
         }
-        $tag_selected = new Tag($tag_id, rex_clang::getCurrentId());
+        $tag_selected = new \TobiasKrais\D2UReferences\Tag($tag_id, rex_clang::getCurrentId());
         $references = $tag_selected->getReferences();
-        printReferenceList($references, $tags, $tag_selected);
+        printReferenceList_mod_50_4($references);
     } elseif (filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' => ['default' => 0]]) > 0 || 'reference_id' === $url_namespace) {
-        $reference_id = filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT);
+        $reference_id = (int) filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT);
         if (\rex_addon::get('url')->isAvailable() && $url_id > 0) {
             $reference_id = $url_id;
         }
-        $reference = new Reference($reference_id, rex_clang::getCurrentId());
+        $reference = new \TobiasKrais\D2UReferences\Reference($reference_id, rex_clang::getCurrentId());
 
         echo '<div class="col-12">';
         echo '<div class="reference-detail">';
         echo '<h1><a href="'. rex_getUrl() .'"><span class="fa-icon fa-back back-spacer"></span></a>'. $reference->name .'</h1>';
-        echo d2u_addon_frontend_helper::prepareEditorField($reference->description);
-        if ('' != $reference->external_url_lang || '' != $reference->external_url) {
-            echo '<a href="'. ('' != $reference->external_url_lang ? $reference->external_url_lang : $reference->external_url) .'">»&nbsp;&nbsp;'. $tag_open .'d2u_references_external_url'. $tag_close .'</a>';
+        echo TobiasKrais\D2UHelper\FrontendHelper::prepareEditorField($reference->description);
+        if ('' !== $reference->external_url_lang || '' !== $reference->external_url) {
+            echo '<a href="'. ('' !== $reference->external_url_lang ? $reference->external_url_lang : $reference->external_url) .'">»&nbsp;&nbsp;'. $tag_open .'d2u_references_external_url'. $tag_close .'</a>';
         }
         if (\rex_addon::get('d2u_videos') instanceof rex_addon && \rex_addon::get('d2u_videos')->isAvailable() && false !== $reference->video) {
-            $videomanager = new Videomanager();
+            $videomanager = new \TobiasKrais\D2UVideos\Videomanager();
             $videomanager->printVideo($reference->video);
         }
         if (count($reference->pictures) > 1) {
@@ -166,11 +158,9 @@ if (rex::isBackend()) {
         echo '</div>';
     } else {
         // Reference list
-        if (0 === count($references)) {
-            $references = Reference::getAll(rex_clang::getCurrentId(), true);
-        }
+        $references = \TobiasKrais\D2UReferences\Reference::getAll(rex_clang::getCurrentId(), true);
 
-        printReferenceList($references, $tags);
+        printReferenceList_mod_50_4($references);
     }
 }
 ?>

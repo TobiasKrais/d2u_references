@@ -19,13 +19,15 @@
     transition: all 0.2s ease-out;
 	width: 100%;
 }
-.reference-box-heading {
+.reference-box-heading-mod-50-1 {
 	font-size: 1.25em;
-	padding: 0.5em 1em;
 }
-.reference-box-text {
-	padding: 0.5em 1em;
+.reference-box-text-mod-50-1 {
 	font-size: 0.9em;
+}
+.reference-box-heading-mod-50-1 b, .reference-box-text-mod-50-1 p {
+	color: white;
+	padding: 8px 15px;
 }
 
 .tag-list {

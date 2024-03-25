@@ -1,49 +1,48 @@
 <?php
 
+\rex_sql_table::get(\rex::getTable('d2u_references_references'))
+    ->ensureColumn(new rex_sql_column('reference_id', 'INT(11) unsigned', false, null, 'auto_increment'))
+    ->setPrimaryKey('reference_id')
+    ->ensureColumn(new \rex_sql_column('pictures', 'TEXT', true))
+    ->ensureColumn(new \rex_sql_column('background_color', 'VARCHAR(7)', true))
+    ->ensureColumn(new \rex_sql_column('video_id', 'INT(10)', true))
+    ->ensureColumn(new \rex_sql_column('url', 'VARCHAR(255)', true))
+    ->ensureColumn(new \rex_sql_column('online_status', 'VARCHAR(10)', false, 'online'))
+    ->ensureColumn(new \rex_sql_column('date', 'VARCHAR(10)', true))
+    ->ensure();
+\rex_sql_table::get(\rex::getTable('d2u_references_references_lang'))
+    ->ensureColumn(new rex_sql_column('reference_id', 'INT(11)', false, null))
+    ->ensureColumn(new \rex_sql_column('clang_id', 'INT(11)', false, (string) rex_clang::getStartId()))
+    ->setPrimaryKey(['reference_id', 'clang_id'])
+    ->ensureColumn(new \rex_sql_column('name', 'VARCHAR(255)'))
+    ->ensureColumn(new \rex_sql_column('teaser', 'TEXT', true))
+    ->ensureColumn(new \rex_sql_column('description', 'TEXT', true))
+    ->ensureColumn(new \rex_sql_column('url_lang', 'VARCHAR(255)', true))
+    ->ensureColumn(new \rex_sql_column('translation_needs_update', 'VARCHAR(7)'))
+    ->ensureColumn(new \rex_sql_column('updatedate', 'DATETIME', true))
+    ->ensure();
+
+\rex_sql_table::get(\rex::getTable('d2u_references_tags'))
+    ->ensureColumn(new rex_sql_column('tag_id', 'INT(11) unsigned', false, null, 'auto_increment'))
+    ->setPrimaryKey('tag_id')
+    ->ensureColumn(new \rex_sql_column('picture', 'VARCHAR(255)', true))
+    ->ensure();
+\rex_sql_table::get(\rex::getTable('d2u_references_tags_lang'))
+    ->ensureColumn(new rex_sql_column('tag_id', 'INT(11)', false, null))
+    ->ensureColumn(new \rex_sql_column('clang_id', 'INT(11)', false, (string) rex_clang::getStartId()))
+    ->setPrimaryKey(['tag_id', 'clang_id'])
+    ->ensureColumn(new \rex_sql_column('name', 'VARCHAR(255)'))
+    ->ensureColumn(new \rex_sql_column('translation_needs_update', 'VARCHAR(7)'))
+    ->ensureColumn(new \rex_sql_column('updatedate', 'DATETIME', true))
+    ->ensure();
+
+\rex_sql_table::get(\rex::getTable('d2u_references_tag2refs'))
+    ->ensureColumn(new rex_sql_column('tag_id', 'INT(11)', false))
+    ->ensureColumn(new \rex_sql_column('reference_id', 'INT(11)', false))
+    ->setPrimaryKey(['tag_id', 'reference_id'])
+    ->ensure();
+
 $sql = rex_sql::factory();
-// Install database
-$sql->setQuery('CREATE TABLE IF NOT EXISTS '. rex::getTablePrefix() ."d2u_references_references (
-	reference_id int(10) unsigned NOT NULL auto_increment,
-	pictures text collate utf8mb4_unicode_ci default NULL,
-	background_color varchar(7) collate utf8mb4_unicode_ci default NULL,
-	video_id int(10) NULL default NULL,
-	url varchar(255) collate utf8mb4_unicode_ci default NULL,
-	online_status varchar(10) collate utf8mb4_unicode_ci default 'online',
-	`date` varchar(10) collate utf8mb4_unicode_ci default NULL,
-	PRIMARY KEY (reference_id)
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;");
-$sql->setQuery('CREATE TABLE IF NOT EXISTS '. rex::getTablePrefix() .'d2u_references_references_lang (
-	reference_id int(10) NOT NULL,
-	clang_id int(10) NOT NULL,
-	name varchar(255) collate utf8mb4_unicode_ci default NULL,
-	teaser text collate utf8mb4_unicode_ci default NULL,
-	description text collate utf8mb4_unicode_ci default NULL,
-	url_lang varchar(255) collate utf8mb4_unicode_ci default NULL,
-	translation_needs_update varchar(7) collate utf8mb4_unicode_ci default NULL,
-	updatedate DATETIME default NULL,
-	PRIMARY KEY (reference_id, clang_id)
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;');
-
-$sql->setQuery('CREATE TABLE IF NOT EXISTS '. rex::getTablePrefix() .'d2u_references_tags (
-	tag_id int(10) unsigned NOT NULL auto_increment,
-	picture varchar(255) collate utf8mb4_unicode_ci default NULL,
-	PRIMARY KEY (tag_id)
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;');
-$sql->setQuery('CREATE TABLE IF NOT EXISTS '. rex::getTablePrefix() .'d2u_references_tags_lang (
-	tag_id int(10) NOT NULL,
-	clang_id int(10) NOT NULL,
-	name varchar(255) collate utf8mb4_unicode_ci default NULL,
-	translation_needs_update varchar(7) collate utf8mb4_unicode_ci default NULL,
-	updatedate DATETIME default NULL,
-	PRIMARY KEY (tag_id, clang_id)
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;');
-
-$sql->setQuery('CREATE TABLE IF NOT EXISTS '. rex::getTablePrefix() .'d2u_references_tag2refs (
-	tag_id int(10) unsigned NOT NULL,
-	reference_id int(10) unsigned NOT NULL,
-	PRIMARY KEY (tag_id, reference_id)
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;');
-
 // Create views for url addon
 $sql->setQuery('CREATE OR REPLACE VIEW '. rex::getTablePrefix() .'d2u_references_url_references AS
 	SELECT lang.reference_id, lang.clang_id, lang.name, lang.name AS seo_title, lang.teaser AS seo_description, SUBSTRING_INDEX(refs.pictures, ",", 1) as picture, lang.updatedate
@@ -81,7 +80,8 @@ if (\rex_addon::get('url')->isAvailable()) {
         . "'{\"column_id\":\"tag_id\",\"column_clang_id\":\"clang_id\",\"restriction_1_column\":\"\",\"restriction_1_comparison_operator\":\"=\",\"restriction_1_value\":\"\",\"restriction_2_logical_operator\":\"\",\"restriction_2_column\":\"\",\"restriction_2_comparison_operator\":\"=\",\"restriction_2_value\":\"\",\"restriction_3_logical_operator\":\"\",\"restriction_3_column\":\"\",\"restriction_3_comparison_operator\":\"=\",\"restriction_3_value\":\"\",\"column_segment_part_1\":\"name\",\"column_segment_part_2_separator\":\"\\/\",\"column_segment_part_2\":\"\",\"column_segment_part_3_separator\":\"\\/\",\"column_segment_part_3\":\"\",\"relation_1_column\":\"\",\"relation_1_position\":\"BEFORE\",\"relation_2_column\":\"\",\"relation_2_position\":\"BEFORE\",\"relation_3_column\":\"\",\"relation_3_position\":\"BEFORE\",\"append_user_paths\":\"\",\"append_structure_categories\":\"0\",\"column_seo_title\":\"seo_title\",\"column_seo_description\":\"seo_description\",\"column_seo_image\":\"picture\",\"sitemap_add\":\"1\",\"sitemap_frequency\":\"monthly\",\"sitemap_priority\":\"0.5\",\"column_sitemap_lastmod\":\"updatedate\"}', "
         . "'', '[]', '', '[]', '', '[]', CURRENT_TIMESTAMP, '". (rex::getUser() instanceof rex_user ? rex::getUser()->getValue('login') : '') ."', CURRENT_TIMESTAMP, '". (rex::getUser() instanceof rex_user ? rex::getUser()->getValue('login') : '') ."');");
 
-    \d2u_addon_backend_helper::generateUrlCache();
+	\TobiasKrais\D2UHelper\BackendHelper::generateUrlCache('reference_id');
+	\TobiasKrais\D2UHelper\BackendHelper::generateUrlCache('tag_id');
 }
 
 // Media Manager media types
@@ -95,11 +95,18 @@ if (0 === (int) $sql->getRows()) {
 }
 
 // Insert frontend translations
-if (class_exists('d2u_references_lang_helper')) {
-    d2u_references_lang_helper::factory()->install();
+if (!class_exists(TobiasKrais\D2UReferences\LangHelper::class)) {
+    // Load class in case addon is deactivated
+    require_once 'lib/LangHelper.php';
 }
+\TobiasKrais\D2UReferences\LangHelper::factory()->install();
+
+// Update modules
+include __DIR__ . DIRECTORY_SEPARATOR .'lib'. DIRECTORY_SEPARATOR .'Module.php';
+$d2u_module_manager = new \TobiasKrais\D2UHelper\ModuleManager(\TobiasKrais\D2UReferences\Module::getModules(), '', 'd2u_references');
+$d2u_module_manager->autoupdate();
 
 // Init Config
-if (!$this->hasConfig()) {
-    $this->setConfig('article_id', rex_article::getSiteStartArticleId());
+if (!rex_config::has('d2u_references', 'article_id')) {
+    rex_config::set('d2u_references', 'article_id', rex_article::getSiteStartArticleId());
 }

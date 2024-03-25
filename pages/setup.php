@@ -2,17 +2,17 @@
 /*
  * Modules
  */
-$d2u_module_manager = new D2UModuleManager(D2UReferencesModules::getModules(), 'modules/', 'd2u_references');
+$d2u_module_manager = new \TobiasKrais\D2UHelper\ModuleManager(\TobiasKrais\D2UReferences\Module::getModules(), 'modules/', 'd2u_references');
 
-// D2UModuleManager actions
+// \TobiasKrais\D2UHelper\ModuleManager actions
 $d2u_module_id = rex_request('d2u_module_id', 'string');
-$paired_module = (int) rex_request('pair_'. $d2u_module_id, 'int');
+$paired_module = rex_request('pair_'. $d2u_module_id, 'int');
 $function = rex_request('function', 'string');
 if ('' !== $d2u_module_id) {
     $d2u_module_manager->doActions($d2u_module_id, $function, $paired_module);
 }
 
-// D2UModuleManager show list
+// \TobiasKrais\D2UHelper\ModuleManager show list
 $d2u_module_manager->showManagerList();
 
 /*
@@ -27,9 +27,25 @@ $d2u_module_manager->showManagerList();
 <h2>Support</h2>
 <p>Fehlermeldungen bitte im <a href="https://github.com/TobiasKrais/d2u_references" target="_blank">GitHub Repository</a> melden.</p>
 <h2>Changelog</h2>
-<p>1.0.12-DEV:</p>
+<p>1.1.0-DEV:</p>
 <ul>
-	<li>...</li>
+	<li>Vorbereitung auf R6: Folgende Klassen wurden umbenannt. Die alten Klassennamen funktionieren weiterhin, sind aber als veraltet markiert.
+		<ul>
+			<li><code>d2u_references_frontend_helper</code> wird zu <code>TobiasKrais\D2UReferences\FrontendHelper</code>.</li>
+			<li><code>Reference</code> wird zu <code>TobiasKrais\D2UReferences\Reference</code>.</li>
+			<li><code>Tag</code> wird zu <code>TobiasKrais\D2UReferences\Tag</code>.</li>
+		</ul>
+		Folgende interne Klasse wurden wurden ebenfalls umbenannt. Es gibt keinen Übergang, da diese Klasse nur intern verwendet wird:
+		<ul>
+			<li><code>d2u_references_lang_helper</code> wird zu <code>TobiasKrais\D2UReferences\LangHelper</code>.</li>
+			<li><code>D2UReferencesModules</code> wird zu <code>TobiasKrais\D2UReferences\Module</code>.</li>
+		</ul>
+	</li>
+	<li>rexstand Level 9 Abgleich.</li>
+	<li>update.php und install.php vereinheitlicht.</li>
+	<li>Modul "50-2 D2U Referenzen - Horizontale Referenzboxen mit Detailansicht": An D2U Videomanager Addon >= 1.2 angepasst.</li>
+	<li>Modul "50-3 D2U Referenzen - Horizontale Mini Referenzboxen mit Detailansicht": An D2U Videomanager Addon >= 1.2 angepasst.</li>
+	<li>Modul "50-4 D2U Referenzen - Farbboxen mit seitlichem Bild": An D2U Videomanager Addon >= 1.2 angepasst.</li>
 </ul>
 <p>1.0.11:</p>
 <ul>

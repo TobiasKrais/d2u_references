@@ -1,4 +1,11 @@
 <?php
+
+namespace TobiasKrais\D2UReferences;
+
+use rex;
+use rex_addon;
+use rex_sql;
+
 /**
  * Redaxo D2U References Addon.
  * @author Tobias Krais
@@ -8,55 +15,55 @@
 /**
  * Reference.
  */
-class Reference implements \D2U_Helper\ITranslationHelper
+class Reference implements \TobiasKrais\D2UHelper\ITranslationHelper
 {
     /** @var int Database ID */
-    public $reference_id = 0;
+    public int $reference_id = 0;
 
     /** @var int Redaxo clang id */
-    public $clang_id = 0;
+    public int $clang_id = 0;
 
     /** @var string Name */
-    public $name = '';
+    public string $name = '';
 
     /** @var string Short description */
-    public $teaser = '';
+    public string $teaser = '';
 
     /** @var string Description */
-    public $description = '';
+    public string $description = '';
 
     /** @var string Online status. Either "online", "offline" or "archived". */
-    public $online_status = '';
+    public string $online_status = '';
 
     /** @var array<string> Array with picture file names */
-    public $pictures = [];
+    public array $pictures = [];
 
     /** @var string Background color (hex) */
-    public $background_color = '';
+    public string $background_color = '';
 
-    /** @var Video Videomanager Video */
-    public $video = false;
+    /** @var \TobiasKrais\D2UVideos\Video|false Videomanager Video */
+    public \TobiasKrais\D2UVideos\Video|false $video = false;
 
     /** @var string External URL */
-    public $external_url = '';
+    public string $external_url = '';
 
     /** @var string Language specific external URL */
-    public $external_url_lang = '';
+    public string $external_url_lang = '';
 
     /** @var int[] Array with tags */
-    public $tag_ids = [];
+    public array $tag_ids = [];
 
     /** @var string "yes" if translation needs update */
-    public $translation_needs_update = 'delete';
+    public string $translation_needs_update = 'delete';
 
     /** @var string date in format YYYY-MM-DD */
-    public $date = '';
+    public string $date = '';
 
     /** @var string Timestamp containing the last update date */
-    public $updatedate = '';
+    private string $updatedate = '';
 
     /** @var string URL */
-    public $url = '';
+    private string $url = '';
 
     /**
      * Constructor. Reads the object stored in database.
@@ -76,24 +83,24 @@ class Reference implements \D2U_Helper\ITranslationHelper
         $num_rows = $result->getRows();
 
         if ($num_rows > 0) {
-            $this->reference_id = $result->getValue('reference_id');
-            $this->name = stripslashes($result->getValue('name'));
-            $this->teaser = stripslashes(htmlspecialchars_decode($result->getValue('teaser')));
-            $this->description = stripslashes(htmlspecialchars_decode($result->getValue('description')));
-            $this->external_url = $result->getValue('url');
-            $this->external_url_lang = $result->getValue('url_lang');
-            $this->online_status = $result->getValue('online_status');
-            $pictures = preg_grep('/^\s*$/s', explode(',', $result->getValue('pictures')), PREG_GREP_INVERT);
+            $this->reference_id = (int) $result->getValue('reference_id');
+            $this->name = stripslashes((string) $result->getValue('name'));
+            $this->teaser = stripslashes(htmlspecialchars_decode((string) $result->getValue('teaser')));
+            $this->description = stripslashes(htmlspecialchars_decode((string) $result->getValue('description')));
+            $this->external_url = (string) $result->getValue('url');
+            $this->external_url_lang = (string) $result->getValue('url_lang');
+            $this->online_status = (string) $result->getValue('online_status');
+            $pictures = preg_grep('/^\s*$/s', explode(',', (string) $result->getValue('pictures')), PREG_GREP_INVERT);
             $this->pictures = is_array($pictures) ? $pictures : [];
-            $this->background_color = $result->getValue('background_color');
+            $this->background_color = (string) $result->getValue('background_color');
             if (\rex_addon::get('d2u_videos') instanceof rex_addon && \rex_addon::get('d2u_videos')->isAvailable() && $result->getValue('video_id') > 0) {
-                $this->video = new Video($result->getValue('video_id'), $clang_id, true);
+                $this->video = new \TobiasKrais\D2UVideos\Video((int) $result->getValue('video_id'), $clang_id, true);
             }
             if ('' !== $result->getValue('translation_needs_update') && null !== $result->getValue('translation_needs_update')) {
-                $this->translation_needs_update = $result->getValue('translation_needs_update');
+                $this->translation_needs_update = (string) $result->getValue('translation_needs_update');
             }
-            $this->date = $result->getValue('date');
-            $this->updatedate = $result->getValue('updatedate');
+            $this->date = (string) $result->getValue('date');
+            $this->updatedate = (string) $result->getValue('updatedate');
 
             $query_tags = 'SELECT tag_refs.tag_id FROM '. rex::getTablePrefix() .'d2u_references_tag2refs AS tag_refs '
                 .'LEFT JOIN '. rex::getTablePrefix() .'d2u_references_tags_lang AS lang '
@@ -103,7 +110,7 @@ class Reference implements \D2U_Helper\ITranslationHelper
             $result_tags = rex_sql::factory();
             $result_tags->setQuery($query_tags);
             for ($i = 0; $i < $result_tags->getRows(); ++$i) {
-                $this->tag_ids[] = $result_tags->getValue('tag_id');
+                $this->tag_ids[] = (int) $result_tags->getValue('tag_id');
                 $result_tags->next();
             }
         }
@@ -136,8 +143,8 @@ class Reference implements \D2U_Helper\ITranslationHelper
 
         // Don't forget to regenerate URL cache to make online machine available
         if (rex_addon::get('url')->isAvailable()) {
-            d2u_addon_backend_helper::generateUrlCache('reference_id');
-            d2u_addon_backend_helper::generateUrlCache('tag_id');
+            \TobiasKrais\D2UHelper\BackendHelper::generateUrlCache('reference_id');
+            \TobiasKrais\D2UHelper\BackendHelper::generateUrlCache('tag_id');
         }
     }
 
@@ -193,7 +200,7 @@ class Reference implements \D2U_Helper\ITranslationHelper
 
         $references = [];
         for ($i = 0; $i < $result->getRows(); ++$i) {
-            $references[$result->getValue('reference_id')] = new self($result->getValue('reference_id'), $clang_id);
+            $references[(int) $result->getValue('reference_id')] = new self((int) $result->getValue('reference_id'), $clang_id);
             $result->next();
         }
         return $references;
@@ -218,14 +225,14 @@ class Reference implements \D2U_Helper\ITranslationHelper
                         .'ON main.reference_id = default_lang.reference_id AND default_lang.clang_id = '. \rex_config::get('d2u_helper', 'default_lang') .' '
                     .'WHERE target_lang.reference_id IS NULL '
                     .'ORDER BY default_lang.name';
-            $clang_id = \rex_config::get('d2u_helper', 'default_lang');
+            $clang_id = (int) \rex_config::get('d2u_helper', 'default_lang');
         }
         $result = \rex_sql::factory();
         $result->setQuery($query);
 
         $objects = [];
         for ($i = 0; $i < $result->getRows(); ++$i) {
-            $objects[] = new self($result->getValue('reference_id'), $clang_id);
+            $objects[] = new self((int) $result->getValue('reference_id'), $clang_id);
             $result->next();
         }
 
@@ -245,11 +252,11 @@ class Reference implements \D2U_Helper\ITranslationHelper
             $parameterArray = [];
             $parameterArray['reference_id'] = $this->reference_id;
 
-            $this->url = rex_getUrl($d2u_references->getConfig('article_id'), $this->clang_id, $parameterArray, '&');
+            $this->url = rex_getUrl((int) $d2u_references->getConfig('article_id'), $this->clang_id, $parameterArray, '&');
         }
 
         if ($including_domain) {
-            if (\rex_addon::get('yrewrite') instanceof \rex_addon_interface && \rex_addon::get('yrewrite')->isAvailable()) {
+            if (\rex_addon::get('yrewrite')->isAvailable()) {
                 return str_replace(\rex_yrewrite::getCurrentDomain()->getUrl() .'/', \rex_yrewrite::getCurrentDomain()->getUrl(), \rex_yrewrite::getCurrentDomain()->getUrl() . $this->url);
             }
 
@@ -333,7 +340,7 @@ class Reference implements \D2U_Helper\ITranslationHelper
 
         // Update URLs
         if ($regenerate_urls) {
-            \d2u_addon_backend_helper::generateUrlCache('reference_id');
+            \TobiasKrais\D2UHelper\BackendHelper::generateUrlCache('reference_id');
         }
 
         return $error;
