@@ -14,12 +14,12 @@ if (!function_exists('printImages')) {
         echo '<div class="row">';
         foreach ($pics as $pic) {
             $media = rex_media::get($pic);
-            echo '<a href="index.php?rex_media_type='. $type_detail .'&rex_media_file='. $pic .'" data-toggle="lightbox'. $lightbox_id .'" data-gallery="example-gallery'. $lightbox_id .'" class="col-6 col-sm-4 col-lg-3"';
+            echo '<a href="'. rex_media_manager::getUrl($type_detail, $pic) .'" data-toggle="lightbox'. $lightbox_id .'" data-gallery="example-gallery'. $lightbox_id .'" class="col-6 col-sm-4 col-lg-3"';
             if ($media instanceof rex_media) {
                 echo ' data-title="'. $media->getValue('title') .'"';
             }
             echo '>';
-            echo '<img src="index.php?rex_media_type='. $type_thumb .'&rex_media_file='. $pic .'" class="img-fluid gallery-pic-box-rf-mod-4"';
+            echo '<img src="'. rex_media_manager::getUrl($type_thumb, $pic) .'" class="img-fluid gallery-pic-box-rf-mod-4"';
             if ($media instanceof rex_media) {
                 echo ' alt="'. $media->getValue('title') .'" title="'. $media->getValue('title') .'"';
             }
@@ -69,7 +69,7 @@ if (!function_exists('printReferenceList_mod_50_4')) {
             $picture = '<div class="col-12 col-md-6 picbox-'. $pic_orientation .'-outer">';
             if (count($reference->pictures) > 0) {
                 $picture .= '<div class="picbox-'. $pic_orientation .'-inner">';
-                $picture .= '<div><img src="index.php?rex_media_type=d2u_helper_sm&rex_media_file='. $reference->pictures[0] .'"></div>';
+                $picture .= '<div><img src="'. rex_media_manager::getUrl('d2u_helper_sm',  $reference->pictures[0]) .'"></div>';
                 $picture .= '<div class="border-rf-mod-4"'. ('' !== $reference->background_color ? ' style="border-color:'. $reference->background_color .'"' : '') .'></div>';
                 $picture .= '</div>';
             }
