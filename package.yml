@@ -20,7 +20,7 @@ requires:
         sprog: '>=1.0.0'
         url: '>=2.0'
         yrewrite: '>=2.0.1'
-    php: '>=7.4'
+    php: '>=8.0'
 
 conflicts:
     packages:
