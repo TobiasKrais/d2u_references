@@ -39,7 +39,7 @@ $d2u_module_manager->showManagerList();
 			<li><code>Reference</code> wird zu <code>TobiasKrais\D2UReferences\Reference</code>.</li>
 			<li><code>Tag</code> wird zu <code>TobiasKrais\D2UReferences\Tag</code>.</li>
 		</ul>
-		Folgende interne Klasse wurden wurden ebenfalls umbenannt. Es gibt keinen Übergang, da diese Klasse nur intern verwendet wird:
+		Folgende interne Klassen wurden wurden ebenfalls umbenannt. Es gibt keinen Übergang, da diese Klassen nur intern verwendet wird:
 		<ul>
 			<li><code>d2u_references_lang_helper</code> wird zu <code>TobiasKrais\D2UReferences\LangHelper</code>.</li>
 			<li><code>D2UReferencesModules</code> wird zu <code>TobiasKrais\D2UReferences\Module</code>.</li>
