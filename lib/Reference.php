@@ -166,7 +166,7 @@ class Reference implements \TobiasKrais\D2UHelper\ITranslationHelper
             .'WHERE reference_id = '. $this->reference_id;
         $result_main = rex_sql::factory();
         $result_main->setQuery($query_main);
-        if (0 === (int) $result_main->getRows()) {
+        if (0 === $result_main->getRows()) {
             $query = 'DELETE FROM '. rex::getTablePrefix() .'d2u_references_references '
                 .'WHERE reference_id = '. $this->reference_id;
             $result = rex_sql::factory();

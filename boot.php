@@ -1,5 +1,7 @@
 <?php
 
+use TobiasKrais\D2UReferences\FrontendHelper;
+
 if (rex::isBackend() && is_object(rex::getUser())) {
     rex_perm::register('d2u_references[]', rex_i18n::msg('d2u_references_rights'));
     rex_perm::register('d2u_references[edit_data]', rex_i18n::msg('d2u_references_rights_edit_data'), rex_perm::OPTIONS);
@@ -10,8 +12,29 @@ if (rex::isBackend() && is_object(rex::getUser())) {
 if (rex::isBackend()) {
     rex_extension::register('ART_PRE_DELETED', rex_d2u_references_article_is_in_use(...));
     rex_extension::register('CLANG_DELETED', rex_d2u_references_clang_deleted(...));
+    rex_extension::register('D2U_HELPER_ALTERNATE_URLS', rex_d2u_references_alternate_urls(...));
+    rex_extension::register('D2U_HELPER_BREADCRUMBS', rex_d2u_references_breadcrumbs(...));
     rex_extension::register('D2U_HELPER_TRANSLATION_LIST', rex_d2u_references_translation_list(...));
     rex_extension::register('MEDIA_IS_IN_USE', rex_d2u_references_media_is_in_use(...));
+}
+
+/**
+ * Get alternate URLs for jobs.
+ * @param rex_extension_point<array<string>> $ep Redaxo extension point
+ * @return array<int,string> Addon url list
+ */
+function rex_d2u_references_alternate_urls(rex_extension_point $ep): array
+{
+    $params = $ep->getParams();
+    $url_namespace = (string) $params['url_namespace'];
+    $url_id = (int) $params['url_id'];
+
+    $url_list = FrontendHelper::getAlternateURLs($url_namespace, $url_id);
+    if (count($url_list) === 0) {
+        $url_list = $ep->getSubject();
+    }
+
+    return $url_list;
 }
 
 /**
@@ -20,7 +43,7 @@ if (rex::isBackend()) {
  * @throws rex_api_exception If article is used
  * @return string Warning message
  */
-function rex_d2u_references_article_is_in_use(rex_extension_point $ep)
+function rex_d2u_references_article_is_in_use(rex_extension_point $ep): string
 {
     $warning = [];
     $params = $ep->getParams();
@@ -43,11 +66,29 @@ function rex_d2u_references_article_is_in_use(rex_extension_point $ep)
 }
 
 /**
+ * Get breadcrumb part for jobs.
+ * @param rex_extension_point<array<string>> $ep Redaxo extension point
+ * @return array<int,string> HTML formatted breadcrumb elements
+ */
+function rex_d2u_references_breadcrumbs(rex_extension_point $ep) {
+    $params = $ep->getParams();
+    $url_namespace = (string) $params['url_namespace'];
+    $url_id = (int) $params['url_id'];
+
+    $breadcrumbs = FrontendHelper::getBreadcrumbs($url_namespace, $url_id);
+    if (count($breadcrumbs) === 0) {
+        $breadcrumbs = $ep->getSubject();
+    }
+
+    return $breadcrumbs;
+}
+
+/**
  * Deletes language specific configurations and objects.
  * @param rex_extension_point<array<string>> $ep Redaxo extension point
  * @return array<string> Warning message as array
  */
-function rex_d2u_references_clang_deleted(rex_extension_point $ep)
+function rex_d2u_references_clang_deleted(rex_extension_point $ep): array
 {
     $warning = $ep->getSubject();
     $params = $ep->getParams();
@@ -78,7 +119,7 @@ function rex_d2u_references_clang_deleted(rex_extension_point $ep)
  * @param rex_extension_point<array<string>> $ep Redaxo extension point
  * @return array<string> Warning message as array
  */
-function rex_d2u_references_media_is_in_use(rex_extension_point $ep)
+function rex_d2u_references_media_is_in_use(rex_extension_point $ep): array
 {
     $warning = $ep->getSubject();
     $params = $ep->getParams();
@@ -125,7 +166,8 @@ function rex_d2u_references_media_is_in_use(rex_extension_point $ep)
  * @param rex_extension_point<array<string>> $ep Redaxo extension point
  * @return array<array<string,array<int,array<string,string>>|string>|string> Addon translation list
  */
-function rex_d2u_references_translation_list(rex_extension_point $ep) {
+function rex_d2u_references_translation_list(rex_extension_point $ep): array
+{
     $params = $ep->getParams();
     $source_clang_id = (int) $params['source_clang_id'];
     $target_clang_id = (int) $params['target_clang_id'];
