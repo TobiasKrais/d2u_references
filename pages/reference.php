@@ -1,4 +1,7 @@
 <?php
+
+use TobiasKrais\D2UReferences\Tag;
+
 $func = rex_request('func', 'string');
 $entry_id = rex_request('entry_id', 'int');
 $message = rex_get('message', 'string');
@@ -19,7 +22,7 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_save') || 1 === (int) filter_input
     $reference = false;
     $reference_id = $form['reference_id'];
     foreach (rex_clang::getAll() as $rex_clang) {
-        if (false === $reference) {
+        if (!$reference instanceof \TobiasKrais\D2UReferences\Reference) {
             $reference = new \TobiasKrais\D2UReferences\Reference($reference_id, $rex_clang->getId());
             $reference->reference_id = $reference_id; // Ensure correct ID in case first language has no object
             $pictures = preg_grep('/^\s*$/s', explode(',', $input_media_list[1]), PREG_GREP_INVERT);
@@ -199,12 +202,12 @@ if ('edit' === $func || 'add' === $func) {
 }
 
 if ('' === $func) {
-    $query = 'SELECT refs.reference_id, name, `date`, online_status '
-        . 'FROM '. rex::getTablePrefix() .'d2u_references_references AS refs '
-        . 'LEFT JOIN '. rex::getTablePrefix() .'d2u_references_references_lang AS lang '
-            . 'ON refs.reference_id = lang.reference_id AND lang.clang_id = '. (int) rex_config::get('d2u_helper', 'default_lang') .' '
-        .'ORDER BY `date` DESC';
-    $list = rex_list::factory($query, 1000);
+    $query = 'SELECT refs.reference_id, `name`, `date`, online_status, '
+            .'(SELECT GROUP_CONCAT(tag_id) FROM '. rex::getTablePrefix() .'d2u_references_tag2refs WHERE reference_id = refs.reference_id) AS tag_ids '
+        .'FROM '. rex::getTablePrefix() .'d2u_references_references AS refs '
+        .'LEFT JOIN '. rex::getTablePrefix() .'d2u_references_references_lang AS lang '
+            . 'ON refs.reference_id = lang.reference_id AND lang.clang_id = '. (int) rex_config::get('d2u_helper', 'default_lang');
+    $list = rex_list::factory(query:$query, rowsPerPage:1000, defaultSort:['date' => 'ASC']);
 
     $list->addTableAttribute('class', 'table-striped table-hover');
 
@@ -218,11 +221,27 @@ if ('' === $func) {
 
     $list->setColumnLabel('reference_id', rex_i18n::msg('id'));
     $list->setColumnLayout('reference_id', ['<th class="rex-table-id">###VALUE###</th>', '<td class="rex-table-id">###VALUE###</td>']);
+    $list->setColumnSortable('reference_id');
 
     $list->setColumnLabel('name', rex_i18n::msg('d2u_helper_name'));
     $list->setColumnParams('name', ['func' => 'edit', 'entry_id' => '###reference_id###']);
+    $list->setColumnSortable('name');
+
+    $list->setColumnLabel('tag_ids', rex_i18n::msg('d2u_references_tags'));
+    $list->setColumnFormat('tag_ids', 'custom', static function ($params) {
+        $list_params = $params['list'];
+        $tag_names = [];
+        $tag_ids_unfilterd = preg_grep('/^\s*$/s', explode(',', (string) $list_params->getValue('tag_ids')), PREG_GREP_INVERT);
+        $tag_ids = is_array($tag_ids_unfilterd) ? array_map('intval', $tag_ids_unfilterd) : [];
+        foreach ($tag_ids as $tag_id) {
+            $tag = new Tag($tag_id, (int) rex_config::get('d2u_helper', 'default_lang'));
+            $tag_names[] = $tag->name;
+        }
+        return implode(', ', $tag_names);
+    });
 
     $list->setColumnLabel('date', rex_i18n::msg('d2u_references_date'));
+    $list->setColumnSortable('date');
 
     $list->addColumn(rex_i18n::msg('module_functions'), '<i class="rex-icon rex-icon-edit"></i> ' . rex_i18n::msg('edit'));
     $list->setColumnLayout(rex_i18n::msg('module_functions'), ['<th class="rex-table-action" colspan="2">###VALUE###</th>', '<td class="rex-table-action">###VALUE###</td>']);

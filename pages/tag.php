@@ -1,4 +1,7 @@
 <?php
+
+use TobiasKrais\D2UReferences\Tag;
+
 $func = rex_request('func', 'string');
 $entry_id = rex_request('entry_id', 'int');
 $message = rex_get('message', 'string');
@@ -19,7 +22,7 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_save') || 1 === (int) filter_input
     $tag = false;
     $tag_id = $form['tag_id'];
     foreach (rex_clang::getAll() as $rex_clang) {
-        if (false === $tag) {
+        if (!$tag instanceof Tag) {
             $tag = new \TobiasKrais\D2UReferences\Tag($tag_id, $rex_clang->getId());
             $tag->tag_id = $tag_id; // Ensure correct ID in case first language has no object
 			$tag->picture = $input_media[1];
@@ -170,9 +173,8 @@ if ('' === $func) {
     $query = 'SELECT tags.tag_id, name '
         . 'FROM '. rex::getTablePrefix() .'d2u_references_tags AS tags '
         . 'LEFT JOIN '. rex::getTablePrefix() .'d2u_references_tags_lang AS lang '
-            . 'ON tags.tag_id = lang.tag_id AND lang.clang_id = '. (int) rex_config::get('d2u_helper', 'default_lang') .' '
-        .'ORDER BY name ASC';
-    $list = rex_list::factory($query, 1000);
+            . 'ON tags.tag_id = lang.tag_id AND lang.clang_id = '. (int) rex_config::get('d2u_helper', 'default_lang');
+    $list = rex_list::factory(query:$query, rowsPerPage:1000, defaultSort:['name' => 'ASC']);
 
     $list->addTableAttribute('class', 'table-striped table-hover');
 
@@ -189,6 +191,7 @@ if ('' === $func) {
 
     $list->setColumnLabel('name', rex_i18n::msg('d2u_helper_name'));
     $list->setColumnParams('name', ['func' => 'edit', 'entry_id' => '###tag_id###']);
+    $list->setColumnSortable('name');
 
     $list->addColumn(rex_i18n::msg('module_functions'), '<i class="rex-icon rex-icon-edit"></i> ' . rex_i18n::msg('edit'));
     $list->setColumnLayout(rex_i18n::msg('module_functions'), ['<th class="rex-table-action" colspan="2">###VALUE###</th>', '<td class="rex-table-action">###VALUE###</td>']);
