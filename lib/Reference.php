@@ -44,6 +44,9 @@ class Reference implements \TobiasKrais\D2UHelper\ITranslationHelper
     /** @var \TobiasKrais\D2UVideos\Video|false Videomanager Video */
     public \TobiasKrais\D2UVideos\Video|false $video = false;
 
+    /** @var int Redaxo article id with further informations */
+    public int $article_id = 0;
+
     /** @var string External URL */
     public string $external_url = '';
 
@@ -89,6 +92,7 @@ class Reference implements \TobiasKrais\D2UHelper\ITranslationHelper
             $this->description = stripslashes(htmlspecialchars_decode((string) $result->getValue('description')));
             $this->external_url = (string) $result->getValue('url');
             $this->external_url_lang = (string) $result->getValue('url_lang');
+            $this->article_id = (int) $result->getValue('article_id');
             $this->online_status = (string) $result->getValue('online_status');
             $pictures = preg_grep('/^\s*$/s', explode(',', (string) $result->getValue('pictures')), PREG_GREP_INVERT);
             $this->pictures = is_array($pictures) ? $pictures : [];
@@ -281,12 +285,13 @@ class Reference implements \TobiasKrais\D2UHelper\ITranslationHelper
 
         if (0 === $this->reference_id || $pre_save_object !== $this) {
             $query = rex::getTablePrefix() .'d2u_references_references SET '
-                    ."online_status = '". $this->online_status ."', "
-                    ."pictures = '". implode(',', $this->pictures) ."', "
-                    ."background_color = '". $this->background_color ."', "
+                    .'online_status = "'. $this->online_status .'", '
+                    .'pictures = "'. implode(',', $this->pictures) .'", '
+                    .'background_color = "'. $this->background_color .'", '
                     .'video_id = '. (false !== $this->video ? $this->video->video_id : 0) .', '
-                    ."url = '". $this->external_url ."', "
-                    ."`date` = '". $this->date ."' ";
+                    .'article_id = '. $this->article_id .', '
+                    .'url = "'. $this->external_url .'", '
+                    .'`date` = "'. $this->date .'"';
 
             if (0 === $this->reference_id) {
                 $query = 'INSERT INTO '. $query;

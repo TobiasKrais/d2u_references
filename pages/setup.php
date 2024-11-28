@@ -30,6 +30,7 @@ $d2u_module_manager->showManagerList();
 <p>1.1.1-DEV:</p>
 <ul>
 	<li>Tags in Übersichtspalte hinzugefügt und Spalten sortierbar gemacht.</li>
+	<li>Referenz um Feld für Artikel ID erweitert.</li>
 </ul>
 <p>1.1.0:</p>
 <ul>

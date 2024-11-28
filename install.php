@@ -6,6 +6,7 @@
     ->ensureColumn(new \rex_sql_column('pictures', 'TEXT', true))
     ->ensureColumn(new \rex_sql_column('background_color', 'VARCHAR(7)', true))
     ->ensureColumn(new \rex_sql_column('video_id', 'INT(10)', true))
+    ->ensureColumn(new \rex_sql_column('article_id', 'INT(11)', true))
     ->ensureColumn(new \rex_sql_column('url', 'VARCHAR(255)', true))
     ->ensureColumn(new \rex_sql_column('online_status', 'VARCHAR(10)', false, 'online'))
     ->ensureColumn(new \rex_sql_column('date', 'VARCHAR(10)', true))

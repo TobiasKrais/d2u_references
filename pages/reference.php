@@ -17,6 +17,7 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_save') || 1 === (int) filter_input
 
     // Media fields and links need special treatment
     $input_media_list = rex_post('REX_INPUT_MEDIALIST', 'array', []);
+    $link_ids = filter_input_array(INPUT_POST, ['REX_INPUT_LINK' => ['filter' => FILTER_VALIDATE_INT, 'flags' => FILTER_REQUIRE_ARRAY]]);
 
     $success = true;
     $reference = false;
@@ -30,6 +31,7 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_save') || 1 === (int) filter_input
             $reference->background_color = $form['background_color'];
             $reference->video = $form['video_id'] > 0 ? new \TobiasKrais\D2UVideos\Video($form['video_id'], $rex_clang->getId()) : false;
             $reference->external_url = $form['url'];
+            $reference->article_id = is_array($link_ids['REX_INPUT_LINK']) ? $link_ids['REX_INPUT_LINK'][1] : 0;
             $reference->date = $form['date'];
             $reference->online_status = array_key_exists('online_status', $form) ? 'online' : 'offline';
             $reference->tag_ids = $form['tag_ids'] ?? [];
@@ -160,6 +162,7 @@ if ('edit' === $func || 'add' === $func) {
                             \TobiasKrais\D2UHelper\BackendHelper::form_imagelistfield('d2u_helper_pictures', 1, $reference->pictures, $readonly);
                             \TobiasKrais\D2UHelper\BackendHelper::form_input('d2u_references_background_color', 'form[background_color]', $reference->background_color, false, false, 'color');
                             \TobiasKrais\D2UHelper\BackendHelper::form_input('d2u_references_url', 'form[url]', $reference->external_url, false, $readonly, 'text');
+                            \TobiasKrais\D2UHelper\BackendHelper::form_linkfield('d2u_helper_article_id', '1', $reference->article_id, (int) rex_config::get('d2u_helper', 'default_lang'));
                             \TobiasKrais\D2UHelper\BackendHelper::form_checkbox('d2u_helper_online_status', 'form[online_status]', 'online', 'online' === $reference->online_status, $readonly);
                             \TobiasKrais\D2UHelper\BackendHelper::form_input('d2u_references_date', 'form[date]', $reference->date, true, $readonly, 'date');
                             $options_tags = [];
