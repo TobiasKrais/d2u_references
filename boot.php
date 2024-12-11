@@ -13,9 +13,11 @@ if (rex::isBackend()) {
     rex_extension::register('ART_PRE_DELETED', rex_d2u_references_article_is_in_use(...));
     rex_extension::register('CLANG_DELETED', rex_d2u_references_clang_deleted(...));
     rex_extension::register('D2U_HELPER_ALTERNATE_URLS', rex_d2u_references_alternate_urls(...));
-    rex_extension::register('D2U_HELPER_BREADCRUMBS', rex_d2u_references_breadcrumbs(...));
     rex_extension::register('D2U_HELPER_TRANSLATION_LIST', rex_d2u_references_translation_list(...));
     rex_extension::register('MEDIA_IS_IN_USE', rex_d2u_references_media_is_in_use(...));
+}
+else {
+    rex_extension::register('D2U_HELPER_BREADCRUMBS', rex_d2u_references_breadcrumbs(...));
 }
 
 /**
