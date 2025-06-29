@@ -32,7 +32,7 @@ function rex_d2u_references_alternate_urls(rex_extension_point $ep): array
     $url_id = (int) $params['url_id'];
 
     $url_list = FrontendHelper::getAlternateURLs($url_namespace, $url_id);
-    if (count($url_list) === 0 && $ep->getSubject() !== null) {
+    if (count($url_list) === 0 && is_array($ep->getSubject())) {
         $url_list = $ep->getSubject();
     }
 
