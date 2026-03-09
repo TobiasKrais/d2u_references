@@ -40,7 +40,8 @@ d2u_references/
     ├── reference.php       # Reference management (create/edit/list)
     ├── tag.php             # Tag management
     ├── settings.php        # Addon settings (article link, languages)
-    └── setup.php           # Module manager + changelog
+    ├── setup.php           # Module manager
+    └── help.changelog.php  # Changelog
 ```
 
 ## Coding Conventions
@@ -114,10 +115,10 @@ d2u_references/
 
 Each module has a revision number defined in `lib/Module.php` inside the `getModules()` method. When a module is changed:
 
-1. Add a changelog entry in `pages/setup.php` describing the change.
+1. Add a changelog entry in `pages/help.changelog.php` describing the change.
 2. Increment the module's revision number in `Module::getModules()` by one.
 
-**Important:** The revision only needs to be incremented **once per release**, not per commit. To determine whether a release is still in development, check the changelog in `pages/setup.php`: if the version number is followed by `-DEV` (e.g. `1.1.1-DEV`), the release is still in development and no additional revision bump is needed for further changes to the same module. Once a version is released (no `-DEV` suffix), the next change requires a new revision increment.
+**Important:** The revision only needs to be incremented **once per release**, not per commit. To determine whether a release is still in development, check the changelog in `pages/help.changelog.php`: if the version number is followed by `-DEV` (e.g. `1.1.1-DEV`), the release is still in development and no additional revision bump is needed for further changes to the same module. Once a version is released (no `-DEV` suffix), the next change requires a new revision increment.
 
 ### Reference Data Model
 
@@ -175,8 +176,8 @@ This addon follows [Semantic Versioning](https://semver.org/):
 - **Minor** (2nd digit): New features, new modules, new database fields (backward compatible)
 - **Patch** (3rd digit): Bug fixes, small improvements (backward compatible)
 
-The version number is maintained in `package.yml`. During development, the changelog in `pages/setup.php` uses a `-DEV` suffix (e.g. `1.2.0-DEV`). The `-DEV` suffix is removed when the version is released. The `package.yml` always contains the final version number without `-DEV`.
+The version number is maintained in `package.yml`. During development, the changelog in `pages/help.changelog.php` uses a `-DEV` suffix (e.g. `1.2.0-DEV`). The `-DEV` suffix is removed when the version is released. The `package.yml` always contains the final version number without `-DEV`.
 
 ## Changelog
 
-The changelog is located in `pages/setup.php`, not in a separate file.
+The changelog is located in `pages/help.changelog.php`.
