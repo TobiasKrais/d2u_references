@@ -1,0 +1,22 @@
+d2u_references = D2U Referenties
+d2u_references_references = Referenties
+d2u_references_tags = Tags
+d2u_references_settings = Instellingen
+d2u_references_setup = Setup
+
+d2u_references_background_color = Achtergrondkleur
+d2u_references_date = Datum
+d2u_references_no_references_found = Er zijn nog geen referenties aangemaakt.
+d2u_references_no_tags_found = Er zijn nog geen tags aangemaakt.
+d2u_references_no_video = Geen video geselecteerd.
+d2u_references_reference = Referentie
+d2u_references_tags = Tags
+d2u_references_teaser = Korte beschrijving
+d2u_references_url = Externe URL
+
+d2u_references_settings_article = Referentie-artikel
+
+d2u_references_rights = D2U Referenties add-on
+d2u_references_rights_edit_data = D2U Referenties add-on: bewerkingsrechten voor gegevens en taaloverstijgende inhoud
+d2u_references_rights_edit_lang = D2U Referenties add-on: bewerkingsrechten voor vertalingen en taalspecifieke inhoud (de talen uit de rolinstellingen zijn van toepassing)
+d2u_references_rights_settings = D2U Referenties add-on: instellingen
