@@ -1,5 +1,6 @@
 <?php
 
+use TobiasKrais\D2UHelper\BackendHelper;
 use TobiasKrais\D2UReferences\Tag;
 
 $func = rex_request('func', 'string');
@@ -119,7 +120,7 @@ if ('edit' === $func || 'add' === $func) {
                                     $options_translations['yes'] = rex_i18n::msg('d2u_helper_translation_needs_update');
                                     $options_translations['no'] = rex_i18n::msg('d2u_helper_translation_is_uptodate');
                                     $options_translations['delete'] = rex_i18n::msg('d2u_helper_translation_delete');
-                                    \TobiasKrais\D2UHelper\BackendHelper::form_select('d2u_helper_translation', 'form[lang]['. $rex_clang->getId() .'][translation_needs_update]', $options_translations, [$reference->translation_needs_update], 1, false, $readonly_lang);
+                                    BackendHelper::form_select('d2u_helper_translation', 'form[lang]['. $rex_clang->getId() .'][translation_needs_update]', $options_translations, [$reference->translation_needs_update], 1, false, $readonly_lang);
                                 } else {
                                     echo '<input type="hidden" name="form[lang]['. $rex_clang->getId() .'][translation_needs_update]" value="">';
                                 }
@@ -137,10 +138,10 @@ if ('edit' === $func || 'add' === $func) {
 							</script>
 							<div id="details_clang_<?= $rex_clang->getId() ?>">
 								<?php
-                                    \TobiasKrais\D2UHelper\BackendHelper::form_input('d2u_helper_name', 'form[lang]['. $rex_clang->getId() .'][name]', $reference->name, $required, $readonly_lang, 'text');
-                                    \TobiasKrais\D2UHelper\BackendHelper::form_textarea('d2u_references_teaser', 'form[lang]['. $rex_clang->getId() .'][teaser]', $reference->teaser, 5, false, $readonly_lang, true);
-                                    \TobiasKrais\D2UHelper\BackendHelper::form_textarea('d2u_helper_description', 'form[lang]['. $rex_clang->getId() .'][description]', $reference->description, 5, false, $readonly_lang, true);
-                                    \TobiasKrais\D2UHelper\BackendHelper::form_input('d2u_references_url', 'form[lang]['. $rex_clang->getId() .'][url_lang]', $reference->external_url_lang, false, $readonly_lang, 'text');
+                                    BackendHelper::form_input('d2u_helper_name', 'form[lang]['. $rex_clang->getId() .'][name]', $reference->name, $required, $readonly_lang, 'text');
+                                    BackendHelper::form_textarea('d2u_references_teaser', 'form[lang]['. $rex_clang->getId() .'][teaser]', $reference->teaser, 5, false, $readonly_lang, true);
+                                    BackendHelper::form_textarea('d2u_helper_description', 'form[lang]['. $rex_clang->getId() .'][description]', $reference->description, 5, false, $readonly_lang, true);
+                                    BackendHelper::form_input('d2u_references_url', 'form[lang]['. $rex_clang->getId() .'][url_lang]', $reference->external_url_lang, false, $readonly_lang, 'text');
                                 ?>
 							</div>
 						</div>
@@ -159,24 +160,24 @@ if ('edit' === $func || 'add' === $func) {
                                 $readonly = false;
                             }
 
-                            \TobiasKrais\D2UHelper\BackendHelper::form_imagelistfield('d2u_helper_pictures', 1, $reference->pictures, $readonly);
-                            \TobiasKrais\D2UHelper\BackendHelper::form_input('d2u_references_background_color', 'form[background_color]', $reference->background_color, false, false, 'color');
-                            \TobiasKrais\D2UHelper\BackendHelper::form_input('d2u_references_url', 'form[url]', $reference->external_url, false, $readonly, 'text');
-                            \TobiasKrais\D2UHelper\BackendHelper::form_linkfield('d2u_helper_article_id', '1', $reference->article_id, (int) rex_config::get('d2u_helper', 'default_lang'));
-                            \TobiasKrais\D2UHelper\BackendHelper::form_checkbox('d2u_helper_online_status', 'form[online_status]', 'online', 'online' === $reference->online_status, $readonly);
-                            \TobiasKrais\D2UHelper\BackendHelper::form_input('d2u_references_date', 'form[date]', $reference->date, true, $readonly, 'date');
+                            BackendHelper::form_imagelistfield('d2u_helper_pictures', 1, $reference->pictures, $readonly);
+                            BackendHelper::form_input('d2u_references_background_color', 'form[background_color]', $reference->background_color, false, false, 'color');
+                            BackendHelper::form_input('d2u_references_url', 'form[url]', $reference->external_url, false, $readonly, 'text');
+                            BackendHelper::form_linkfield('d2u_helper_article_id', '1', $reference->article_id, (int) rex_config::get('d2u_helper', 'default_lang'));
+                            BackendHelper::form_checkbox('d2u_helper_online_status', 'form[online_status]', 'online', 'online' === $reference->online_status, $readonly);
+                            BackendHelper::form_input('d2u_references_date', 'form[date]', $reference->date, true, $readonly, 'date');
                             $options_tags = [];
                             foreach (\TobiasKrais\D2UReferences\Tag::getAll((int) rex_config::get('d2u_helper', 'default_lang')) as $tag) {
                                 $options_tags[$tag->tag_id] = $tag->name;
                             }
-                            \TobiasKrais\D2UHelper\BackendHelper::form_select('d2u_references_tags', 'form[tag_ids][]', $options_tags, $reference->tag_ids, 10, true, $readonly);
+                            BackendHelper::form_select('d2u_references_tags', 'form[tag_ids][]', $options_tags, $reference->tag_ids, 10, true, $readonly);
 
                             if (\rex_addon::get('d2u_videos') instanceof rex_addon && \rex_addon::get('d2u_videos')->isAvailable()) {
                                 $options_videos = [0 => rex_i18n::msg('d2u_references_no_video')];
                                 foreach (TobiasKrais\D2UVideos\Video::getAll((int) rex_config::get('d2u_helper', 'default_lang')) as $video) {
                                     $options_videos[$video->video_id] = $video->name;
                                 }
-                                \TobiasKrais\D2UHelper\BackendHelper::form_select('d2u_videos_video', 'form[video_id]', $options_videos, [false !== $reference->video ? $reference->video->video_id : 0], 1, false, $readonly);
+                                BackendHelper::form_select('d2u_videos_video', 'form[video_id]', $options_videos, [false !== $reference->video ? $reference->video->video_id : 0], 1, false, $readonly);
                             }
                         ?>
 					</div>
@@ -200,8 +201,8 @@ if ('edit' === $func || 'add' === $func) {
 	</form>
 	<br>
 	<?php
-        echo \TobiasKrais\D2UHelper\BackendHelper::getCSS();
-        echo \TobiasKrais\D2UHelper\BackendHelper::getJS();
+        echo BackendHelper::getCSS();
+        echo BackendHelper::getJS();
 }
 
 if ('' === $func) {
@@ -260,6 +261,14 @@ if ('' === $func) {
         $list->setColumnParams(rex_i18n::msg('delete_module'), ['func' => 'delete', 'entry_id' => '###reference_id###']);
         $list->addLinkAttribute(rex_i18n::msg('delete_module'), 'data-confirm', rex_i18n::msg('d2u_helper_confirm_delete'));
     }
+
+    $list->addColumn(rex_i18n::msg('d2u_helper_open_frontend'), '');
+    $list->setColumnLayout(rex_i18n::msg('d2u_helper_open_frontend'), ['', '<td class="rex-table-action">###VALUE###</td>']);
+    $list->setColumnFormat(rex_i18n::msg('d2u_helper_open_frontend'), 'custom', static function ($params) {
+        $listParams = $params['list'];
+
+        return BackendHelper::getFrontendLinkButton((new \TobiasKrais\D2UReferences\Reference((int) $listParams->getValue('reference_id'), (int) rex_config::get('d2u_helper', 'default_lang')))->getUrl());
+    });
 
     $list->setNoRowsMessage(rex_i18n::msg('d2u_references_no_references_found'));
 

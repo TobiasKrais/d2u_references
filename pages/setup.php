@@ -33,6 +33,14 @@ $d2u_module_manager->showManagerList();
 
 <?php if ($showChangelogOnly) { ?>
 <h2>Changelog</h2>
+<p>1.2.0-DEV:</p>
+<ul>
+	<li>Neue Module 50-5 bis 50-8 als Bootstrap-5-Varianten der bestehenden Beispielmodule hinzugefügt.</li>
+	<li>Leerer Modulordner 50-5 mit einer echten BS5-Variante belegt, damit Setup und Dokumentation wieder konsistent sind.</li>
+	<li>Module 50-1 bis 50-4 als "(BS4, deprecated)" markiert. Die BS4-Varianten werden im nächsten Major Release entfernt.</li>
+	<li>Module 50-4 und 50-8: Textspalte der Farbboxen mit seitlichem Bild auf Flex-Zentrierung umgestellt, damit der Text nicht oberhalb des Containers positioniert wird.</li>
+	<li>Benötigt d2u_helper &gt;= 2.1.0.</li>
+</ul>
 <p>1.1.1-DEV:</p>
 <ul>
 	<li>Tags in Übersichtspalte hinzugefügt und Spalten sortierbar gemacht.</li>

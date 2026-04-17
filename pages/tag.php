@@ -1,5 +1,6 @@
 <?php
 
+use TobiasKrais\D2UHelper\BackendHelper;
 use TobiasKrais\D2UReferences\Tag;
 
 $func = rex_request('func', 'string');
@@ -99,7 +100,7 @@ if ('edit' === $func || 'add' === $func) {
                                     $options_translations['yes'] = rex_i18n::msg('d2u_helper_translation_needs_update');
                                     $options_translations['no'] = rex_i18n::msg('d2u_helper_translation_is_uptodate');
                                     $options_translations['delete'] = rex_i18n::msg('d2u_helper_translation_delete');
-                                    \TobiasKrais\D2UHelper\BackendHelper::form_select('d2u_helper_translation', 'form[lang]['. $rex_clang->getId() .'][translation_needs_update]', $options_translations, [$tag->translation_needs_update], 1, false, $readonly_lang);
+                                    BackendHelper::form_select('d2u_helper_translation', 'form[lang]['. $rex_clang->getId() .'][translation_needs_update]', $options_translations, [$tag->translation_needs_update], 1, false, $readonly_lang);
                                 } else {
                                     echo '<input type="hidden" name="form[lang]['. $rex_clang->getId() .'][translation_needs_update]" value="">';
                                 }
@@ -117,7 +118,7 @@ if ('edit' === $func || 'add' === $func) {
 							</script>
 							<div id="details_clang_<?= $rex_clang->getId() ?>">
 								<?php
-                                    \TobiasKrais\D2UHelper\BackendHelper::form_input('d2u_helper_name', 'form[lang]['. $rex_clang->getId() .'][name]', $tag->name, $required, $readonly_lang, 'text');
+                                    BackendHelper::form_input('d2u_helper_name', 'form[lang]['. $rex_clang->getId() .'][name]', $tag->name, $required, $readonly_lang, 'text');
                                 ?>
 							</div>
 						</div>
@@ -136,12 +137,12 @@ if ('edit' === $func || 'add' === $func) {
                                 $readonly = false;
                             }
 
-							\TobiasKrais\D2UHelper\BackendHelper::form_mediafield('d2u_helper_picture', '1', $tag->picture, $readonly);
+                            BackendHelper::form_mediafield('d2u_helper_picture', '1', $tag->picture, $readonly);
                             $options_tags = [];
                             foreach (\TobiasKrais\D2UReferences\Reference::getAll((int) rex_config::get('d2u_helper', 'default_lang'), false) as $reference) {
                                 $options_tags[$reference->reference_id] = $reference->name;
                             }
-                            \TobiasKrais\D2UHelper\BackendHelper::form_select('d2u_references_references', 'form[reference_ids][]', $options_tags, $tag->reference_ids, 10, true, $readonly);
+                            BackendHelper::form_select('d2u_references_references', 'form[reference_ids][]', $options_tags, $tag->reference_ids, 10, true, $readonly);
                         ?>
 					</div>
 				</fieldset>
@@ -164,9 +165,9 @@ if ('edit' === $func || 'add' === $func) {
 	</form>
 	<br>
 	<?php
-        echo \TobiasKrais\D2UHelper\BackendHelper::getCSS();
-        echo \TobiasKrais\D2UHelper\BackendHelper::getJS();
-        echo \TobiasKrais\D2UHelper\BackendHelper::getJSOpenAll();
+        echo BackendHelper::getCSS();
+        echo BackendHelper::getJS();
+        echo BackendHelper::getJSOpenAll();
 }
 
 if ('' === $func) {
@@ -203,6 +204,14 @@ if ('' === $func) {
         $list->setColumnParams(rex_i18n::msg('delete_module'), ['func' => 'delete', 'entry_id' => '###tag_id###']);
         $list->addLinkAttribute(rex_i18n::msg('delete_module'), 'data-confirm', rex_i18n::msg('d2u_helper_confirm_delete'));
     }
+
+    $list->addColumn(rex_i18n::msg('d2u_helper_open_frontend'), '');
+    $list->setColumnLayout(rex_i18n::msg('d2u_helper_open_frontend'), ['', '<td class="rex-table-action">###VALUE###</td>']);
+    $list->setColumnFormat(rex_i18n::msg('d2u_helper_open_frontend'), 'custom', static function ($params) {
+        $listParams = $params['list'];
+
+        return BackendHelper::getFrontendLinkButton((new \TobiasKrais\D2UReferences\Tag((int) $listParams->getValue('tag_id'), (int) rex_config::get('d2u_helper', 'default_lang')))->getUrl());
+    });
 
     $list->setNoRowsMessage(rex_i18n::msg('d2u_references_no_tags_found'));
 
