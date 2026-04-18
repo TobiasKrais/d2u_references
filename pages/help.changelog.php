@@ -1,6 +1,10 @@
 <?php
 ?>
 <h2>Changelog</h2>
+<p>1.2.1-DEV:</p>
+<ul>
+	<li>...</li>
+</ul>
 <p>1.2.0:</p>
 <ul>
 	<li>Neue Module 50-5 bis 50-8 als Bootstrap-5-Varianten der bestehenden Beispielmodule hinzugefügt.</li>
