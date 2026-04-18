@@ -5,6 +5,7 @@
     ->setPrimaryKey('reference_id')
     ->ensureColumn(new \rex_sql_column('pictures', 'TEXT', true))
     ->ensureColumn(new \rex_sql_column('background_color', 'VARCHAR(7)', true))
+    ->ensureColumn(new \rex_sql_column('background_color_dark', 'VARCHAR(7)', true))
     ->ensureColumn(new \rex_sql_column('video_id', 'INT(10)', true))
     ->ensureColumn(new \rex_sql_column('article_id', 'INT(11)', true))
     ->ensureColumn(new \rex_sql_column('url', 'VARCHAR(255)', true))
@@ -51,13 +52,7 @@ $sql->setQuery('CREATE OR REPLACE VIEW '. rex::getTablePrefix() .'d2u_references
 	LEFT JOIN '. rex::getTablePrefix() .'d2u_references_references AS refs ON lang.reference_id = refs.reference_id
 	LEFT JOIN '. rex::getTablePrefix() .'clang AS clang ON lang.clang_id = clang.id
 	WHERE clang.`status` = 1 AND refs.online_status = "online";');
-$sql->setQuery('CREATE OR REPLACE VIEW '. rex::getTablePrefix() .'d2u_references_url_tags AS
-	SELECT lang.tag_id, lang.clang_id, lang.name, lang.name AS seo_title, lang.name AS seo_description, tags. picture, lang.updatedate
-	FROM '. rex::getTablePrefix() .'d2u_references_tags_lang AS lang
-	LEFT JOIN '. rex::getTablePrefix() .'d2u_references_tags AS tags ON lang.tag_id = tags.tag_id
-	LEFT JOIN '. rex::getTablePrefix() .'clang AS clang ON lang.clang_id = clang.id
-	WHERE clang.`status` = 1 AND lang.tag_id IN (SELECT tag_id FROM `'. rex::getTablePrefix() .'d2u_references_tag2refs` GROUP BY tag_id);');
-
+$sql->setQuery('DROP VIEW IF EXISTS '. rex::getTablePrefix() .'d2u_references_url_tags;');
 // Insert url schemes
 if (\rex_addon::get('url')->isAvailable()) {
     $clang_id = 1 === count(rex_clang::getAllIds()) ? rex_clang::getStartId() : 0;
@@ -73,16 +68,8 @@ if (\rex_addon::get('url')->isAvailable()) {
         . "'{\"column_id\":\"reference_id\",\"column_clang_id\":\"clang_id\",\"restriction_1_column\":\"\",\"restriction_1_comparison_operator\":\"=\",\"restriction_1_value\":\"\",\"restriction_2_logical_operator\":\"\",\"restriction_2_column\":\"\",\"restriction_2_comparison_operator\":\"=\",\"restriction_2_value\":\"\",\"restriction_3_logical_operator\":\"\",\"restriction_3_column\":\"\",\"restriction_3_comparison_operator\":\"=\",\"restriction_3_value\":\"\",\"column_segment_part_1\":\"name\",\"column_segment_part_2_separator\":\"\\/\",\"column_segment_part_2\":\"\",\"column_segment_part_3_separator\":\"\\/\",\"column_segment_part_3\":\"\",\"relation_1_column\":\"\",\"relation_1_position\":\"BEFORE\",\"relation_2_column\":\"\",\"relation_2_position\":\"BEFORE\",\"relation_3_column\":\"\",\"relation_3_position\":\"BEFORE\",\"append_user_paths\":\"\",\"append_structure_categories\":\"0\",\"column_seo_title\":\"seo_title\",\"column_seo_description\":\"seo_description\",\"column_seo_image\":\"picture\",\"sitemap_add\":\"1\",\"sitemap_frequency\":\"monthly\",\"sitemap_priority\":\"1.0\",\"column_sitemap_lastmod\":\"updatedate\"}', "
         . "'', '[]', '', '[]', '', '[]', CURRENT_TIMESTAMP, '". (rex::getUser() instanceof rex_user ? rex::getUser()->getValue('login') : '') ."', CURRENT_TIMESTAMP, '". (rex::getUser() instanceof rex_user ? rex::getUser()->getValue('login') : '') ."');");
     $sql->setQuery('DELETE FROM '. \rex::getTablePrefix() ."url_generator_profile WHERE `namespace` = 'tag_id';");
-    $sql->setQuery('INSERT INTO '. \rex::getTablePrefix() ."url_generator_profile (`namespace`, `article_id`, `clang_id`, `table_name`, `table_parameters`, `relation_1_table_name`, `relation_1_table_parameters`, `relation_2_table_name`, `relation_2_table_parameters`, `relation_3_table_name`, `relation_3_table_parameters`, `createdate`, `createuser`, `updatedate`, `updateuser`) VALUES
-		('tag_id', "
-        . $article_id .', '
-        . $clang_id .', '
-        . "'1_xxx_". rex::getTablePrefix() ."d2u_references_url_tags', "
-        . "'{\"column_id\":\"tag_id\",\"column_clang_id\":\"clang_id\",\"restriction_1_column\":\"\",\"restriction_1_comparison_operator\":\"=\",\"restriction_1_value\":\"\",\"restriction_2_logical_operator\":\"\",\"restriction_2_column\":\"\",\"restriction_2_comparison_operator\":\"=\",\"restriction_2_value\":\"\",\"restriction_3_logical_operator\":\"\",\"restriction_3_column\":\"\",\"restriction_3_comparison_operator\":\"=\",\"restriction_3_value\":\"\",\"column_segment_part_1\":\"name\",\"column_segment_part_2_separator\":\"\\/\",\"column_segment_part_2\":\"\",\"column_segment_part_3_separator\":\"\\/\",\"column_segment_part_3\":\"\",\"relation_1_column\":\"\",\"relation_1_position\":\"BEFORE\",\"relation_2_column\":\"\",\"relation_2_position\":\"BEFORE\",\"relation_3_column\":\"\",\"relation_3_position\":\"BEFORE\",\"append_user_paths\":\"\",\"append_structure_categories\":\"0\",\"column_seo_title\":\"seo_title\",\"column_seo_description\":\"seo_description\",\"column_seo_image\":\"picture\",\"sitemap_add\":\"1\",\"sitemap_frequency\":\"monthly\",\"sitemap_priority\":\"0.5\",\"column_sitemap_lastmod\":\"updatedate\"}', "
-        . "'', '[]', '', '[]', '', '[]', CURRENT_TIMESTAMP, '". (rex::getUser() instanceof rex_user ? rex::getUser()->getValue('login') : '') ."', CURRENT_TIMESTAMP, '". (rex::getUser() instanceof rex_user ? rex::getUser()->getValue('login') : '') ."');");
 
 	\TobiasKrais\D2UHelper\BackendHelper::generateUrlCache('reference_id');
-	\TobiasKrais\D2UHelper\BackendHelper::generateUrlCache('tag_id');
 }
 
 // Media Manager media types

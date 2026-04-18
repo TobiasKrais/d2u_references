@@ -3,6 +3,8 @@
 // Update database to 1.0.5
 $sql = rex_sql::factory();
 $sql->setQuery('DROP VIEW IF EXISTS ' . rex::getTablePrefix() . 'd2u_references_url_tags2ref');
+$sql->setQuery('DROP VIEW IF EXISTS ' . rex::getTablePrefix() . 'd2u_references_url_tags');
+$sql->setQuery('DELETE FROM '. rex::getTablePrefix() ."url_generator_profile WHERE `namespace` = 'tag_id';");
 
 if (rex_version::compare(rex_addon::get('d2u_references')->getVersion(), '1.0.5', '<')) {
     $sql->setQuery('ALTER TABLE '. \rex::getTablePrefix() .'d2u_references_references_lang DROP updateuser;');

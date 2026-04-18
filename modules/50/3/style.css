@@ -10,7 +10,7 @@
 }
 
 .reference-box-image {
-	background-color: article_color_box;
+	background-color: var(--article-color-box);
 	padding: 1em;
 }
 .reference-box-heading-mod-50-3, .reference-box-heading-mod-50-3 h3 {
@@ -24,7 +24,7 @@
 	padding-left: 0px;
 }
 .tag-list li {
-	background-color: article_color_box;
+	background-color: var(--article-color-box);
 	border-radius: 0.5em;
 	float: left;
     list-style: none;
@@ -32,13 +32,13 @@
 	padding: 0.5em 0.75em;
 }
 .tag-list li a, .tag-list li .icon {
-	color: subhead_color_bg;
+	color: var(--subhead-color-bg);
 }
 .tag-list li.active {
-	background-color: navi_color_bg;
+	background-color: var(--navi-color-bg);
 }
 .tag-list li.active a, .tag-list li.active a:hover, .tag-list li.active a:focus, .tag-list li.active a:visited, .tag-list li.active .icon {
-	color: navi_color_font;
+	color: var(--navi-color-font);
 }
 .icon {
 	font-family: FontAwesome;

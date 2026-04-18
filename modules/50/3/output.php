@@ -1,5 +1,9 @@
 <?php
 
+if (!rex::isBackend()) {
+    echo \TobiasKrais\D2UReferences\FrontendHelper::getTagFilterAssets();
+}
+
 if (!function_exists('printImages')) {
     /**
      * Prints images in Ekko Lightbox module format.
@@ -42,9 +46,12 @@ if (!function_exists('printReferenceList_mod_50_3')) {
     /**
      * Prints reference list.
      * @param \TobiasKrais\D2UReferences\Reference[] $references Array with reference objects
+     * @param \TobiasKrais\D2UReferences\Tag[] $tags Array with tag objects
      */
-    function printReferenceList_mod_50_3($references): void
+    function printReferenceList_mod_50_3($references, $tags): void
     {
+        echo '<div data-d2u-reference-filter-root>';
+
         // Text
         if ('' !== 'REX_VALUE[id=1 isset=1]') {
             echo '<div class="col-12">';
@@ -52,10 +59,12 @@ if (!function_exists('printReferenceList_mod_50_3')) {
             echo '</div>';
         }
 
+        echo \TobiasKrais\D2UReferences\FrontendHelper::getTagFilterMarkup($tags);
+
         // Reference List
         $counter = 1;
         foreach ($references as $reference) {
-            echo '<div class="col-6 col-sm-4 col-md-3 col-lg-2 abstand">';
+            echo '<div class="col-6 col-sm-4 col-md-3 col-lg-2 abstand"'. \TobiasKrais\D2UReferences\FrontendHelper::getReferenceFilterAttributes($reference) .'>';
             echo '<div class="reference-box">'; // START reference-box
 
             if (strlen($reference->name) > 10) {
@@ -79,29 +88,19 @@ if (!function_exists('printReferenceList_mod_50_3')) {
             }
             ++$counter;
         }
+
+        echo '</div>';
     }
 }
 
 // Get placeholder wildcard tags and other presets
-$sprog = rex_addon::get('sprog');
-$tag_open = $sprog->getConfig('wildcard_open_tag');
-$tag_close = $sprog->getConfig('wildcard_close_tag');
 
 $url_namespace = TobiasKrais\D2UHelper\FrontendHelper::getUrlNamespace();
 $url_id = TobiasKrais\D2UHelper\FrontendHelper::getUrlId();
 
 $tags = \TobiasKrais\D2UReferences\Tag::getAll(rex_clang::getCurrentId(), true);
-$tag_selected = false;
 $references = [];
-if (filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT, ['options' => ['default' => 0]]) > 0 || 'tag_id' === $url_namespace) {
-    $tag_id = (int) filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT);
-    if (\rex_addon::get('url')->isAvailable() && $url_id > 0) {
-        $tag_id = $url_id;
-    }
-    $tag_selected = new \TobiasKrais\D2UReferences\Tag($tag_id, rex_clang::getCurrentId());
-    $references = $tag_selected->getReferences();
-    printReferenceList_mod_50_3($references);
-} elseif (filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' => ['default' => 0]]) > 0 || 'reference_id' === $url_namespace) {
+if (filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' => ['default' => 0]]) > 0 || 'reference_id' === $url_namespace) {
     $reference_id = (int) filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT);
     if (\rex_addon::get('url')->isAvailable() && $url_id > 0) {
         $reference_id = $url_id;
@@ -123,7 +122,7 @@ if (filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT, ['options' => ['defau
     echo '<h1>'. $reference->name .'</h1>';
     echo TobiasKrais\D2UHelper\FrontendHelper::prepareEditorField($reference->description);
     if ('' !== $reference->external_url_lang || '' !== $reference->external_url) {
-        echo '<a href="'. ('' !== $reference->external_url_lang ? $reference->external_url_lang : $reference->external_url) .'">»&nbsp;&nbsp;'. $tag_open .'d2u_references_external_url'. $tag_close .'</a>';
+        echo '<a href="'. ('' !== $reference->external_url_lang ? $reference->external_url_lang : $reference->external_url) .'">»&nbsp;&nbsp;'. \Sprog\Wildcard::get('d2u_references_external_url') .'</a>';
     }
     if (\rex_addon::get('d2u_videos') instanceof rex_addon && \rex_addon::get('d2u_videos')->isAvailable() && false !== $reference->video) {
         $videomanager = new \TobiasKrais\D2UVideos\Videomanager();
@@ -138,5 +137,5 @@ if (filter_input(INPUT_GET, 'tag_id', FILTER_VALIDATE_INT, ['options' => ['defau
     // Reference list
     $references = \TobiasKrais\D2UReferences\Reference::getAll(rex_clang::getCurrentId(), true);
 
-    printReferenceList_mod_50_3($references);
+    printReferenceList_mod_50_3($references, $tags);
 }

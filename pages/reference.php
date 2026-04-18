@@ -30,6 +30,7 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_save') || 1 === (int) filter_input
             $pictures = preg_grep('/^\s*$/s', explode(',', $input_media_list[1]), PREG_GREP_INVERT);
             $reference->pictures = is_array($pictures) ? $pictures : [];
             $reference->background_color = $form['background_color'];
+            $reference->background_color_dark = $form['background_color_dark'] ?? '';
             $reference->video = $form['video_id'] > 0 ? new \TobiasKrais\D2UVideos\Video($form['video_id'], $rex_clang->getId()) : false;
             $reference->external_url = $form['url'];
             $reference->article_id = is_array($link_ids['REX_INPUT_LINK']) ? $link_ids['REX_INPUT_LINK'][1] : 0;
@@ -161,7 +162,7 @@ if ('edit' === $func || 'add' === $func) {
                             }
 
                             BackendHelper::form_imagelistfield('d2u_helper_pictures', 1, $reference->pictures, $readonly);
-                            BackendHelper::form_input('d2u_references_background_color', 'form[background_color]', $reference->background_color, false, false, 'color');
+                            BackendHelper::form_input_color_pair('d2u_references_background_color', 'form[background_color]', $reference->background_color, 'form[background_color_dark]', $reference->background_color_dark, true);
                             BackendHelper::form_input('d2u_references_url', 'form[url]', $reference->external_url, false, $readonly, 'text');
                             BackendHelper::form_linkfield('d2u_helper_article_id', '1', $reference->article_id, (int) rex_config::get('d2u_helper', 'default_lang'));
                             BackendHelper::form_checkbox('d2u_helper_online_status', 'form[online_status]', 'online', 'online' === $reference->online_status, $readonly);

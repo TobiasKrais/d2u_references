@@ -10,8 +10,13 @@ page:
     subpages:
         reference: { title: 'translate:d2u_references_references', icon: rex-icon fa-thumbs-o-up }
         tag: { title: 'translate:d2u_references_tags', icon: rex-icon fa-tags }
-        setup: { title: 'translate:d2u_references_setup', icon: rex-icon rex-icon-install, itemClass: pull-right, perm: 'd2u_references[settings]' }
-        settings: { title: 'translate:d2u_references_settings', icon: rex-icon rex-icon-system, itemClass: pull-right, perm: 'd2u_references[settings]' }
+        settings:
+            icon: rex-icon rex-icon-system
+            title: ''
+            itemClass: pull-right
+            subpages:
+                settings: { title: 'translate:d2u_helper_settings', icon: rex-icon rex-icon-system, perm: 'd2u_references[settings]' }
+                setup: { title: 'translate:d2u_helper_setup', icon: rex-icon rex-icon-install, perm: 'd2u_references[settings]' }
         help:
             title: ''
             icon: rex-icon rex-icon-help

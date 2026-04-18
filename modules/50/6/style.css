@@ -9,11 +9,36 @@
 		url("./assets/addons/be_style/fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular") format('svg');
 }
 
+.reference-box-mod-50-2 {
+	background-color: var(--reference-bg-color, transparent);
+	height: 100%;
+}
+[data-bs-theme="dark"] .reference-box-mod-50-2 {
+	background-color: var(--reference-bg-color-dark, var(--reference-bg-color, transparent));
+}
 .reference-box-image {
-	background-color: var(--article-color-box);
-	padding: 1em;
+	background-color: var(--reference-bg-color, var(--article-color-box));
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 1rem;
+	padding: 1rem;
+}
+[data-bs-theme="dark"] .reference-box-image {
+	background-color: var(--reference-bg-color-dark, var(--reference-bg-color, var(--article-color-box)));
+}
+.reference-box-preview-wrap {
+	flex: 0 0 50%;
+	max-width: 50%;
+}
+.reference-box-preview {
+	display: block;
+	height: auto;
+	object-fit: cover;
+	width: 100%;
 }
 .reference-box-heading-mod-50-2, .reference-box-heading-mod-50-2 h3 {
+	color: white;
 	font-size: 1.25em;
 	text-align: center;
 }
@@ -46,13 +71,25 @@
 	line-height: 1em;
 	padding-right: 0.25em;
 }
-.go-details:before {
-	font-family: FontAwesome;
+
+.reference-box-image .go-details {
+	color: white;
+	display: inline-flex;
+	flex: 0 0 auto;
+	font-size: 3rem;
+	justify-content: center;
+	line-height: 1;
+	margin-left: 0;
+	min-width: calc(50% - 1rem);
+	padding-right: 0;
+	text-align: center;
+}
+.reference-box-image .go-details:before {
 	content: "\f054";
-	float: right;
-	font-size: 1em;
-	line-height: 2.6em;
-	margin-right: 1em;
+	float: none;
+	font-family: FontAwesome;
+	line-height: 1;
+	margin-right: 0;
 }
 .tag:before {
 	content: "\f02b";

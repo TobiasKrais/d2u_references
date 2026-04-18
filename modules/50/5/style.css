@@ -1,0 +1,101 @@
+@font-face{
+	font-family:'FontAwesome';
+	font-display: auto;
+	src:url("./assets/addons/be_style/fonts/fontawesome-webfont.eot?v=4.7.0");
+	src:url("./assets/addons/be_style/fonts/fontawesome-webfont.eot?#iefix&v=4.7.0") format('embedded-opentype'),
+		url("./assets/addons/be_style/fonts/fontawesome-webfont.woff2?v=4.7.0") format('woff2'),
+		url("./assets/addons/be_style/fonts/fontawesome-webfont.woff?v=4.7.0") format('woff'),
+		url("./assets/addons/be_style/fonts/fontawesome-webfont.ttf?v=4.7.0") format('truetype'),
+		url("./assets/addons/be_style/fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular") format('svg');
+}
+
+.reference-box {
+	background-color: var(--reference-bg-color, transparent);
+	width: 100%;
+}
+[data-bs-theme="dark"] .reference-box {
+	background-color: var(--reference-bg-color-dark, var(--reference-bg-color, transparent));
+}
+
+.reference-box-media {
+	overflow: hidden;
+}
+.reference-box img {
+	display: block;
+	height: 100%;
+	object-fit: cover;
+	width: 100%;
+}
+.reference-box:hover img {
+	-webkit-transition: all 0.2s ease-out;
+	opacity: 0.7;
+    transition: all 0.2s ease-out;
+	width: 100%;
+}
+.reference-box-content {
+	padding-top: 1em;
+}
+.reference-box-heading-mod-50-1 {
+	font-size: 1.25em;
+}
+.reference-box-text-mod-50-1 {
+	flex: 1 0 auto;
+	font-size: 0.9em;
+}
+.reference-box-heading-mod-50-1 b, .reference-box-text-mod-50-1 p {
+	color: white;
+	padding: 8px 15px;
+}
+.reference-box-text-mod-50-1 p:last-child {
+	margin-bottom: 0;
+}
+
+.d2u-references-mod-50-5 .d2u-references-tag-filter-row {
+	display: flow-root;
+	width: 100%;
+}
+.d2u-references-mod-50-5 .d2u-references-tag-filter-row .tag-list {
+	display: flex;
+	float: none;
+	flex-wrap: wrap;
+	gap: 1em;
+	list-style: none;
+	margin: 0;
+	padding-left: 0;
+}
+.d2u-references-mod-50-5 .tag-list a:hover {
+	text-decoration: none;
+}
+.d2u-references-mod-50-5 .d2u-references-tag-filter-row .tag-list li {
+	background-color: var(--article-color-box);
+	border-radius: 0.5em;
+	float: none;
+	list-style: none;
+	margin: 0 0 1em 0;
+	padding: 0.5em 0.75em;
+}
+.d2u-references-mod-50-5 .tag-list li a, .d2u-references-mod-50-5 .tag-list li .icon {
+	color: var(--subhead-color-bg);
+}
+.d2u-references-mod-50-5 .tag-list li.active, .d2u-references-mod-50-5 .tag-list li:hover {
+	background-color: var(--navi-color-bg);
+}
+.d2u-references-mod-50-5 .tag-list li.active a, .d2u-references-mod-50-5 .tag-list li.active a:hover, .d2u-references-mod-50-5 .tag-list li.active a:focus, .d2u-references-mod-50-5 .tag-list li.active a:visited, .d2u-references-mod-50-5 .tag-list li.active .icon, .d2u-references-mod-50-5 .tag-list li:hover a, .d2u-references-mod-50-5 .tag-list li:hover .icon {
+	color: var(--navi-color-font);
+}
+.d2u-references-mod-50-5-list {
+	clear: both;
+	width: 100%;
+}
+.icon {
+	font-family: FontAwesome;
+	font-weight: normal;
+	line-height: 1em;
+	padding-right: 0.25em;
+}
+.tag:before {
+	content: "\f02b";
+}
+.tags:before {
+	content: "\f02c";
+}

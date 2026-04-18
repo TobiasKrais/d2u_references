@@ -41,6 +41,9 @@ class Reference implements \TobiasKrais\D2UHelper\ITranslationHelper
     /** @var string Background color (hex) */
     public string $background_color = '';
 
+    /** @var string Dark mode background color (hex) */
+    public string $background_color_dark = '';
+
     /** @var \TobiasKrais\D2UVideos\Video|false Videomanager Video */
     public \TobiasKrais\D2UVideos\Video|false $video = false;
 
@@ -97,6 +100,7 @@ class Reference implements \TobiasKrais\D2UHelper\ITranslationHelper
             $pictures = preg_grep('/^\s*$/s', explode(',', (string) $result->getValue('pictures')), PREG_GREP_INVERT);
             $this->pictures = is_array($pictures) ? $pictures : [];
             $this->background_color = (string) $result->getValue('background_color');
+            $this->background_color_dark = (string) $result->getValue('background_color_dark');
             if (\rex_addon::get('d2u_videos') instanceof rex_addon && \rex_addon::get('d2u_videos')->isAvailable() && $result->getValue('video_id') > 0) {
                 $this->video = new \TobiasKrais\D2UVideos\Video((int) $result->getValue('video_id'), $clang_id, true);
             }
@@ -288,6 +292,7 @@ class Reference implements \TobiasKrais\D2UHelper\ITranslationHelper
                     .'online_status = "'. $this->online_status .'", '
                     .'pictures = "'. implode(',', $this->pictures) .'", '
                     .'background_color = "'. $this->background_color .'", '
+                    .'background_color_dark = "'. $this->background_color_dark .'", '
                     .'video_id = '. (false !== $this->video ? $this->video->video_id : 0) .', '
                     .'article_id = '. $this->article_id .', '
                     .'url = "'. $this->external_url .'", '

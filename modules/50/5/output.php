@@ -18,27 +18,34 @@ if (filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' => [
     $references = \TobiasKrais\D2UReferences\Reference::getAll(rex_clang::getCurrentId(), true);
 }
 
-echo '<div data-d2u-reference-filter-root>';
+echo '<div class="d2u-references-mod-50-5" data-d2u-reference-filter-root>';
 echo \TobiasKrais\D2UReferences\FrontendHelper::getTagFilterMarkup($tags);
 
-echo '<div class="col-12 abstand">';
-echo '<div class="row" data-match-height>';
+echo '<div class="col-12 abstand d2u-references-mod-50-5-list">';
+echo '<div class="row g-4 align-items-stretch">';
 
 foreach ($references as $reference) {
-    echo '<div class="col-sm-12 col-md-6 col-lg-4 abstand"'. \TobiasKrais\D2UReferences\FrontendHelper::getReferenceFilterAttributes($reference) .'>';
-    $bg_color = '';
+    echo '<div class="col-sm-12 col-md-6 col-lg-4 d-flex"'. \TobiasKrais\D2UReferences\FrontendHelper::getReferenceFilterAttributes($reference) .'>';
+    $style_vars = [];
     if ('' !== $reference->background_color) {
-        $bg_color = ' style="background-color: '. $reference->background_color .'"';
+        $style_vars[] = '--reference-bg-color: '. $reference->background_color;
     }
-    echo '<div class="reference-box"'. $bg_color .' data-height-watch>'; // START reference-box
+    if ('' !== $reference->background_color_dark) {
+        $style_vars[] = '--reference-bg-color-dark: '. $reference->background_color_dark;
+    }
+    $box_style = count($style_vars) > 0 ? ' style="'. implode('; ', $style_vars) .';"' : '';
+    echo '<div class="reference-box d-flex flex-column h-100 w-100"'. $box_style .'>'; // START reference-box
 
     if ('' !== $reference->external_url_lang || '' !== $reference->external_url) {
         echo '<a href="'. ('' !== $reference->external_url_lang ? $reference->external_url_lang : $reference->external_url) .'">';
     }
+    echo '<div class="reference-box-media ratio ratio-4x3">';
     if (count($reference->pictures) > 0) {
         echo '<img src="'. rex_media_manager::getUrl('d2u_helper_sm', $reference->pictures[0]) .'" alt="'. $reference->name .'" title="'. $reference->name .'">';
     }
+    echo '</div>';
 
+    echo '<div class="reference-box-content d-flex flex-column flex-grow-1">';
     echo '<div class="reference-box-heading-mod-50-1"><b>'. $reference->name .'</b></div>';
     if ('' !== $reference->external_url_lang || '' !== $reference->external_url) {
         echo '</a>';
@@ -46,6 +53,7 @@ foreach ($references as $reference) {
 
     echo '<div class="reference-box-text-mod-50-1">';
     echo TobiasKrais\D2UHelper\FrontendHelper::prepareEditorField($reference->teaser);
+    echo '</div>';
     echo '</div>';
 
     echo '</div>'; // END reference-box

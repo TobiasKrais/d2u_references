@@ -9,34 +9,31 @@
 		url("./assets/addons/be_style/fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular") format('svg');
 }
 
-.reference-box img {
-	padding-bottom: 1em;
+.reference-box {
+	background-color: var(--reference-bg-color, transparent);
 }
-.reference-box:hover img {
-	height: auto;
-	-webkit-transition: all 0.2s ease-out;
-	opacity: 0.7;
-    transition: all 0.2s ease-out;
+[data-bs-theme="dark"] .reference-box {
+	background-color: var(--reference-bg-color-dark, var(--reference-bg-color, transparent));
+}
+.reference-box-image {
+	background-color: var(--reference-bg-color, var(--article-color-box));
+}
+[data-bs-theme="dark"] .reference-box-image {
+	background-color: var(--reference-bg-color-dark, var(--reference-bg-color, var(--article-color-box)));
+}
+.reference-box-image img {
+	display: block;
 	width: 100%;
 }
-.reference-box-heading-mod-50-1 {
-	font-size: 1.25em;
-}
-.reference-box-text-mod-50-1 {
-	font-size: 0.9em;
-}
-.reference-box-heading-mod-50-1 b, .reference-box-text-mod-50-1 p {
-	color: white;
-	padding: 8px 15px;
+.reference-box-heading-mod-50-3, .reference-box-heading-mod-50-3 h3 {
+	font-size: 1em;
+	text-align: center;
 }
 
 .tag-list {
 	float: left;
     list-style: none;
 	padding-left: 0px;
-}
-.tag-list a:hover {
-	text-decoration: none;
 }
 .tag-list li {
 	background-color: var(--article-color-box);
@@ -49,10 +46,10 @@
 .tag-list li a, .tag-list li .icon {
 	color: var(--subhead-color-bg);
 }
-.tag-list li.active, .tag-list li:hover {
+.tag-list li.active {
 	background-color: var(--navi-color-bg);
 }
-.tag-list li.active a, .tag-list li.active a:hover, .tag-list li.active a:focus, .tag-list li.active a:visited, .tag-list li.active .icon, .tag-list li:hover a, .tag-list li:hover .icon {
+.tag-list li.active a, .tag-list li.active a:hover, .tag-list li.active a:focus, .tag-list li.active a:visited, .tag-list li.active .icon {
 	color: var(--navi-color-font);
 }
 .icon {
@@ -60,6 +57,13 @@
 	font-weight: normal;
 	line-height: 1em;
 	padding-right: 0.25em;
+}
+.go-details {
+	content: "\f054";
+	float: right;
+	font-size: 3em;
+	line-height: 3em;
+	margin-right: 1em;
 }
 .tag:before {
 	content: "\f02b";

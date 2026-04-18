@@ -1,3 +1,4 @@
+
 .heading-rf-mod-4 {
 	padding-bottom: 1em;
 	text-align: center;
@@ -49,16 +50,27 @@
 	margin: 0.5em 0;
 }
 
+.references-mod-4 {
+	background-color: var(--reference-bg-color, transparent);
+}
+[data-bs-theme="dark"] .references-mod-4 {
+	background-color: var(--reference-bg-color-dark, var(--reference-bg-color, transparent));
+}
+
 .picbox-left-inner, .picbox-right-inner {
 	position: relative;
 }
 .border-rf-mod-4 {
 	border: 1.5rem solid transparent;
+	border-color: var(--reference-border-color, transparent);
 	bottom: auto;
 	content: " ";
 	position: absolute;
 	top: 50%;
 	transform: translateY(-50%);
+}
+[data-bs-theme="dark"] .border-rf-mod-4 {
+	border-color: var(--reference-border-color-dark, var(--reference-border-color, transparent));
 }
 .picbox-left-inner .border-rf-mod-4 {
 	left: auto;

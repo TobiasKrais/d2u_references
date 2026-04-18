@@ -1,6 +1,7 @@
 <?php
 if (!rex::isBackend()) {
     echo \TobiasKrais\D2UReferences\FrontendHelper::getTagFilterAssets();
+    echo \TobiasKrais\D2UReferences\FrontendHelper::getLightboxAssets();
 }
 
 if (!function_exists('printImages')) {
@@ -18,11 +19,11 @@ if (!function_exists('printImages')) {
         echo '<div class="row">';
         foreach ($pics as $pic) {
             $media = rex_media::get($pic);
-            echo '<a href="'. rex_media_manager::getUrl($type_detail, $pic) .'" data-toggle="lightbox'. $lightbox_id .'" data-gallery="example-gallery'. $lightbox_id .'" class="col-6 col-sm-4 col-lg-3"';
+            echo '<a href="'. rex_media_manager::getUrl($type_detail, $pic) .'" data-d2u-gallery="gallery-'. $lightbox_id .'" class="col-6 col-sm-4 col-lg-3"';
             if ($media instanceof rex_media) {
                 echo ' data-title="'. $media->getValue('title') .'"';
             }
-            echo '>';
+            echo ' onclick="event.preventDefault(); d2uLightboxOpen(\'gallery-'. $lightbox_id .'\', this);">';
             echo '<img src="'. rex_media_manager::getUrl($type_thumb, $pic) .'" class="img-fluid gallery-pic-box-rf-mod-4"';
             if ($media instanceof rex_media) {
                 echo ' alt="'. $media->getValue('title') .'" title="'. $media->getValue('title') .'"';
@@ -32,12 +33,6 @@ if (!function_exists('printImages')) {
         }
         echo '</div>';
         echo '</div>';
-        echo '<script>';
-        echo "$(document).on('click', '[data-toggle=\"lightbox". $lightbox_id ."\"]', function(event) {";
-        echo 'event.preventDefault();';
-        echo '$(this).ekkoLightbox({ alwaysShowClose: true	});';
-        echo '});';
-        echo '</script>';
     }
 }
 
@@ -72,7 +67,17 @@ if (!function_exists('printReferenceList_mod_50_4')) {
             echo '<div class="col-12"'. \TobiasKrais\D2UReferences\FrontendHelper::getReferenceFilterAttributes($reference) .'>';
             echo '<a href="'. $reference->getUrl() .'">';
 
-            echo '<div class="references-mod-4"'. ('' !== $reference->background_color ? ' style="background-color:'. $reference->background_color .'"' : '') .'>';
+            $style_vars = [];
+            if ('' !== $reference->background_color) {
+                $style_vars[] = '--reference-bg-color: '. $reference->background_color;
+                $style_vars[] = '--reference-border-color: '. $reference->background_color;
+            }
+            if ('' !== $reference->background_color_dark) {
+                $style_vars[] = '--reference-bg-color-dark: '. $reference->background_color_dark;
+                $style_vars[] = '--reference-border-color-dark: '. $reference->background_color_dark;
+            }
+            $box_style = count($style_vars) > 0 ? ' style="'. implode('; ', $style_vars) .';"' : '';
+            echo '<div class="references-mod-4"'. $box_style .'>';
             echo '<div class="row">';
 
             // Picture
@@ -80,7 +85,7 @@ if (!function_exists('printReferenceList_mod_50_4')) {
             if (count($reference->pictures) > 0) {
                 $picture .= '<div class="picbox-'. $pic_orientation .'-inner">';
                 $picture .= '<div><img src="'. rex_media_manager::getUrl('d2u_helper_sm',  $reference->pictures[0]) .'"></div>';
-                $picture .= '<div class="border-rf-mod-4"'. ('' !== $reference->background_color ? ' style="border-color:'. $reference->background_color .'"' : '') .'></div>';
+                $picture .= '<div class="border-rf-mod-4"></div>';
                 $picture .= '</div>';
             }
             $picture .= '</div>';
