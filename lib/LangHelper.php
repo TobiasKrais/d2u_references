@@ -16,7 +16,7 @@ class LangHelper extends \TobiasKrais\D2UHelper\ALangHelper
      */
     public $replacements_english = [
         'd2u_references_all_tags' => 'All tags',
-        'd2u_references_external_url' => 'Got to product site',
+        'd2u_references_external_url' => 'Go to product site',
         'd2u_references_references' => 'References',
     ];
 
