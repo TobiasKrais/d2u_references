@@ -44,8 +44,8 @@ if (!$invalidCsrf && (1 === (int) filter_input(INPUT_POST, 'btn_save') || 1 === 
             $reference->reference_id = $reference_id; // Ensure correct ID in case first language has no object
             $pictures = preg_grep('/^\s*$/s', explode(',', $input_media_list[1]), PREG_GREP_INVERT);
             $reference->pictures = is_array($pictures) ? $pictures : [];
-            $reference->background_color = $form['background_color'];
-            $reference->background_color_dark = $form['background_color_dark'] ?? '';
+            $reference->background_color = BackendHelper::sanitizeHexColor($form['background_color'] ?? '');
+            $reference->background_color_dark = BackendHelper::sanitizeHexColor($form['background_color_dark'] ?? '');
             $reference->video = $form['video_id'] > 0 ? new \TobiasKrais\D2UVideos\Video($form['video_id'], $rex_clang->getId()) : false;
             $reference->external_url = $form['url'];
             $reference->article_id = is_array($link_ids['REX_INPUT_LINK']) ? $link_ids['REX_INPUT_LINK'][1] : 0;
