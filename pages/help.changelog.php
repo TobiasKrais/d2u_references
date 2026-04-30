@@ -5,8 +5,9 @@
 <ul>
 	<li>Backend: CSRF-Schutz fuer Speichern-, Loesch- und Statusaktionen der Referenzverwaltung ergaenzt.</li>
 	<li>Backend: CSRF-Schutz fuer Modul-Installation, -Update und -Deinstallation auf der Setup-Seite ergaenzt.</li>
-	<li>Sicherheit: Hex-Farben (Referenz-Hintergrundfarbe Light/Dark) werden vor dem Speichern strikt validiert (#RGB / #RRGGBB / #RRGGBBAA), damit keine CSS-Werte ueber das Backend eingeschleust werden koennen.</li>
-</ul>
+	<li>Sicherheit: Hex-Farben (Referenz-Hintergrundfarbe Light/Dark) werden vor dem Speichern strikt validiert (#RGB / #RRGGBB / #RRGGBBAA), damit keine CSS-Werte ueber das Backend eingeschleust werden koennen.</li>        <li>Security: Die <code>media-is-in-use</code>-Extension-Points in <code>boot.php</code> verwenden jetzt gebundene Parameter statt SQL-String-Konkatenation mit <code>addslashes()</code>.</li>
+        <li>Security: Die <code>save()</code>-Methoden in <code>lib/Reference.php</code> und <code>lib/Tag.php</code> verwenden jetzt gebundene Parameter statt SQL-String-Konkatenation mit <code>addslashes()</code>.</li>
+        <li>Security: Modul-Ausgaben (<code>modules/50/5-8/output.php</code>) härten Backend-Eingaben gegen XSS via <code>rex_escape()</code> für Referenz-Namen, Teaser-Überschriften, externe URLs sowie für Bildtitel/-Alt im <code>printImages()</code>-Helper.</li></ul>
 <p>1.2.0:</p>
 <ul>
 	<li>Neue Module 50-5 bis 50-8 als Bootstrap-5-Varianten der bestehenden Beispielmodule hinzugefügt.</li>

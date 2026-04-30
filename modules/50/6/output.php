@@ -20,14 +20,14 @@ if (!function_exists('printImages')) {
         echo '<div class="row">';
         foreach ($pics as $pic) {
             $media = rex_media::get($pic);
-            echo '<a href="'. rex_media_manager::getUrl($type_detail, $pic) .'" data-d2u-gallery="gallery-'. $lightbox_id .'" class="col-6 col-sm-4 col-lg-3"';
+            echo '<a href="'. rex_escape(rex_media_manager::getUrl($type_detail, $pic)) .'" data-d2u-gallery="gallery-'. (int) $lightbox_id .'" class="col-6 col-sm-4 col-lg-3"';
             if ($media instanceof rex_media) {
-                echo ' data-title="'. $media->getValue('title') .'"';
+                echo ' data-title="'. rex_escape((string) $media->getValue('title')) .'"';
             }
-            echo ' onclick="event.preventDefault(); d2uLightboxOpen(\'gallery-'. $lightbox_id .'\', this);">';
-            echo '<img src="'. rex_media_manager::getUrl($type_thumb, $pic) .'" class="img-fluid gallery-pic-box"';
+            echo ' onclick="event.preventDefault(); d2uLightboxOpen(\'gallery-'. (int) $lightbox_id .'\', this);">';
+            echo '<img src="'. rex_escape(rex_media_manager::getUrl($type_thumb, $pic)) .'" class="img-fluid gallery-pic-box"';
             if ($media instanceof rex_media) {
-                echo ' alt="'. $media->getValue('title') .'" title="'. $media->getValue('title') .'"';
+                echo ' alt="'. rex_escape((string) $media->getValue('title')) .'" title="'. rex_escape((string) $media->getValue('title')) .'"';
             }
             echo '>';
             echo '</a>';
@@ -68,7 +68,7 @@ if (!function_exists('printReferenceList_mod_50_2')) {
                 $year = date('Y', strtotime($reference->date));
                 echo '<div data-d2u-reference-filter-year-group>';
                 echo '<div class="col-12 abstand">';
-                echo '<h2 class="section-title">'. \Sprog\Wildcard::get('d2u_references_references') .' '. $year .'</h2>';
+                echo '<h2 class="section-title">'. \Sprog\Wildcard::get('d2u_references_references') .' '. rex_escape($year) .'</h2>';
                 echo '</div>';
                 echo '<div class="row">';
                 $year_group_open = true;
@@ -87,18 +87,18 @@ if (!function_exists('printReferenceList_mod_50_2')) {
             }
             $box_style = count($style_vars) > 0 ? ' style="'. implode('; ', $style_vars) .';"' : '';
             echo '<div class="reference-box-mod-50-2"'. $box_style .'>'; // START reference-box
-            echo '<div class="reference-box-heading-mod-50-2"><h3>'. $reference->name .'</h3></div>';
+            echo '<div class="reference-box-heading-mod-50-2"><h3>'. rex_escape($reference->name) .'</h3></div>';
 
             $details_url = $reference->getUrl();
             $has_details_link = '' !== $details_url;
 
             if ($has_details_link) {
-                echo '<a href="'. $details_url .'">';
+                echo '<a href="'. rex_escape($details_url) .'">';
             }
             echo '<div class="reference-box-image">';
             echo '<div class="reference-box-preview-wrap">';
             if (count($reference->pictures) > 0) {
-                echo '<img src="'. rex_media_manager::getUrl('d2u_references_list_flat',  $reference->pictures[0]) .'" alt="'. $reference->name .'" title="'. $reference->name .'" class="reference-box-preview">';
+                echo '<img src="'. rex_escape(rex_media_manager::getUrl('d2u_references_list_flat',  $reference->pictures[0])) .'" alt="'. rex_escape($reference->name) .'" title="'. rex_escape($reference->name) .'" class="reference-box-preview">';
             }
             echo '</div>';
             echo '<span class="icon go-details"></span>';
@@ -136,10 +136,10 @@ if (filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' => [
 
     echo '<div class="col-12">';
     echo '<div class="reference-detail">';
-    echo '<h1>'. $reference->name .'</h1>';
+    echo '<h1>'. rex_escape($reference->name) .'</h1>';
     echo TobiasKrais\D2UHelper\FrontendHelper::prepareEditorField($reference->description);
     if ('' !== $reference->external_url_lang || '' !== $reference->external_url) {
-        echo '<a href="'. ('' !== $reference->external_url_lang ? $reference->external_url_lang : $reference->external_url) .'">»&nbsp;&nbsp;'. \Sprog\Wildcard::get('d2u_references_external_url') .'</a>';
+        echo '<a href="'. rex_escape('' !== $reference->external_url_lang ? $reference->external_url_lang : $reference->external_url) .'">»&nbsp;&nbsp;'. \Sprog\Wildcard::get('d2u_references_external_url') .'</a>';
     }
     if (\rex_addon::get('d2u_videos') instanceof rex_addon && \rex_addon::get('d2u_videos')->isAvailable() && false !== $reference->video) {
         $videomanager = new \TobiasKrais\D2UVideos\Videomanager();

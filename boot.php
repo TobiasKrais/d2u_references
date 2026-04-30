@@ -125,19 +125,19 @@ function rex_d2u_references_media_is_in_use(rex_extension_point $ep): array
 {
     $warning = $ep->getSubject();
     $params = $ep->getParams();
-    $filename = addslashes((string) $params['filename']);
+    $filename = (string) $params['filename'];
 
     // References
     $sql_references = rex_sql::factory();
     $sql_references->setQuery('SELECT lang.reference_id, name FROM `' . rex::getTablePrefix() . 'd2u_references_references_lang` AS lang '
         .'LEFT JOIN `' . rex::getTablePrefix() . 'd2u_references_references` AS refs ON lang.reference_id = refs.reference_id '
-        .'WHERE FIND_IN_SET("'. $filename .'", pictures)');
+        .'WHERE FIND_IN_SET(:filename, pictures)', [':filename' => $filename]);
 
     // Tags
     $sql_tags = rex_sql::factory();
     $sql_tags->setQuery('SELECT lang.tag_id, name FROM `' . rex::getTablePrefix() . 'd2u_references_tags_lang` AS lang '
         .'LEFT JOIN `' . rex::getTablePrefix() . 'd2u_references_tags` AS tags ON lang.tag_id = tags.tag_id '
-        .'WHERE picture = "'. $filename .'"');
+        .'WHERE picture = :filename', [':filename' => $filename]);
 
     // Prepare warnings
     // References

@@ -329,17 +329,21 @@ class Reference implements \TobiasKrais\D2UHelper\ITranslationHelper
             $pre_save_object = new self($this->reference_id, $this->clang_id);
             if ($pre_save_object !== $this) {
                 $query = 'REPLACE INTO '. rex::getTablePrefix() .'d2u_references_references_lang SET '
-                        ."reference_id = '". $this->reference_id ."', "
-                        ."clang_id = '". $this->clang_id ."', "
-                        ."name = '". addslashes($this->name) ."', "
-                        ."teaser = '". addslashes(htmlspecialchars($this->teaser)) ."', "
-                        ."description = '". addslashes(htmlspecialchars($this->description)) ."', "
+                        .'reference_id = '. (int) $this->reference_id .', '
+                        .'clang_id = '. (int) $this->clang_id .', '
+                        .'name = :name, '
+                        .'teaser = :teaser, '
+                        .'description = :description, '
                         ."url_lang = '". $this->external_url_lang ."', "
                         ."translation_needs_update = '". $this->translation_needs_update ."', "
                         .'updatedate = CURRENT_TIMESTAMP ';
 
                 $result = rex_sql::factory();
-                $result->setQuery($query);
+                $result->setQuery($query, [
+                    ':name' => $this->name,
+                    ':teaser' => htmlspecialchars($this->teaser),
+                    ':description' => htmlspecialchars($this->description),
+                ]);
                 $error = $result->hasError();
 
                 if (!$error && $pre_save_object->name !== $this->name) {

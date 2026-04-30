@@ -276,14 +276,14 @@ class Tag implements \TobiasKrais\D2UHelper\ITranslationHelper
             $pre_save_object = new self($this->tag_id, $this->clang_id);
             if ($pre_save_object !== $this) {
                 $query = 'REPLACE INTO '. rex::getTablePrefix() .'d2u_references_tags_lang SET '
-                        ."tag_id = '". $this->tag_id ."', "
-                        ."clang_id = '". $this->clang_id ."', "
-                        ."name = '". addslashes($this->name) ."', "
+                        .'tag_id = '. (int) $this->tag_id .', '
+                        .'clang_id = '. (int) $this->clang_id .', '
+                        .'name = :name, '
                         ."translation_needs_update = '". $this->translation_needs_update ."', "
                         .'updatedate = CURRENT_TIMESTAMP ';
 
                 $result = rex_sql::factory();
-                $result->setQuery($query);
+                $result->setQuery($query, [':name' => $this->name]);
                 $error = $result->hasError();
 
                 if (!$error && $pre_save_object->name !== $this->name) {

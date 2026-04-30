@@ -37,16 +37,16 @@ foreach ($references as $reference) {
     echo '<div class="reference-box d-flex flex-column h-100 w-100"'. $box_style .'>'; // START reference-box
 
     if ('' !== $reference->external_url_lang || '' !== $reference->external_url) {
-        echo '<a href="'. ('' !== $reference->external_url_lang ? $reference->external_url_lang : $reference->external_url) .'">';
+        echo '<a href="'. rex_escape('' !== $reference->external_url_lang ? $reference->external_url_lang : $reference->external_url) .'">';
     }
     echo '<div class="reference-box-media ratio ratio-4x3">';
     if (count($reference->pictures) > 0) {
-        echo '<img src="'. rex_media_manager::getUrl('d2u_helper_sm', $reference->pictures[0]) .'" alt="'. $reference->name .'" title="'. $reference->name .'">';
+        echo '<img src="'. rex_escape(rex_media_manager::getUrl('d2u_helper_sm', $reference->pictures[0])) .'" alt="'. rex_escape($reference->name) .'" title="'. rex_escape($reference->name) .'">';
     }
     echo '</div>';
 
     echo '<div class="reference-box-content d-flex flex-column flex-grow-1">';
-    echo '<div class="reference-box-heading-mod-50-1"><b>'. $reference->name .'</b></div>';
+    echo '<div class="reference-box-heading-mod-50-1"><b>'. rex_escape($reference->name) .'</b></div>';
     if ('' !== $reference->external_url_lang || '' !== $reference->external_url) {
         echo '</a>';
     }

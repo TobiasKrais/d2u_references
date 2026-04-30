@@ -20,14 +20,14 @@ if (!function_exists('printImages')) {
         echo '<div class="row">';
         foreach ($pics as $pic) {
             $media = rex_media::get($pic);
-            echo '<a href="'. rex_media_manager::getUrl($type_detail, $pic) .'" data-d2u-gallery="gallery-'. $lightbox_id .'" class="col-6 col-sm-4 col-lg-3"';
+            echo '<a href="'. rex_escape(rex_media_manager::getUrl($type_detail, $pic)) .'" data-d2u-gallery="gallery-'. (int) $lightbox_id .'" class="col-6 col-sm-4 col-lg-3"';
             if ($media instanceof rex_media) {
-                echo ' data-title="'. $media->getValue('title') .'"';
+                echo ' data-title="'. rex_escape((string) $media->getValue('title')) .'"';
             }
-            echo ' onclick="event.preventDefault(); d2uLightboxOpen(\'gallery-'. $lightbox_id .'\', this);">';
-            echo '<img src="'. rex_media_manager::getUrl($type_thumb, $pic) .'" class="img-fluid gallery-pic-box"';
+            echo ' onclick="event.preventDefault(); d2uLightboxOpen(\'gallery-'. (int) $lightbox_id .'\', this);">';
+            echo '<img src="'. rex_escape(rex_media_manager::getUrl($type_thumb, $pic)) .'" class="img-fluid gallery-pic-box"';
             if ($media instanceof rex_media) {
-                echo ' alt="'. $media->getValue('title') .'" title="'. $media->getValue('title') .'"';
+                echo ' alt="'. rex_escape((string) $media->getValue('title')) .'" title="'. rex_escape((string) $media->getValue('title')) .'"';
             }
             echo '>';
             echo '</a>';
@@ -75,14 +75,14 @@ if (!function_exists('printReferenceList_mod_50_3')) {
             $has_details_link = '' !== $details_url;
 
             if ($has_details_link) {
-                echo '<a href="'. $details_url .'">';
+                echo '<a href="'. rex_escape($details_url) .'">';
             }
             echo '<div class="reference-box-image p-0 mb-2">';
             if (count($reference->pictures) > 0) {
-                echo '<img src="'. rex_media_manager::getUrl('d2u_references_list_flat',  $reference->pictures[0]) .'" alt="'. $reference->name .'" title="'. $reference->name .'">';
+                echo '<img src="'. rex_escape(rex_media_manager::getUrl('d2u_references_list_flat',  $reference->pictures[0])) .'" alt="'. rex_escape($reference->name) .'" title="'. rex_escape($reference->name) .'">';
             }
             echo '</div>';
-            echo '<div class="reference-box-heading-mod-50-3"><p class="mb-2"><b>'. $reference->name .'</b></p>'
+            echo '<div class="reference-box-heading-mod-50-3"><p class="mb-2"><b>'. rex_escape($reference->name) .'</b></p>'
                 . TobiasKrais\D2UHelper\FrontendHelper::prepareEditorField($reference->teaser) .'</div>';
             if ($has_details_link) {
                 echo '</a>';
@@ -125,12 +125,12 @@ if (filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' => [
         $offset_lg = ' me-lg-auto ms-lg-auto ';
     }
 
-    echo '<div class="col-12 col-lg-'. $cols_lg . $offset_lg .'">';
+    echo '<div class="col-12 col-lg-'. (int) $cols_lg . $offset_lg .'">';
     echo '<div class="reference-detail">';
-    echo '<h1>'. $reference->name .'</h1>';
+    echo '<h1>'. rex_escape($reference->name) .'</h1>';
     echo TobiasKrais\D2UHelper\FrontendHelper::prepareEditorField($reference->description);
     if ('' !== $reference->external_url_lang || '' !== $reference->external_url) {
-        echo '<a href="'. ('' !== $reference->external_url_lang ? $reference->external_url_lang : $reference->external_url) .'">»&nbsp;&nbsp;'. \Sprog\Wildcard::get('d2u_references_external_url') .'</a>';
+        echo '<a href="'. rex_escape('' !== $reference->external_url_lang ? $reference->external_url_lang : $reference->external_url) .'">»&nbsp;&nbsp;'. \Sprog\Wildcard::get('d2u_references_external_url') .'</a>';
     }
     if (\rex_addon::get('d2u_videos') instanceof rex_addon && \rex_addon::get('d2u_videos')->isAvailable() && false !== $reference->video) {
         $videomanager = new \TobiasKrais\D2UVideos\Videomanager();
