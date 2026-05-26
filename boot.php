@@ -12,6 +12,7 @@ if (rex::isBackend() && is_object(rex::getUser())) {
 if (rex::isBackend()) {
     rex_extension::register('ART_PRE_DELETED', rex_d2u_references_article_is_in_use(...));
     rex_extension::register('CLANG_DELETED', rex_d2u_references_clang_deleted(...));
+    rex_extension::register('D2U_VIDEO_IN_USE', rex_d2u_references_video_is_in_use(...));
     rex_extension::register('D2U_HELPER_TRANSLATION_LIST', rex_d2u_references_translation_list(...));
     rex_extension::register('MEDIA_IS_IN_USE', rex_d2u_references_media_is_in_use(...));
 }
@@ -142,8 +143,8 @@ function rex_d2u_references_media_is_in_use(rex_extension_point $ep): array
     // Prepare warnings
     // References
     for ($i = 0; $i < $sql_references->getRows(); ++$i) {
-        $message = '<a href="javascript:openPage(\'index.php?page=d2u_references/reference&func=edit&entry_id='.
-            $sql_references->getValue('reference_id') .'\')">'. rex_i18n::msg('d2u_references_rights') .' - '. rex_i18n::msg('d2u_references_references') .': '. $sql_references->getValue('name') .'</a>';
+        $message = '<a href="?page=d2u_references/reference&amp;func=edit&amp;entry_id='.
+            $sql_references->getValue('reference_id') .'&amp;list=d70bbb0b">'. rex_i18n::msg('d2u_references_rights') .' - '. rex_i18n::msg('d2u_references_references') .': '. $sql_references->getValue('name') .'</a>';
         if (!in_array($message, $warning, true)) {
             $warning[] = $message;
         }
@@ -158,6 +159,34 @@ function rex_d2u_references_media_is_in_use(rex_extension_point $ep): array
             $warning[] = $message;
         }
         $sql_tags->next();
+    }
+
+    return $warning;
+}
+
+/**
+ * Checks if video is used by this addon.
+ * @param rex_extension_point<array<string>> $ep Redaxo extension point
+ * @return array<string> Warning message as array
+ */
+function rex_d2u_references_video_is_in_use(rex_extension_point $ep): array
+{
+    $warning = $ep->getSubject();
+    $params = $ep->getParams();
+    $video_id = (int) $params['video_id'];
+
+    $sql_references = rex_sql::factory();
+    $sql_references->setQuery('SELECT lang.reference_id, name FROM `' . rex::getTablePrefix() . 'd2u_references_references_lang` AS lang '
+        .'LEFT JOIN `' . rex::getTablePrefix() . 'd2u_references_references` AS refs ON lang.reference_id = refs.reference_id '
+        .'WHERE refs.video_id = :video_id GROUP BY lang.reference_id', [':video_id' => $video_id]);
+
+    for ($i = 0; $i < $sql_references->getRows(); ++$i) {
+        $message = '<a href="?page=d2u_references/reference&amp;func=edit&amp;entry_id='.
+            $sql_references->getValue('reference_id') .'&amp;list=d70bbb0b">'. rex_i18n::msg('d2u_references_rights') .' - '. rex_i18n::msg('d2u_references_references') .': '. $sql_references->getValue('name') .'</a>';
+        if (!in_array($message, $warning, true)) {
+            $warning[] = $message;
+        }
+        $sql_references->next();
     }
 
     return $warning;
