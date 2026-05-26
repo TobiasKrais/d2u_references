@@ -1,6 +1,10 @@
 <?php
 ?>
 <h2>Changelog</h2>
+<p>1.2.2-DEV:</p>
+<ul>
+	<li>...</li>
+</ul>
 <p>1.2.1:</p>
 <ul>
 	<li>Backend: Abbrechen-Buttons in Referenz- und Tagformularen fuehren jetzt wieder zur Liste.</li>
