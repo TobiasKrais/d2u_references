@@ -1,7 +1,7 @@
 <?php
 ?>
 <h2>Changelog</h2>
-<p>1.2.1-DEV:</p>
+<p>1.2.1:</p>
 <ul>
 	<li>Backend: Abbrechen-Buttons in Referenz- und Tagformularen fuehren jetzt wieder zur Liste.</li>
 	<li>Backend: CSRF-Schutz fuer Speichern-, Loesch- und Statusaktionen der Referenzverwaltung ergaenzt.</li>
