@@ -1,6 +1,10 @@
 <?php
 ?>
 <h2>Changelog</h2>
+<p>1.2.3-DEV:</p>
+<ul>
+	<li>...</li>
+</ul>
 <p>1.2.2:</p>
 <ul>
 	<li>Security: In <code>boot.php</code> werden Referenz- und Tag-Namen in den Übersetzungs-Hilfslisten (<code>YFORM_DATA_LIST</code>/Translation-Helper) mit <code>rex_escape()</code> gehärtet.</li>
