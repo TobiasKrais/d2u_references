@@ -33,13 +33,13 @@ foreach ($references as $reference) {
     echo '<div class="reference-box"'. $bg_color .' data-height-watch>'; // START reference-box
 
     if ('' !== $reference->external_url_lang || '' !== $reference->external_url) {
-        echo '<a href="'. ('' !== $reference->external_url_lang ? $reference->external_url_lang : $reference->external_url) .'">';
+        echo '<a href="'. rex_escape(TobiasKrais\D2UHelper\FrontendHelper::sanitizeUrl('' !== $reference->external_url_lang ? $reference->external_url_lang : $reference->external_url), 'html_attr') .'">';
     }
     if (count($reference->pictures) > 0) {
-        echo '<img src="'. rex_media_manager::getUrl('d2u_helper_sm', $reference->pictures[0]) .'" alt="'. $reference->name .'" title="'. $reference->name .'">';
+        echo '<img src="'. rex_media_manager::getUrl('d2u_helper_sm', $reference->pictures[0]) .'" alt="'. rex_escape($reference->name, 'html_attr') .'" title="'. rex_escape($reference->name, 'html_attr') .'">';
     }
 
-    echo '<div class="reference-box-heading-mod-50-1"><b>'. $reference->name .'</b></div>';
+    echo '<div class="reference-box-heading-mod-50-1"><b>'. rex_escape($reference->name) .'</b></div>';
     if ('' !== $reference->external_url_lang || '' !== $reference->external_url) {
         echo '</a>';
     }

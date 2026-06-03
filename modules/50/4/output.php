@@ -88,7 +88,7 @@ if (!function_exists('printReferenceList_mod_50_4')) {
             // Textbox
             $text = '<div class="col-12 col-md-6 text-rf-mod-4">';
             $text .= '<div class="references-content-rf-mod-4">';
-            $text .= '<div class="references-title-rf-mod-4">'. $reference->name .'</div>';
+            $text .= '<div class="references-title-rf-mod-4">'. rex_escape($reference->name) .'</div>';
             if ('' !== $reference->teaser) {
                 $text .= '<div class="references-teaser-rf-mod-4">'. $reference->teaser .'</div>';
             }
@@ -141,10 +141,14 @@ if (rex::isBackend()) {
 
         echo '<div class="col-12">';
         echo '<div class="reference-detail">';
-        echo '<h1><a href="'. rex_getUrl() .'"><span class="fa-icon fa-back back-spacer"></span></a>'. $reference->name .'</h1>';
+        echo '<h1><a href="'. rex_getUrl() .'"><span class="fa-icon fa-back back-spacer"></span></a>'. rex_escape($reference->name) .'</h1>';
         echo TobiasKrais\D2UHelper\FrontendHelper::prepareEditorField($reference->description);
         if ('' !== $reference->external_url_lang || '' !== $reference->external_url) {
-            echo '<a href="'. ('' !== $reference->external_url_lang ? $reference->external_url_lang : $reference->external_url) .'">»&nbsp;&nbsp;'. \Sprog\Wildcard::get('d2u_references_external_url') .'</a>';
+            $external_url = '' !== $reference->external_url_lang ? $reference->external_url_lang : $reference->external_url;
+            $external_url = TobiasKrais\D2UHelper\FrontendHelper::sanitizeUrl($external_url);
+            if ('' !== $external_url) {
+                echo '<a href="'. rex_escape($external_url, 'html_attr') .'">»&nbsp;&nbsp;'. \Sprog\Wildcard::get('d2u_references_external_url') .'</a>';
+            }
         }
         if (\rex_addon::get('d2u_videos') instanceof rex_addon && \rex_addon::get('d2u_videos')->isAvailable() && false !== $reference->video) {
             $videomanager = new \TobiasKrais\D2UVideos\Videomanager();

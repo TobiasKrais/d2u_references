@@ -72,10 +72,10 @@ if (!function_exists('printReferenceList_mod_50_3')) {
             }
             echo '<div class="reference-box-image">';
             if (count($reference->pictures) > 0) {
-                echo '<img src="'. rex_media_manager::getUrl('d2u_references_list_flat',  $reference->pictures[0]) .'" alt="'. $reference->name .'" title="'. $reference->name .'">';
+                echo '<img src="'. rex_media_manager::getUrl('d2u_references_list_flat',  $reference->pictures[0]) .'" alt="'. rex_escape($reference->name, 'html_attr') .'" title="'. rex_escape($reference->name, 'html_attr') .'">';
             }
             echo '</div>';
-            echo '<div class="reference-box-heading-mod-50-3"><b>'. $reference->name .'</b><br>'
+            echo '<div class="reference-box-heading-mod-50-3"><b>'. rex_escape($reference->name) .'</b><br>'
                 . TobiasKrais\D2UHelper\FrontendHelper::prepareEditorField($reference->teaser) .'</div>';
             if (strlen($reference->name) > 10) {
                 echo '</a>';
@@ -119,10 +119,13 @@ if (filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' => [
 
     echo '<div class="col-12 col-lg-'. $cols_lg . $offset_lg .'">';
     echo '<div class="reference-detail">';
-    echo '<h1>'. $reference->name .'</h1>';
+    echo '<h1>'. rex_escape($reference->name) .'</h1>';
     echo TobiasKrais\D2UHelper\FrontendHelper::prepareEditorField($reference->description);
     if ('' !== $reference->external_url_lang || '' !== $reference->external_url) {
-        echo '<a href="'. ('' !== $reference->external_url_lang ? $reference->external_url_lang : $reference->external_url) .'">»&nbsp;&nbsp;'. \Sprog\Wildcard::get('d2u_references_external_url') .'</a>';
+        $external_url = TobiasKrais\D2UHelper\FrontendHelper::sanitizeUrl('' !== $reference->external_url_lang ? $reference->external_url_lang : $reference->external_url);
+        if ('' !== $external_url) {
+            echo '<a href="'. rex_escape($external_url, 'html_attr') .'">»&nbsp;&nbsp;'. \Sprog\Wildcard::get('d2u_references_external_url') .'</a>';
+        }
     }
     if (\rex_addon::get('d2u_videos') instanceof rex_addon && \rex_addon::get('d2u_videos')->isAvailable() && false !== $reference->video) {
         $videomanager = new \TobiasKrais\D2UVideos\Videomanager();

@@ -3,7 +3,8 @@
 <h2>Changelog</h2>
 <p>1.2.2-DEV:</p>
 <ul>
-	<li>...</li>
+	<li>Security: In <code>boot.php</code> werden Referenz- und Tag-Namen in den Übersetzungs-Hilfslisten (<code>YFORM_DATA_LIST</code>/Translation-Helper) mit <code>rex_escape()</code> gehärtet.</li>
+	<li>Security: Auch in den Beispielmodulen <code>modules/50/1-3/output.php</code> werden Referenz-Namen (Überschriften, Box-Titel sowie Bild-<code>alt</code>/<code>title</code>) jetzt mit <code>rex_escape()</code> ausgegeben und die externe Produkt-URL über <code>FrontendHelper::sanitizeUrl()</code> gefiltert und attributsicher escaped. Rich-Text-Felder (Teaser/Beschreibung) bleiben bewusst unverändert.</li>
 </ul>
 <p>1.2.1:</p>
 <ul>

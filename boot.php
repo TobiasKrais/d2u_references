@@ -217,7 +217,7 @@ function rex_d2u_references_translation_list(rex_extension_point $ep): array
             if ('' === $reference->name) {
                 $reference = new \TobiasKrais\D2UReferences\Reference($reference->reference_id, $source_clang_id);
             }
-            $html_references .= '<li><a href="'. rex_url::backendPage('d2u_references/reference', ['entry_id' => $reference->reference_id, 'func' => 'edit']) .'">'. $reference->name .'</a></li>';
+            $html_references .= '<li><a href="'. rex_url::backendPage('d2u_references/reference', ['entry_id' => $reference->reference_id, 'func' => 'edit']) .'">'. rex_escape($reference->name) .'</a></li>';
         }
         $html_references .= '</ul>';
         
@@ -235,7 +235,7 @@ function rex_d2u_references_translation_list(rex_extension_point $ep): array
             if ('' === $tag->name) {
                 $tag = new \TobiasKrais\D2UReferences\Tag($tag->tag_id, $source_clang_id);
             }
-            $html_tags .= '<li><a href="'. rex_url::backendPage('d2u_references/tag', ['entry_id' => $tag->tag_id, 'func' => 'edit']) .'">'. $tag->name .'</a></li>';
+            $html_tags .= '<li><a href="'. rex_url::backendPage('d2u_references/tag', ['entry_id' => $tag->tag_id, 'func' => 'edit']) .'">'. rex_escape($tag->name) .'</a></li>';
         }
         $html_tags .= '</ul>';
         
