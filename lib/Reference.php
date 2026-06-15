@@ -289,35 +289,42 @@ class Reference implements \TobiasKrais\D2UHelper\ITranslationHelper
 
         if (0 === $this->reference_id || $pre_save_object !== $this) {
             $query = rex::getTablePrefix() .'d2u_references_references SET '
-                    .'online_status = "'. $this->online_status .'", '
-                    .'pictures = "'. implode(',', $this->pictures) .'", '
-                    .'background_color = "'. $this->background_color .'", '
-                    .'background_color_dark = "'. $this->background_color_dark .'", '
-                    .'video_id = '. (false !== $this->video ? $this->video->video_id : 0) .', '
-                    .'article_id = '. $this->article_id .', '
-                    .'url = "'. $this->external_url .'", '
-                    .'`date` = "'. $this->date .'"';
+                    .'online_status = :online_status, '
+                    .'pictures = :pictures, '
+                    .'background_color = :background_color, '
+                    .'background_color_dark = :background_color_dark, '
+                    .'video_id = '. (false !== $this->video ? (int) $this->video->video_id : 0) .', '
+                    .'article_id = '. (int) $this->article_id .', '
+                    .'url = :url, '
+                    .'`date` = :date';
 
             if (0 === $this->reference_id) {
                 $query = 'INSERT INTO '. $query;
             } else {
-                $query = 'UPDATE '. $query .' WHERE reference_id = '. $this->reference_id;
+                $query = 'UPDATE '. $query .' WHERE reference_id = '. (int) $this->reference_id;
             }
 
             $result = rex_sql::factory();
-            $result->setQuery($query);
+            $result->setQuery($query, [
+                ':online_status' => $this->online_status,
+                ':pictures' => implode(',', $this->pictures),
+                ':background_color' => $this->background_color,
+                ':background_color_dark' => $this->background_color_dark,
+                ':url' => $this->external_url,
+                ':date' => $this->date,
+            ]);
             if (0 === $this->reference_id) {
                 $this->reference_id = (int) $result->getLastId();
                 $error = $result->hasError();
             }
 
             // Save tag links
-            $query_del_tags = 'DELETE FROM '. rex::getTablePrefix() .'d2u_references_tag2refs WHERE reference_id = '. $this->reference_id;
+            $query_del_tags = 'DELETE FROM '. rex::getTablePrefix() .'d2u_references_tag2refs WHERE reference_id = '. (int) $this->reference_id;
             $result_del_tags = rex_sql::factory();
             $result_del_tags->setQuery($query_del_tags);
 
             foreach ($this->tag_ids as $tag_id) {
-                $query_add_tags = 'INSERT INTO '. rex::getTablePrefix() .'d2u_references_tag2refs SET reference_id = '. $this->reference_id .', tag_id = '. $tag_id;
+                $query_add_tags = 'INSERT INTO '. rex::getTablePrefix() .'d2u_references_tag2refs SET reference_id = '. (int) $this->reference_id .', tag_id = '. (int) $tag_id;
                 $result_add_tags = rex_sql::factory();
                 $result_add_tags->setQuery($query_add_tags);
             }
@@ -334,8 +341,8 @@ class Reference implements \TobiasKrais\D2UHelper\ITranslationHelper
                         .'name = :name, '
                         .'teaser = :teaser, '
                         .'description = :description, '
-                        ."url_lang = '". $this->external_url_lang ."', "
-                        ."translation_needs_update = '". $this->translation_needs_update ."', "
+                        .'url_lang = :url_lang, '
+                        .'translation_needs_update = :translation_needs_update, '
                         .'updatedate = CURRENT_TIMESTAMP ';
 
                 $result = rex_sql::factory();
@@ -343,6 +350,8 @@ class Reference implements \TobiasKrais\D2UHelper\ITranslationHelper
                     ':name' => $this->name,
                     ':teaser' => htmlspecialchars($this->teaser),
                     ':description' => htmlspecialchars($this->description),
+                    ':url_lang' => $this->external_url_lang,
+                    ':translation_needs_update' => $this->translation_needs_update,
                 ]);
                 $error = $result->hasError();
 

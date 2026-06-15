@@ -243,28 +243,28 @@ class Tag implements \TobiasKrais\D2UHelper\ITranslationHelper
 
         if (0 === $this->tag_id || $pre_save_object !== $this) {
             $query = rex::getTablePrefix() .'d2u_references_tags SET '
-                    ."picture = '". $this->picture ."' ";
+                    .'picture = :picture ';
 
             if (0 === $this->tag_id) {
                 $query = 'INSERT INTO '. $query;
             } else {
-                $query = 'UPDATE '. $query .' WHERE tag_id = '. $this->tag_id;
+                $query = 'UPDATE '. $query .' WHERE tag_id = '. (int) $this->tag_id;
             }
 
             $result = rex_sql::factory();
-            $result->setQuery($query);
+            $result->setQuery($query, [':picture' => $this->picture]);
             if (0 === $this->tag_id) {
                 $this->tag_id = (int) $result->getLastId();
                 $error = $result->hasError();
             }
 
             // Save reference links
-            $query_del_refs = 'DELETE FROM '. rex::getTablePrefix() .'d2u_references_tag2refs WHERE tag_id = '. $this->tag_id;
+            $query_del_refs = 'DELETE FROM '. rex::getTablePrefix() .'d2u_references_tag2refs WHERE tag_id = '. (int) $this->tag_id;
             $result_del_refs = rex_sql::factory();
             $result_del_refs->setQuery($query_del_refs);
 
             foreach ($this->reference_ids as $reference_id) {
-                $query_add_refs = 'REPLACE INTO '. rex::getTablePrefix() .'d2u_references_tag2refs SET reference_id = '. $reference_id .', tag_id = '. $this->tag_id;
+                $query_add_refs = 'REPLACE INTO '. rex::getTablePrefix() .'d2u_references_tag2refs SET reference_id = '. (int) $reference_id .', tag_id = '. (int) $this->tag_id;
                 $result_add_tags = rex_sql::factory();
                 $result_add_tags->setQuery($query_add_refs);
             }
@@ -279,11 +279,14 @@ class Tag implements \TobiasKrais\D2UHelper\ITranslationHelper
                         .'tag_id = '. (int) $this->tag_id .', '
                         .'clang_id = '. (int) $this->clang_id .', '
                         .'name = :name, '
-                        ."translation_needs_update = '". $this->translation_needs_update ."', "
+                        .'translation_needs_update = :translation_needs_update, '
                         .'updatedate = CURRENT_TIMESTAMP ';
 
                 $result = rex_sql::factory();
-                $result->setQuery($query, [':name' => $this->name]);
+                $result->setQuery($query, [
+                    ':name' => $this->name,
+                    ':translation_needs_update' => $this->translation_needs_update,
+                ]);
                 $error = $result->hasError();
 
                 if (!$error && $pre_save_object->name !== $this->name) {
