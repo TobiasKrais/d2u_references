@@ -3,6 +3,7 @@
 <h2>Changelog</h2>
 <p>1.2.3-DEV:</p>
 <ul>
+	<li>Wartung: Die Backend-Seiten Einstellungen und Setup verzichten jetzt auf separate Inhaltsdateien mit <code>require</code>; der Inhalt steht direkt in <code>pages/settings.settings.php</code> und <code>pages/settings.setup.php</code>. Damit kann ein versehentliches Löschen einer Zieldatei die Seiten nicht mehr unbenutzbar machen.</li>
 	<li>Security/Bugfix: Die <code>save()</code>-Methoden in <code>lib/Reference.php</code> und <code>lib/Tag.php</code> verwenden jetzt durchgaengig gebundene Parameter statt SQL-String-Konkatenation (inkl. der mit doppelten Anfuehrungszeichen konkatenierten Felder in <code>Reference</code> wie <code>online_status</code>, <code>pictures</code>, <code>background_color</code>, <code>url</code>, <code>date</code>, <code>url_lang</code>); IDs werden nach <code>int</code> gecastet. Verhindert SQL-Injection und <code>rex_sql_exception</code> bei Werten mit Anfuehrungszeichen.</li>
 </ul>
 <p>1.2.2:</p>
