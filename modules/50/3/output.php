@@ -50,8 +50,6 @@ if (!function_exists('printReferenceList_mod_50_3')) {
      */
     function printReferenceList_mod_50_3($references, $tags): void
     {
-        echo '<div data-d2u-reference-filter-root>';
-
         // Text
         if ('' !== 'REX_VALUE[id=1 isset=1]') {
             echo '<div class="col-12">';
@@ -88,8 +86,6 @@ if (!function_exists('printReferenceList_mod_50_3')) {
             }
             ++$counter;
         }
-
-        echo '</div>';
     }
 }
 
