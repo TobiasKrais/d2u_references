@@ -1,7 +1,7 @@
 <?php
 ?>
 <h2>Changelog</h2>
-<p>1.2.3-DEV:</p>
+<p>1.2.3:</p>
 <ul>
 	<li>Bugfix: Der Online/Offline-Schalter in der Backend-Liste funktioniert wieder. Beim Erzeugen des CSRF-geschützten Status-Links wurde der Platzhalter für die Datensatz-ID URL-kodiert und dadurch nicht mehr durch die echte ID ersetzt.</li>
 	<li>Wartung: Die Backend-Seiten Einstellungen und Setup verzichten jetzt auf separate Inhaltsdateien mit <code>require</code>; der Inhalt steht direkt in <code>pages/settings.settings.php</code> und <code>pages/settings.setup.php</code>. Damit kann ein versehentliches Löschen einer Zieldatei die Seiten nicht mehr unbenutzbar machen.</li>
