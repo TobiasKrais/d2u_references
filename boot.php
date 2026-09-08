@@ -14,6 +14,7 @@ if (rex::isBackend()) {
     rex_extension::register('CLANG_DELETED', rex_d2u_references_clang_deleted(...));
     rex_extension::register('D2U_VIDEO_IN_USE', rex_d2u_references_video_is_in_use(...));
     rex_extension::register('D2U_HELPER_TRANSLATION_LIST', rex_d2u_references_translation_list(...));
+    rex_extension::register('D2U_HELPER_TRANSLATE_OBJECT', rex_d2u_references_translate_object(...));
     rex_extension::register('MEDIA_IS_IN_USE', rex_d2u_references_media_is_in_use(...));
 }
 else {
@@ -217,7 +218,7 @@ function rex_d2u_references_translation_list(rex_extension_point $ep): array
             if ('' === $reference->name) {
                 $reference = new \TobiasKrais\D2UReferences\Reference($reference->reference_id, $source_clang_id);
             }
-            $html_references .= '<li><a href="'. rex_url::backendPage('d2u_references/reference', ['entry_id' => $reference->reference_id, 'func' => 'edit']) .'">'. rex_escape($reference->name) .'</a></li>';
+            $html_references .= \TobiasKrais\D2UHelper\BackendHelper::getTranslationItem('d2u_references', 'reference', $reference->reference_id, $reference->name, rex_url::backendPage('d2u_references/reference', ['entry_id' => $reference->reference_id, 'func' => 'edit']));
         }
         $html_references .= '</ul>';
         
@@ -235,7 +236,7 @@ function rex_d2u_references_translation_list(rex_extension_point $ep): array
             if ('' === $tag->name) {
                 $tag = new \TobiasKrais\D2UReferences\Tag($tag->tag_id, $source_clang_id);
             }
-            $html_tags .= '<li><a href="'. rex_url::backendPage('d2u_references/tag', ['entry_id' => $tag->tag_id, 'func' => 'edit']) .'">'. rex_escape($tag->name) .'</a></li>';
+            $html_tags .= \TobiasKrais\D2UHelper\BackendHelper::getTranslationItem('d2u_references', 'tag', $tag->tag_id, $tag->name, rex_url::backendPage('d2u_references/tag', ['entry_id' => $tag->tag_id, 'func' => 'edit']));
         }
         $html_tags .= '</ul>';
         
@@ -249,4 +250,48 @@ function rex_d2u_references_translation_list(rex_extension_point $ep): array
     $list[] = $list_entry;
 
     return $list;
+}
+
+/**
+ * Translate a single d2u_references object with AI (D2U_HELPER_TRANSLATE_OBJECT).
+ * @param rex_extension_point<array<string,mixed>> $ep Redaxo extension point
+ * @return array<string,mixed> Result array with success, name and message
+ */
+function rex_d2u_references_translate_object(rex_extension_point $ep)
+{
+    $params = $ep->getParams();
+    if ('d2u_references' !== ($params['addon'] ?? '')) {
+        return $ep->getSubject();
+    }
+
+    $type = (string) ($params['type'] ?? '');
+    $id = (int) ($params['id'] ?? 0);
+    $source_clang_id = (int) ($params['source_clang_id'] ?? 0);
+    $target_clang_id = (int) ($params['target_clang_id'] ?? 0);
+
+    $object = null;
+    switch ($type) {
+        case 'reference':
+            $reference = new \TobiasKrais\D2UReferences\Reference($id, $target_clang_id);
+            $object = $reference->reference_id > 0 ? $reference : null;
+            break;
+        case 'tag':
+            $tag = new \TobiasKrais\D2UReferences\Tag($id, $target_clang_id);
+            $object = $tag->tag_id > 0 ? $tag : null;
+            break;
+        default:
+            return $ep->getSubject();
+    }
+
+    if (!$object instanceof \TobiasKrais\D2UHelper\ITranslateable) {
+        return ['success' => false, 'name' => '', 'message' => rex_i18n::msg('d2u_helper_translations_ai_error')];
+    }
+
+    $success = $object->translateFrom($source_clang_id);
+
+    return [
+        'success' => $success,
+        'name' => $object->name,
+        'message' => $success ? '' : rex_i18n::msg('d2u_helper_translations_ai_error'),
+    ];
 }

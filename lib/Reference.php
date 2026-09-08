@@ -15,7 +15,7 @@ use rex_sql;
 /**
  * Reference.
  */
-class Reference implements \TobiasKrais\D2UHelper\ITranslationHelper
+class Reference implements \TobiasKrais\D2UHelper\ITranslationHelper, \TobiasKrais\D2UHelper\ITranslateable
 {
     /** @var int Database ID */
     public int $reference_id = 0;
@@ -274,6 +274,42 @@ class Reference implements \TobiasKrais\D2UHelper\ITranslationHelper
 
         return $this->url;
 
+    }
+
+    /**
+     * Translate this reference from a source language into its own (target)
+     * language using ai_platform and store the result.
+     * @param int $sourceClangId Redaxo clang id of the source language
+     * @return bool true on success
+     */
+    public function translateFrom(int $sourceClangId): bool
+    {
+        if ($this->reference_id <= 0 || $sourceClangId === $this->clang_id) {
+            return false;
+        }
+
+        $source = new self($this->reference_id, $sourceClangId);
+        if ('' === $source->name && '' === $source->teaser && '' === $source->description) {
+            return false;
+        }
+
+        try {
+            $translated = \TobiasKrais\D2UHelper\AiTranslationHelper::translateFields([
+                'name' => ['value' => $source->name, 'html' => false],
+                'teaser' => ['value' => $source->teaser, 'html' => true],
+                'description' => ['value' => $source->description, 'html' => true],
+            ], $sourceClangId, $this->clang_id);
+        } catch (\Throwable $e) {
+            return false;
+        }
+
+        $this->name = $translated['name'];
+        $this->teaser = $translated['teaser'];
+        $this->description = $translated['description'];
+        $this->translation_needs_update = 'no';
+
+        // save() returns the error flag (true on error), so success is its negation.
+        return false === $this->save();
     }
 
     /**
