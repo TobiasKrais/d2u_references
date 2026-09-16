@@ -12,6 +12,9 @@ d2u_references_no_video = Geen video geselecteerd.
 d2u_references_reference = Referentie
 d2u_references_tags = Tags
 d2u_references_teaser = Korte beschrijving
+d2u_references_seo_hint_meta_title = Wordt gebruikt als meta-titel (paginatitel) voor zoekmachines.
+d2u_references_seo_hint_meta_description = Wordt gebruikt als meta-omschrijving voor zoekmachines.
+d2u_references_seo_hint_first_image = De eerste afbeelding wordt gebruikt voor de SEO-/socialmediavoorbeeld (og:image).
 d2u_references_url = Externe URL
 
 d2u_references_settings_article = Referentie-artikel

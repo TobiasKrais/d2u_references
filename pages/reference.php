@@ -161,7 +161,9 @@ if ('edit' === $func || 'add' === $func) {
 							<div id="details_clang_<?= $rex_clang->getId() ?>">
 								<?php
                                     BackendHelper::form_input('d2u_helper_name', 'form[lang]['. $rex_clang->getId() .'][name]', $reference->name, $required, $readonly_lang, 'text');
+                                    echo '<p class="rex-note">'. rex_i18n::msg('d2u_references_seo_hint_meta_title') .'</p>';
                                     BackendHelper::form_textarea('d2u_references_teaser', 'form[lang]['. $rex_clang->getId() .'][teaser]', $reference->teaser, 5, false, $readonly_lang, true);
+                                    echo '<p class="rex-note">'. rex_i18n::msg('d2u_references_seo_hint_meta_description') .'</p>';
                                     BackendHelper::form_textarea('d2u_helper_description', 'form[lang]['. $rex_clang->getId() .'][description]', $reference->description, 5, false, $readonly_lang, true);
                                     BackendHelper::form_input('d2u_references_url', 'form[lang]['. $rex_clang->getId() .'][url_lang]', $reference->external_url_lang, false, $readonly_lang, 'text');
                                 ?>
@@ -183,6 +185,7 @@ if ('edit' === $func || 'add' === $func) {
                             }
 
                             BackendHelper::form_imagelistfield('d2u_helper_pictures', 1, $reference->pictures, $readonly);
+                            echo '<p class="rex-note">'. rex_i18n::msg('d2u_references_seo_hint_first_image') .'</p>';
                             BackendHelper::form_input_color_pair('d2u_references_background_color', 'form[background_color]', $reference->background_color, 'form[background_color_dark]', $reference->background_color_dark, true);
                             BackendHelper::form_input('d2u_references_url', 'form[url]', $reference->external_url, false, $readonly, 'text');
                             BackendHelper::form_linkfield('d2u_helper_article_id', '1', $reference->article_id, (int) rex_config::get('d2u_helper', 'default_lang'));

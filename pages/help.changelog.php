@@ -4,6 +4,7 @@
 <p>1.2.4-DEV:</p>
 <ul>
 	<li>Neu: KI-Übersetzung in der Übersetzungshilfe von d2u_helper. Ist das Addon <code>ai_platform</code> installiert und ein Standard-Textprofil konfiguriert, lassen sich fehlende oder zu aktualisierende Übersetzungen von Referenzen und Tags direkt in der Übersetzungshilfe automatisch übersetzen (einzeln oder alle auf einmal). Dazu implementieren <code>Reference</code> und <code>Tag</code> das neue Interface <code>TobiasKrais\D2UHelper\ITranslateable</code> und die <code>boot.php</code> beantwortet den Extension Point <code>D2U_HELPER_TRANSLATE_OBJECT</code>.</li>
+	<li>Backend: Im Referenz-Formular wird jetzt direkt an den betroffenen Feldern angezeigt, wofür sie im Frontend/SEO verwendet werden: der Name als Meta-Titel, der Teaser als Meta-Beschreibung und der Hinweis, dass das erste Bild für die SEO-/Social-Media-Vorschau (<code>og:image</code>) genutzt wird.</li>
 </ul>
 <p>1.2.3:</p>
 <ul>
