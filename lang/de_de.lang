@@ -12,9 +12,6 @@ d2u_references_no_video = Kein Video ausgewählt.
 d2u_references_reference = Referenz
 d2u_references_tags = Tags
 d2u_references_teaser = Kurzbeschreibung
-d2u_references_seo_hint_meta_title = Wird als Meta-Titel (Seitentitel) für Suchmaschinen verwendet.
-d2u_references_seo_hint_meta_description = Wird als Meta-Beschreibung für Suchmaschinen verwendet.
-d2u_references_seo_hint_first_image = Das erste Bild wird für die SEO-/Social-Media-Vorschau (og:image) verwendet.
 d2u_references_url = Externe URL
 
 d2u_references_settings_article = Referenzen Artikel
