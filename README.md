@@ -4,6 +4,10 @@ Addon zum Verwalten und einheitlichen Darstellen von Referenzen. Referenzen kön
 
 Demoseite: [https://test.design-to-use.de/de/addontests/d2u-referenzen/](https://test.design-to-use.de/de/addontests/d2u-referenzen/)
 
+## REST API
+
+Bei installiertem [`api`](https://github.com/FriendsOfREDAXO/api)-Addon stellt d2u_references eine REST API bereit, mit der externe Werkzeuge Referenzen und Tags auslesen und einspielen können. Es gibt einen Discovery-Endpunkt (`/api/d2u_references/schema`), der die verfügbaren Felder je Ressource inkl. SEO-Rolle meldet. Details siehe [API.md](API.md) sowie im Backend unter **Hilfe › REST API**.
+
 ## Beispielmodule
 
 - 50-1 D2U Referenzen - Vertikale Referenzboxen ohne Detailansicht (BS4, deprecated)
