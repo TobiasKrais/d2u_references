@@ -2,6 +2,11 @@
 
 use TobiasKrais\D2UReferences\FrontendHelper;
 
+// Register the REST API with the "api" addon (frontend + backend requests).
+if (\rex_addon::get('api')->isAvailable()) {
+    \FriendsOfRedaxo\Api\RouteCollection::registerRoutePackage(new \TobiasKrais\D2UReferences\Api\ReferencesApi());
+}
+
 if (rex::isBackend() && is_object(rex::getUser())) {
     rex_perm::register('d2u_references[]', rex_i18n::msg('d2u_references_rights'));
     rex_perm::register('d2u_references[edit_data]', rex_i18n::msg('d2u_references_rights_edit_data'), rex_perm::OPTIONS);
