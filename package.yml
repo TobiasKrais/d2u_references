@@ -23,6 +23,7 @@ page:
             itemClass: pull-right
             subpages:
                 changelog: { title: 'translate:d2u_helper_help_chapter_changelog' }
+                api: { title: 'translate:d2u_references_help_chapter_api' }
 
 requires:
     redaxo: '>=5.10.0'

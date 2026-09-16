@@ -20,3 +20,4 @@ d2u_references_rights = D2U References addon
 d2u_references_rights_edit_data = D2U References addon: edit rights for data
 d2u_references_rights_edit_lang = D2U References addon: edit rights for translations (languages set in user roles apply)
 d2u_references_rights_settings = D2U References addon: settings
+d2u_references_help_chapter_api = REST API

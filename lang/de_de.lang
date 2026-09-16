@@ -20,3 +20,4 @@ d2u_references_rights = D2U Referenzen Addon
 d2u_references_rights_edit_data = D2U Referenzen Addon: Editierrechte für Daten und sprachübergreifende Inhalte
 d2u_references_rights_edit_lang = D2U Referenzen Addon: Editierrechte für Übersetzungen und sprachspezifische Inhalte (es gelten die Sprachen der Rolleneinstellungen)
 d2u_references_rights_settings = D2U Referenzen Addon: Einstellungen
+d2u_references_help_chapter_api = REST API
