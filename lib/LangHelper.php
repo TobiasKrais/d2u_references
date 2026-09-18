@@ -61,6 +61,16 @@ class LangHelper extends \TobiasKrais\D2UHelper\ALangHelper
     ];
 
     /**
+     * @var array<string,string> Array with dutch replacements. Key is the wildcard,
+     * value the replacement.
+     */
+    protected array $replacements_dutch = [
+        'd2u_references_all_tags' => 'Alle tags',
+        'd2u_references_external_url' => 'Naar productpagina',
+        'd2u_references_references' => 'Referenties',
+    ];
+
+    /**
      * @var array<string,string> Array with german replacements. Key is the wildcard,
      * value the replacement.
      */
@@ -91,8 +101,12 @@ class LangHelper extends \TobiasKrais\D2UHelper\ALangHelper
                 // Load values for input
                 if ('german' === $lang_replacement && isset($this->replacements_german) && isset($this->replacements_german[$key])) {
                     $value = $this->replacements_german[$key];
+                } elseif ('dutch' === $lang_replacement && isset($this->replacements_dutch) && isset($this->replacements_dutch[$key])) {
+                    $value = $this->replacements_dutch[$key];
                 } elseif ('french' === $lang_replacement && isset($this->replacements_francaise) && isset($this->replacements_francaise[$key])) {
                     $value = $this->replacements_francaise[$key];
+                } elseif ('spanish' === $lang_replacement && isset($this->replacements_spanish) && isset($this->replacements_spanish[$key])) {
+                    $value = $this->replacements_spanish[$key];
                 } elseif ('russian' === $lang_replacement && isset($this->replacements_russian) && isset($this->replacements_russian[$key])) {
                     $value = $this->replacements_russian[$key];
                 } elseif ('slovak' === $lang_replacement && isset($this->replacements_slovak) && isset($this->replacements_slovak[$key])) {

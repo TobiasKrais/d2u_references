@@ -67,6 +67,7 @@ if (!$invalidCsrf && 'save' === filter_input(INPUT_POST, 'btn_save')) {
                             echo '<select class="form-control" name="settings[lang_replacement_'. $rex_clang->getId() .']">';
                             $replacement_options = [
                                 'd2u_helper_lang_english' => 'english',
+                                'd2u_helper_lang_dutch' => 'dutch',
                                 'd2u_helper_lang_french' => 'french',
                                 'd2u_helper_lang_german' => 'german',
                                 'd2u_helper_lang_russian' => 'russian',
