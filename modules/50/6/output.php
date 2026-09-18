@@ -1,4 +1,5 @@
 <?php
+/* d2u_translate: 1:html */
 
 if (!rex::isBackend()) {
     echo \TobiasKrais\D2UReferences\FrontendHelper::getTagFilterAssets();
