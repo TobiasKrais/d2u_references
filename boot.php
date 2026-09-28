@@ -15,25 +15,11 @@ if (rex::isBackend() && is_object(rex::getUser())) {
 }
 
 if (rex::isBackend()) {
-    rex_extension::register('ART_PRE_DELETED', rex_d2u_references_article_is_in_use(...));
     rex_extension::register('CLANG_DELETED', rex_d2u_references_clang_deleted(...));
     rex_extension::register('D2U_VIDEO_IN_USE', rex_d2u_references_video_is_in_use(...));
     rex_extension::register('D2U_HELPER_TRANSLATION_LIST', rex_d2u_references_translation_list(...));
     rex_extension::register('D2U_HELPER_TRANSLATE_OBJECT', rex_d2u_references_translate_object(...));
     rex_extension::register('MEDIA_IS_IN_USE', rex_d2u_references_media_is_in_use(...));
-}
-
-/**
- * Checks if article is used by this addon.
- * @param rex_extension_point<string> $ep Redaxo extension point
- * @throws rex_api_exception If article is used
- * @return string Warning message
- */
-function rex_d2u_references_article_is_in_use(rex_extension_point $ep): string
-{
-    // Since 2.0.0 references link to external URLs, no addon article is stored,
-    // so no article deletion is blocked by this addon anymore.
-    return '';
 }
 
 /**

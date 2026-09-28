@@ -1,7 +1,7 @@
 <?php
 ?>
 <h2>Changelog</h2>
-<p>2.0.0:</p>
+<p>2.0.0-DEV:</p>
 <ul>
 	<li>Breaking Change: Referenzen erzeugen keine eigenen Detailseiten-URLs mehr. Die zugehörige url-Addon-Integration (Profil <code>reference_id</code>, Datenbank-View <code>rex_d2u_references_url_references</code>) sowie die Detailansicht in den Modulen wurden entfernt. Referenz-Boxen verlinken jetzt auf die externe URL der Referenz (sprachspezifisch bevorzugt), ersatzweise auf den in der Referenz hinterlegten REDAXO-Artikel; ist beides leer, ist die Box nicht verlinkt. Die Einstellung „Artikel" (Detailseiten-Artikel) entfällt. Beim Update werden das URL-Profil und die View automatisch entfernt. Der Artikel-Löschschutz dieses Addons entfällt ebenfalls; der veraltete Konfigurationswert <code>article_id</code> wird beim Update entfernt, damit das Löschen von Artikeln nicht mehr fälschlich blockiert wird.</li>
 	<li>Breaking Change: Auch Tags erzeugen keine eigenen URLs mehr. Die Methode <code>Tag::getUrl()</code> und die URL-Cache-Aktualisierung wurden entfernt; die Tag-Filterung in den Frontend-Modulen läuft ausschließlich per JavaScript (Datenattribute <code>data-d2u-reference-filter-*</code>). Das <code>tag_id</code>-URL-Profil und die Tag-Views werden beim Update entfernt.</li>
