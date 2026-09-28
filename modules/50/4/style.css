@@ -77,19 +77,6 @@
 .fa-back:before {
 	content: "\f104";
 }
-.back-spacer {
-	margin-left: 15px;
-	margin-right: 1em;
-	padding-right: 1em;
-}
-.back-spacer:hover {
-	background-color: var(--navi-color-hover-bg);
-	color: var(--navi-color-hover-font);
-	transition: all 0.5s;
-}
-.reference-detail a:hover {
-	text-decoration: none;
-}
 @media screen and (min-width: 768px) {
 	.text-rf-mod-4 {
 		display: flex;
