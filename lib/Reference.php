@@ -68,9 +68,6 @@ class Reference implements \TobiasKrais\D2UHelper\ITranslationHelper, \TobiasKra
     /** @var string Timestamp containing the last update date */
     private string $updatedate = '';
 
-    /** @var string URL */
-    private string $url = '';
-
     /**
      * Constructor. Reads the object stored in database.
      * @param int $reference_id reference ID
@@ -147,12 +144,6 @@ class Reference implements \TobiasKrais\D2UHelper\ITranslationHelper, \TobiasKra
                 $result->setQuery($query);
             }
             $this->online_status = 'online';
-        }
-
-        // Don't forget to regenerate URL cache to make online machine available
-        if (rex_addon::get('url')->isAvailable()) {
-            \TobiasKrais\D2UHelper\BackendHelper::generateUrlCache('reference_id');
-            \TobiasKrais\D2UHelper\BackendHelper::generateUrlCache('tag_id');
         }
     }
 
@@ -248,32 +239,22 @@ class Reference implements \TobiasKrais\D2UHelper\ITranslationHelper, \TobiasKra
     }
 
     /**
-     * Returns the URL of this object.
-     * @param bool $including_domain true if Domain name should be included
-     * @return string URL
+     * Returns the link target of this reference: the language specific external
+     * URL, then the general external URL, then the referenced REDAXO article.
+     * @return string URL or empty string if none is set
      */
-    public function getUrl($including_domain = false)
+    public function getLinkUrl(): string
     {
-        if ('' === $this->url) {
-            $d2u_references = rex_addon::get('d2u_references');
-
-            $parameterArray = [];
-            $parameterArray['reference_id'] = $this->reference_id;
-
-            $this->url = rex_getUrl((int) $d2u_references->getConfig('article_id'), $this->clang_id, $parameterArray, '&');
+        if ('' !== $this->external_url_lang) {
+            return $this->external_url_lang;
         }
-
-        if ($including_domain) {
-            if (\rex_addon::get('yrewrite')->isAvailable()) {
-                return str_replace(\rex_yrewrite::getCurrentDomain()->getUrl() .'/', \rex_yrewrite::getCurrentDomain()->getUrl(), \rex_yrewrite::getCurrentDomain()->getUrl() . $this->url);
-            }
-
-            return str_replace(\rex::getServer(). '/', \rex::getServer(), \rex::getServer() . $this->url);
-
+        if ('' !== $this->external_url) {
+            return $this->external_url;
         }
-
-        return $this->url;
-
+        if ($this->article_id > 0) {
+            return rex_getUrl($this->article_id, $this->clang_id);
+        }
+        return '';
     }
 
     /**
@@ -395,11 +376,6 @@ class Reference implements \TobiasKrais\D2UHelper\ITranslationHelper, \TobiasKra
                     $regenerate_urls = true;
                 }
             }
-        }
-
-        // Update URLs
-        if ($regenerate_urls) {
-            \TobiasKrais\D2UHelper\BackendHelper::generateUrlCache('reference_id');
         }
 
         return $error;

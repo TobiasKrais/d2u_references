@@ -22,29 +22,6 @@ if (rex::isBackend()) {
     rex_extension::register('D2U_HELPER_TRANSLATE_OBJECT', rex_d2u_references_translate_object(...));
     rex_extension::register('MEDIA_IS_IN_USE', rex_d2u_references_media_is_in_use(...));
 }
-else {
-    rex_extension::register('D2U_HELPER_ALTERNATE_URLS', rex_d2u_references_alternate_urls(...));
-    rex_extension::register('D2U_HELPER_BREADCRUMBS', rex_d2u_references_breadcrumbs(...));
-}
-
-/**
- * Get alternate URLs for jobs.
- * @param rex_extension_point<array<string>> $ep Redaxo extension point
- * @return array<int,string> Addon url list
- */
-function rex_d2u_references_alternate_urls(rex_extension_point $ep): array
-{
-    $params = $ep->getParams();
-    $url_namespace = (string) $params['url_namespace'];
-    $url_id = (int) $params['url_id'];
-
-    $url_list = FrontendHelper::getAlternateURLs($url_namespace, $url_id);
-    if (count($url_list) === 0 && is_array($ep->getSubject())) {
-        $url_list = $ep->getSubject();
-    }
-
-    return $url_list;
-}
 
 /**
  * Checks if article is used by this addon.
@@ -72,24 +49,6 @@ function rex_d2u_references_article_is_in_use(rex_extension_point $ep): string
     }
 
     return '';
-}
-
-/**
- * Get breadcrumb part for jobs.
- * @param rex_extension_point<array<string>> $ep Redaxo extension point
- * @return array<int,string> HTML formatted breadcrumb elements
- */
-function rex_d2u_references_breadcrumbs(rex_extension_point $ep) {
-    $params = $ep->getParams();
-    $url_namespace = (string) $params['url_namespace'];
-    $url_id = (int) $params['url_id'];
-
-    $breadcrumbs = FrontendHelper::getBreadcrumbs($url_namespace, $url_id);
-    if (count($breadcrumbs) === 0) {
-        $breadcrumbs = $ep->getSubject();
-    }
-
-    return $breadcrumbs;
 }
 
 /**

@@ -291,8 +291,9 @@ if ('' === $func) {
     $list->setColumnLayout(rex_i18n::msg('d2u_helper_open_frontend'), ['', '<td class="rex-table-action">###VALUE###</td>']);
     $list->setColumnFormat(rex_i18n::msg('d2u_helper_open_frontend'), 'custom', static function ($params) {
         $listParams = $params['list'];
+        $linkUrl = (new \TobiasKrais\D2UReferences\Reference((int) $listParams->getValue('reference_id'), (int) rex_config::get('d2u_helper', 'default_lang')))->getLinkUrl();
 
-        return BackendHelper::getFrontendLinkButton((new \TobiasKrais\D2UReferences\Reference((int) $listParams->getValue('reference_id'), (int) rex_config::get('d2u_helper', 'default_lang')))->getUrl());
+        return '' !== $linkUrl ? BackendHelper::getFrontendLinkButton($linkUrl) : '';
     });
 
     $list->setNoRowsMessage(rex_i18n::msg('d2u_references_no_references_found'));

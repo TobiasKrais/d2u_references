@@ -1,8 +1,9 @@
 <?php
 ?>
 <h2>Changelog</h2>
-<p>1.2.4-DEV:</p>
+<p>2.0.0:</p>
 <ul>
+	<li>Breaking Change: Referenzen erzeugen keine eigenen Detailseiten-URLs mehr. Die zugehörige url-Addon-Integration (Profil <code>reference_id</code>, Datenbank-View <code>rex_d2u_references_url_references</code>) sowie die Detailansicht in den Modulen wurden entfernt. Referenz-Boxen verlinken jetzt auf die externe URL der Referenz (sprachspezifisch bevorzugt), ersatzweise auf den in der Referenz hinterlegten REDAXO-Artikel; ist beides leer, ist die Box nicht verlinkt. Die Einstellung „Artikel" (Detailseiten-Artikel) entfällt. Beim Update werden das URL-Profil und die View automatisch entfernt.</li>
 	<li>Bugfix (REST API): Beim Anlegen und Aktualisieren über die REST-API werden jetzt alle Sprachen in einer Datenbank-Transaktion geschrieben. Bisher gab es keine Transaktion um den Schreibvorgang: Schlug ein Sprach-Speichervorgang mitten im Ablauf fehl (<code>HTTP 500</code>), blieben der Hauptdatensatz (sprachunabhängige Felder) und bereits geschriebene <code>_lang</code>-Zeilen gespeichert, während die restlichen Sprachfelder fehlten — der Datensatz blieb halb geschrieben zurück. Jetzt wird bei einem Fehler der komplette Schreibvorgang zurückgerollt (kein Teil-Write mehr).</li>
 	<li>Bugfix (REST API): Feldwerte werden beim Anlegen/Aktualisieren jetzt gegen ihren deklarierten Typ geprüft und bei nicht speicherbaren Werten mit <code>HTTP 400</code> samt Meldung abgewiesen, statt sie stillschweigend zu verwerfen und Erfolg (<code>HTTP 200</code>) zu melden (<code>media[]</code>/<code>int[]</code> müssen Arrays sein, Einzel-Medien-/Textfelder Skalar, <code>enum</code>-Felder nur erlaubte Werte). Ein Import erkennt Fehlschläge damit zuverlässig.</li>
         <li>Neu: Niederländische Frontend-Übersetzung (SProg-Wildcards für „Alle tags“, „Naar productpagina“, „Referenties“). Niederländisch ist jetzt auch in den Einstellungen als voreingestellte Sprachersetzung wählbar. Zudem wird die bereits vorhandene spanische Übersetzung beim Installieren der Sprachersetzungen nun korrekt übernommen (Auswahl „Spanisch“ wurde zuvor ignoriert).</li>

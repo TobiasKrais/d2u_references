@@ -18,10 +18,6 @@ if ((
 if (!$invalidCsrf && 'save' === filter_input(INPUT_POST, 'btn_save')) {
     $settings = rex_post('settings', 'array', []);
 
-    // Linkmap Link and media needs special treatment
-    $link_ids = filter_input_array(INPUT_POST, ['REX_INPUT_LINK' => ['filter' => FILTER_VALIDATE_INT, 'flags' => FILTER_REQUIRE_ARRAY]]);
-    $settings['article_id'] = is_array($link_ids['REX_INPUT_LINK']) ? $link_ids['REX_INPUT_LINK'][1] : 0;
-
     // Checkbox also needs special treatment if empty
     $settings['lang_wildcard_overwrite'] = array_key_exists('lang_wildcard_overwrite', $settings) ? 'true' : 'false';
 
@@ -31,12 +27,6 @@ if (!$invalidCsrf && 'save' === filter_input(INPUT_POST, 'btn_save')) {
 
         // Install / update language replacements
         \TobiasKrais\D2UReferences\LangHelper::factory()->install();
-
-        // Update url schemes
-        if (\rex_addon::get('url')->isAvailable()) {
-            BackendHelper::update_url_scheme(rex::getTablePrefix() .'d2u_references_url_references', $settings['article_id']);
-            BackendHelper::update_url_scheme(rex::getTablePrefix() .'d2u_references_url_tags', $settings['article_id']);
-        }
     } else {
         echo rex_view::error(rex_i18n::msg('form_save_error'));
     }
@@ -47,14 +37,6 @@ if (!$invalidCsrf && 'save' === filter_input(INPUT_POST, 'btn_save')) {
 	<div class="panel panel-edit">
 		<header class="panel-heading"><div class="panel-title"><?= rex_i18n::msg('d2u_references_settings') ?></div></header>
 		<div class="panel-body">
-			<fieldset>
-				<legend><small><i class="rex-icon rex-icon-system"></i></small> <?= rex_i18n::msg('d2u_references_settings') ?></legend>
-				<div class="panel-body-wrapper slide">
-					<?php
-                        BackendHelper::form_linkfield('d2u_references_settings_article', '1', (int) rex_config::get('d2u_references', 'article_id'), (int) rex_config::get('d2u_helper', 'default_lang', rex_clang::getStartId()));
-                    ?>
-				</div>
-			</fieldset>
 			<fieldset>
 				<legend><small><i class="rex-icon rex-icon-language"></i></small> <?= rex_i18n::msg('d2u_helper_lang_replacements') ?></legend>
 				<div class="panel-body-wrapper slide">
