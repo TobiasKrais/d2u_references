@@ -102,7 +102,9 @@ if (!function_exists('printReferenceList_mod_50_2')) {
                 echo '<img src="'. rex_escape(rex_media_manager::getUrl('d2u_references_list_flat',  $reference->pictures[0])) .'" alt="'. rex_escape($reference->name) .'" title="'. rex_escape($reference->name) .'" class="reference-box-preview">';
             }
             echo '</div>';
-            echo '<span class="icon go-details"></span>';
+            if ($has_details_link) {
+                echo '<span class="icon go-details"></span>';
+            }
             echo '</div>';
             if ($has_details_link) {
                 echo '</a>';
