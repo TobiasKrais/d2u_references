@@ -71,7 +71,10 @@ if (!function_exists('printReferenceList_mod_50_4')) {
         $pic_orientation = 'left';
         foreach ($references as $reference) {
             echo '<div class="col-12"'. \TobiasKrais\D2UReferences\FrontendHelper::getReferenceFilterAttributes($reference) .'>';
-            echo '<a href="'. $reference->getUrl() .'">';
+            $reference_link = $reference->getLinkUrl();
+            if ('' !== $reference_link) {
+                echo '<a href="'. rex_escape($reference_link) .'">';
+            }
 
             echo '<div class="references-mod-4"'. ('' !== $reference->background_color ? ' style="background-color:'. $reference->background_color .'"' : '') .'>';
             echo '<div class="row">';
@@ -108,7 +111,9 @@ if (!function_exists('printReferenceList_mod_50_4')) {
             echo '</div>';
             echo '</div>';
 
-            echo '</a>';
+            if ('' !== $reference_link) {
+                echo '</a>';
+            }
             echo '</div>';
         }
 
@@ -132,39 +137,10 @@ if (rex::isBackend()) {
     $url_id = TobiasKrais\D2UHelper\FrontendHelper::getUrlId();
 
     $tags = \TobiasKrais\D2UReferences\Tag::getAll(rex_clang::getCurrentId(), true);
-    $references = [];
-    if (filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' => ['default' => 0]]) > 0 || 'reference_id' === $url_namespace) {
-        $reference_id = (int) filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT);
-        if (\rex_addon::get('url')->isAvailable() && $url_id > 0) {
-            $reference_id = $url_id;
-        }
-        $reference = new \TobiasKrais\D2UReferences\Reference($reference_id, rex_clang::getCurrentId());
 
-        echo '<div class="col-12">';
-        echo '<div class="reference-detail">';
-        echo '<h1><a href="'. rex_getUrl() .'"><span class="fa-icon fa-back back-spacer"></span></a>'. rex_escape($reference->name) .'</h1>';
-        echo TobiasKrais\D2UHelper\FrontendHelper::prepareEditorField($reference->description);
-        if ('' !== $reference->external_url_lang || '' !== $reference->external_url) {
-            $external_url = '' !== $reference->external_url_lang ? $reference->external_url_lang : $reference->external_url;
-            $external_url = TobiasKrais\D2UHelper\FrontendHelper::sanitizeUrl($external_url);
-            if ('' !== $external_url) {
-                echo '<a href="'. rex_escape($external_url, 'html_attr') .'">»&nbsp;&nbsp;'. \Sprog\Wildcard::get('d2u_references_external_url') .'</a>';
-            }
-        }
-        if (\rex_addon::get('d2u_videos') instanceof rex_addon && \rex_addon::get('d2u_videos')->isAvailable() && false !== $reference->video) {
-            $videomanager = new \TobiasKrais\D2UVideos\Videomanager();
-            $videomanager->printVideo($reference->video);
-        }
-        if (count($reference->pictures) > 1) {
-            printImages($reference->pictures);
-        }
-        echo '</div>';
-        echo '</div>';
-    } else {
-        // Reference list
-        $references = \TobiasKrais\D2UReferences\Reference::getAll(rex_clang::getCurrentId(), true);
+    // Reference list
+    $references = \TobiasKrais\D2UReferences\Reference::getAll(rex_clang::getCurrentId(), true);
 
-        printReferenceList_mod_50_4($references, $tags);
-    }
+    printReferenceList_mod_50_4($references, $tags);
 }
 ?>

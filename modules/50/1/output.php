@@ -10,13 +10,7 @@ $url_namespace = TobiasKrais\D2UHelper\FrontendHelper::getUrlNamespace();
 $url_id = TobiasKrais\D2UHelper\FrontendHelper::getUrlId();
 
 $tags = \TobiasKrais\D2UReferences\Tag::getAll(rex_clang::getCurrentId());
-$references = [];
-if (filter_input(INPUT_GET, 'reference_id', FILTER_VALIDATE_INT, ['options' => ['default' => 0]]) > 0 || 'reference_id' === $url_namespace) {
-    header('Location: '. rex_getUrl());
-    exit;
-} else {
-    $references = \TobiasKrais\D2UReferences\Reference::getAll(rex_clang::getCurrentId(), true);
-}
+$references = \TobiasKrais\D2UReferences\Reference::getAll(rex_clang::getCurrentId(), true);
 
 echo '<div data-d2u-reference-filter-root>';
 echo \TobiasKrais\D2UReferences\FrontendHelper::getTagFilterMarkup($tags);
