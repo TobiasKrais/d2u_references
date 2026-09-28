@@ -31,23 +31,8 @@ if (rex::isBackend()) {
  */
 function rex_d2u_references_article_is_in_use(rex_extension_point $ep): string
 {
-    $warning = [];
-    $params = $ep->getParams();
-    $article_id = $params['id'];
-
-    // Prepare warnings
-    // Settings
-    $addon = rex_addon::get('d2u_references');
-    if ($addon->hasConfig('article_id') && (int) $addon->getConfig('article_id') === $article_id) {
-        $message = '<a href="index.php?page=d2u_references/settings">'.
-             rex_i18n::msg('d2u_references_rights') .' - '. rex_i18n::msg('d2u_references_settings') . '</a>';
-            $warning[] = $message;
-    }
-
-    if (count($warning) > 0) {
-        throw new rex_api_exception(rex_i18n::msg('d2u_helper_rex_article_cannot_delete') .'<ul><li>'. implode('</li><li>', $warning) .'</li></ul>');
-    }
-
+    // Since 2.0.0 references link to external URLs, no addon article is stored,
+    // so no article deletion is blocked by this addon anymore.
     return '';
 }
 

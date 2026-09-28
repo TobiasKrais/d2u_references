@@ -76,7 +76,8 @@ include __DIR__ . DIRECTORY_SEPARATOR .'lib'. DIRECTORY_SEPARATOR .'Module.php';
 $d2u_module_manager = new \TobiasKrais\D2UHelper\ModuleManager(\TobiasKrais\D2UReferences\Module::getModules(), '', 'd2u_references');
 $d2u_module_manager->autoupdate();
 
-// Init Config
-if (!rex_config::has('d2u_references', 'article_id')) {
-    rex_config::set('d2u_references', 'article_id', rex_article::getSiteStartArticleId());
+// Since 2.0.0 references link to external URLs. The former addon article config
+// is obsolete; remove it so article deletion is no longer blocked by a stale value.
+if (rex_config::has('d2u_references', 'article_id')) {
+    rex_config::remove('d2u_references', 'article_id');
 }
