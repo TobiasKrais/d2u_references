@@ -38,9 +38,6 @@ class Tag implements \TobiasKrais\D2UHelper\ITranslationHelper, \TobiasKrais\D2U
     /** @var string Timestamp containing the last update date */
     private string $updatedate = '';
 
-    /** @var string URL */
-    private string $url = '';
-
     /**
      * Constructor. Reads the object stored in database.
      * @param int $tag_id tag ID
@@ -202,35 +199,6 @@ class Tag implements \TobiasKrais\D2UHelper\ITranslationHelper, \TobiasKrais\D2U
     }
 
     /**
-     * Returns the URL of this object.
-     * @param bool $including_domain true if Domain name should be included
-     * @return string URL
-     */
-    public function getUrl($including_domain = false)
-    {
-        if ('' === $this->url) {
-            $d2u_references = rex_addon::get('d2u_references');
-
-            $parameterArray = [];
-            $parameterArray['tag_id'] = $this->tag_id;
-
-            $this->url = rex_getUrl((int) $d2u_references->getConfig('article_id'), $this->clang_id, $parameterArray, '&');
-        }
-
-        if ($including_domain) {
-            if (rex_addon::get('yrewrite')->isAvailable()) {
-                return str_replace(\rex_yrewrite::getCurrentDomain()->getUrl() .'/', \rex_yrewrite::getCurrentDomain()->getUrl(), \rex_yrewrite::getCurrentDomain()->getUrl() . $this->url);
-            }
-
-            return str_replace(\rex::getServer(). '/', \rex::getServer(), \rex::getServer() . $this->url);
-
-        }
-
-        return $this->url;
-
-    }
-
-    /**
      * Translate this tag from a source language into its own (target) language
      * using ai_platform and store the result.
      * @param int $sourceClangId Redaxo clang id of the source language
@@ -325,11 +293,6 @@ class Tag implements \TobiasKrais\D2UHelper\ITranslationHelper, \TobiasKrais\D2U
                     $regenerate_urls = true;
                 }
             }
-        }
-
-        // Update URLs
-        if ($regenerate_urls) {
-            \TobiasKrais\D2UHelper\BackendHelper::generateUrlCache('tag_id');
         }
 
         return $error;
