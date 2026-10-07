@@ -107,10 +107,16 @@ class Reference implements \TobiasKrais\D2UHelper\ITranslationHelper, \TobiasKra
             $this->date = (string) $result->getValue('date');
             $this->updatedate = (string) $result->getValue('updatedate');
 
+            // Tag links are language-independent (tag2refs has no clang). Load ALL of
+            // them so save() preserves the associations even when the tag has no
+            // translation in this clang yet (otherwise translating a reference into
+            // such a language would wipe its tag links). The LEFT JOIN only provides
+            // the name for ordering; untranslated tags (lang.name NULL) still load and
+            // are skipped by the frontend when rendering.
             $query_tags = 'SELECT tag_refs.tag_id FROM '. rex::getTablePrefix() .'d2u_references_tag2refs AS tag_refs '
                 .'LEFT JOIN '. rex::getTablePrefix() .'d2u_references_tags_lang AS lang '
                     .'ON tag_refs.tag_id = lang.tag_id AND lang.clang_id = '. $this->clang_id .' '
-                .'WHERE reference_id = '. $this->reference_id .' AND lang.name IS NOT NULL '
+                .'WHERE reference_id = '. $this->reference_id .' '
                 .'ORDER BY lang.name';
             $result_tags = rex_sql::factory();
             $result_tags->setQuery($query_tags);
