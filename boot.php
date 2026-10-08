@@ -208,10 +208,19 @@ function rex_d2u_references_translate_object(rex_extension_point $ep)
     switch ($type) {
         case 'reference':
             $reference = new \TobiasKrais\D2UReferences\Reference($id, $target_clang_id);
+            if ($reference->reference_id <= 0) {
+                // No target-language row yet: load the source and retarget it.
+                $reference = new \TobiasKrais\D2UReferences\Reference($id, $source_clang_id);
+                $reference->clang_id = $target_clang_id;
+            }
             $object = $reference->reference_id > 0 ? $reference : null;
             break;
         case 'tag':
             $tag = new \TobiasKrais\D2UReferences\Tag($id, $target_clang_id);
+            if ($tag->tag_id <= 0) {
+                $tag = new \TobiasKrais\D2UReferences\Tag($id, $source_clang_id);
+                $tag->clang_id = $target_clang_id;
+            }
             $object = $tag->tag_id > 0 ? $tag : null;
             break;
         default:
