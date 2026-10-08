@@ -63,11 +63,13 @@ class Tag implements \TobiasKrais\D2UHelper\ITranslationHelper, \TobiasKrais\D2U
             }
             $this->updatedate = (string) $result->getValue('updatedate');
 
-            $query_refs = 'SELECT tag2refs.tag_id, tag2refs.reference_id FROM '. rex::getTablePrefix() .'d2u_references_tag2refs AS tag2refs '
-                .'LEFT JOIN '. rex::getTablePrefix() .'d2u_references_tags_lang AS lang '
-                    .'ON tag2refs.tag_id = lang.tag_id '
-                .'WHERE tag2refs.tag_id = '. $this->tag_id .' AND clang_id = '. $this->clang_id .' '
-                .'ORDER BY name';
+            // tag2refs is language-independent (reference_id <-> tag_id). Load ALL
+            // associations, NOT filtered by clang — otherwise loading the tag in a
+            // language it is not translated into yet returns an empty list, and save()
+            // (DELETE + re-insert from reference_ids) would wipe the associations.
+            $query_refs = 'SELECT reference_id FROM '. rex::getTablePrefix() .'d2u_references_tag2refs '
+                .'WHERE tag_id = '. $this->tag_id .' '
+                .'ORDER BY reference_id';
             $result_refs = rex_sql::factory();
             $result_refs->setQuery($query_refs);
             for ($i = 0; $i < $result_refs->getRows(); ++$i) {
